@@ -1,0 +1,318 @@
+.navigation-bar {
+    background-color: var(--secondary);
+    height: 3.75rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    left: 0;
+    transition: background-color 0.2s ease-in-out, border-bottom-color 0.2s ease-in-out;
+    z-index: 50;
+}
+
+.navigation.side-navigation {
+    background-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.navigation-bar-container {
+    height: 100%;
+    max-width: 84rem; /** Accommodates for padding-left & padding-right **/
+    width: 100%;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    color: var(--accent-two);
+    font-size: 1.5rem;
+    font-weight: 600;
+    transition: color 0.1s ease-in-out;
+}
+
+.logo:hover {
+    color: var(--accent-one);
+}
+
+.search-bar {
+    background-color: var(--accent-four);
+    border-radius: 1rem;
+    height: 2.25rem;
+    max-width: 32rem;
+    width: 100%;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search {
+    background-color: transparent;
+    border: none;
+    color: var(--accent-three);
+    outline: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    height: 100%;
+    max-width: 30rem;
+    width: 100%;
+    padding-left: 1rem;
+}
+
+.search-icon-wrapper {
+    background-color: transparent;
+    border: none;
+    height: 100%;
+    width: 2.5rem;
+    padding: 0.625rem 1rem 0.625rem 0.5rem;
+    cursor: pointer;
+}
+
+.search-icon-wrapper:hover .search-icon {
+    color: var(--primary);
+}
+
+.search-icon {
+    color: var(--accent-three);
+    height: 1rem;
+    width: 1rem;
+    transition: color 0.1s ease-in-out;
+}
+
+.navigation-menu ol {
+    display: flex;
+    align-items: center;
+    column-gap: 0;
+}
+
+.navigation-menu li {
+    display: flex;
+}
+
+.navigation-link {
+    border: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: none;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+}
+
+.non-CTA-link {
+    background-color: transparent;
+    color: var(--primary);
+    padding: 0.75rem;
+}
+
+.non-CTA-link:hover {
+    color: var(--accent-two);
+}
+
+.CTA-link {
+    background-color: var(--accent-two);
+    border-radius: 2rem;
+    color: var(--secondary);
+    padding: 0.75rem 1.125rem;
+}
+
+.CTA-link:hover {
+    background-color: var(--accent-one);
+}
+
+.mobile-search-wrapper {
+    background-color: transparent;
+    border: none;
+    padding: 0.5625rem;
+    display: none;
+    cursor: pointer;
+    transform: translateY(0.03125rem);
+}
+
+.mobile-search-wrapper.is-hidden {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    visibility: hidden;
+}
+
+.mobile-search-icon {
+    color: var(--primary);
+    height: 1.125rem;
+    width: 1.125rem;
+}
+
+.hamburger-menu {
+    appearance: none;
+    background: none;
+    border: none;
+    height: 2.75rem;
+    width: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    left: 0.625rem;
+    cursor: pointer;
+}
+
+.hamburger-menu.is-active .hamburger-line {
+    background-color: transparent;
+}
+
+.hamburger-menu.is-active .hamburger-line::before {
+    transform: rotate(45deg);
+}
+
+.hamburger-menu.is-active .hamburger-line::after {
+    transform: rotate(-45deg);
+}
+
+.hamburger-line {
+    background-color: var(--primary);
+    border-radius: 0.5rem;
+    height: 0.125rem;
+    width: 1.5rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.hamburger-line::before, .hamburger-line::after {
+    content: '';
+    background-color: var(--primary);
+    border-radius: 0.5rem;
+    height: 0.125rem;
+    width: 1.5rem;
+    display: block;
+    position: absolute;
+    transition: transform 0.2s ease-in-out;
+}
+
+.hamburger-line::before {
+    transform: translateY(-0.5rem);
+}
+
+.hamburger-line::after {
+    transform: translateY(0.5rem);
+}
+
+.side-navigation-menu {
+    background-color: var(--secondary);
+    border-top: var(--tertiary-two) 0.0625rem solid;
+    height: 100vh;
+    width: calc(100% - 2rem);
+    padding: 3.75rem 1.5rem;
+    position: fixed;
+    top: 0;
+    left: 2rem;
+    opacity: 0;
+    overflow: auto;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    visibility: hidden;
+    z-index: 40;
+}
+
+.side-navigation-menu.is-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.side-navigation-header {
+    background-color: var(--secondary);
+    height: 3.75rem;
+    width: calc(100% - 2rem);
+    position: fixed;
+    top: 0;
+    left: 2rem;
+    z-index: 45;
+}
+
+.side-navigation-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.CTA-side-link {
+    border: none;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    width: 100%;
+    padding: 0.75rem 1.125rem;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.login-side-link {
+    background-color: var(--tertiary-two);
+    color: var(--primary);
+}
+
+.login-side-link:hover {
+    background-color: var(--tertiary-one);
+}
+
+.sign-up-side-link {
+    background-color: var(--accent-two);
+    color: var(--secondary);
+}
+
+.sign-up-side-link:hover {
+    background-color: var(--accent-one);
+}
+
+.side-navigation-overlay {
+    background-color: rgba(20, 20, 20, 0.5);
+    backdrop-filter: blur(0.25rem);
+    height: 100vh;
+    width: 2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    visibility: hidden;
+    z-index: 60;
+}
+
+.side-navigation-overlay.is-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media only screen and (min-width: 22rem) {
+    .side-navigation-menu, .side-navigation-header {
+        width: 20rem;
+        left: calc(100% - 20rem);
+    }
+
+    .side-navigation-overlay {
+        width: calc(100% - 20rem);
+    }
+}
+
+@media only screen and (min-width: 64rem) {
+    .logo {
+        font-size: 1.75rem;
+    }
+
+    .search-bar {
+        display: flex;
+    }
+
+    .navigation-menu ol {
+        column-gap: 0.5rem;
+    }
+
+    .navigation-link {
+        display: flex;
+    }
+
+    .mobile-search-wrapper {
+        display: none;
+    }
+
+    .hamburger-menu {
+        display: none;
+    }
+}
