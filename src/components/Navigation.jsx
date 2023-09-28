@@ -63,8 +63,8 @@ const Navigation = (props) => {
         <nav className={`side-navigation-menu ${sideNav ? 'is-active' : ''}`}>
           <div className='side-navigation-header'></div>
           <ol className='side-navigation-list'>
-            <li><button onClick={props.toggleLogin} className='CTA-side-link login-side-link'>Log in</button></li>
-            <li><button onClick={props.toggleSignUp} className='CTA-side-link sign-up-side-link'>Sign up</button></li>
+            <li><button onClick={() => {props.toggleLogin(); handleSideNav();}} className='CTA-side-link login-side-link'>Log in</button></li>
+            <li><button onClick={() => {props.toggleSignUp(); handleSideNav();}} className='CTA-side-link sign-up-side-link'>Sign up</button></li>
           </ol>
         </nav>
 
