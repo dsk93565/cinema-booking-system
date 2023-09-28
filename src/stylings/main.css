@@ -28,10 +28,151 @@ section {
     overflow-x: hidden;
 }
 
+h1 {
+    color: var(--primary);
+    font-size: 2.25rem;
+    font-weight: 700;
+}
+
+h2 {
+    color: var(--primary);
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+h3 {
+    color: var(--primary);
+}
+
+p {
+    color: var(--primary);
+}
+
 a {
     text-decoration: none;
 }
 
 ol li, ul li {
     list-style-type: none;
+}
+
+.universal-section-container {
+    background-color: var(--secondary);
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.small-section-container {
+    max-width: none;
+    width: 100%;
+    padding: 4rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: normal;
+    justify-content: normal;
+    row-gap: 3rem;
+}
+
+.large-section-container {
+    max-width: 72rem;
+    width: 100%;
+}
+
+.user-info-form {
+    display: flex;
+    flex-direction: column;
+    align-items: normal;
+    justify-content: normal;
+    row-gap: 2.5rem;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: normal;
+    justify-content: normal;
+    row-gap: 1rem;
+}
+
+.user-info-label {
+    color: var(--primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.user-info-input {
+    background-color: var(--accent-four);
+    border: none;
+    border-radius: 2rem;
+    color: var(--primary);
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%;
+    padding: 1rem;
+    outline: transparent 0.125rem solid;
+    transition: outline 0.2s ease-in-out;
+}
+
+.user-info-input::placeholder {
+    color: var(--accent-three);
+}
+
+.user-info-input:focus {
+    outline: var(--accent-two) 0.125rem solid;
+}
+
+.vertical-link {
+    margin-top: 0.25rem;
+    display: flex;
+    align-self: end;
+}
+
+.sub-action-link {
+    background-color: transparent;
+    border: none;
+    color: var(--accent-three);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.1s ease-in-out;
+}
+
+.sub-action-link:hover {
+    color: var(--primary);
+}
+
+.CTA-form-button {
+    background-color: var(--accent-two);
+    border: none;
+    border-radius: 2rem;
+    color: var(--secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%;
+    padding: 0.75rem 1.125rem;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.CTA-form-button:hover {
+    background-color: var(--accent-one);
+}
+
+@media only screen and (min-width: 40rem) {
+    .small-section-container {
+        max-width: 32rem;
+    }
+}
+
+@media only screen and (min-width: 48rem) {
+    .universal-section-container {
+        padding: 0 3rem;
+    }
+}
+
+@media only screen and (min-width: 64rem) {
+    .universal-section-container {
+        padding: 0 6rem;
+    }
 }
