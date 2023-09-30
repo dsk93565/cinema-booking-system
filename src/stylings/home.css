@@ -1,0 +1,123 @@
+.home .CTA-button-one {
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 1rem 1.25rem;
+}
+
+.hero-info {
+    max-width: 36rem;
+    width: 100%;
+}
+
+.hero-info h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.hero-info p {
+    font-size: 1.125rem;
+    margin-bottom: 1.75rem;
+}
+
+.hero-image {
+    border-radius: 2rem;
+    height: 20rem;
+    width: 25rem;
+    display: none;
+    object-fit: cover;
+}
+
+.movies-card {
+    background-color: var(--accent-four);
+    border-radius: 2rem;
+    color: var(--primary);
+    width: 100%;
+    padding: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2.25rem;
+}
+
+.movies-card a {
+    width: fit-content;
+    align-self: end;
+}
+
+.movies {
+    display: flex;
+    column-gap: 2.25rem;
+    overflow-x: scroll;
+}
+
+.movie-image-placeholder { /** --- For testing purposes --- **/
+    border: var(--primary) 0.125rem solid;
+    border-radius: 1rem;
+    height: 20rem;
+    width: 13rem;
+    cursor: pointer;
+}
+
+.movie-image-placeholder:hover ~ .movie-title {
+    color: var(--accent-two);
+}
+
+.movie-title {
+    color: var(--primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 150%;
+    margin-top: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: color 0.1s ease-in-out;
+}
+
+.movie-title:hover {
+    color: var(--accent-two);
+}
+
+.movie-info {
+    color: var(--accent-three);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 150%;
+    margin-top: 0.75rem;
+    text-align: center;
+}
+
+.promo-subscription .section-container {
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 3rem;
+}
+
+.promo-subscription h2 {
+    text-align: center;
+}
+
+@media only screen and (min-width: 40rem) {
+    .home .CTA-button-one {
+        font-size: 1rem;
+    }
+
+    .hero-info h1 {
+        font-size: 2.25rem;
+    }
+}
+
+@media only screen and (min-width: 48rem) {
+    .movies-card {
+        padding: 3rem;
+        row-gap: 3rem;
+    }
+
+    .movies {
+        column-gap: 3rem;
+    }
+}
+
+@media only screen and (min-width: 64rem) {
+    .hero-image {
+        display: flex;
+    }
+}

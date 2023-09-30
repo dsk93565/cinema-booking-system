@@ -1,5 +1,6 @@
 .navigation-bar {
     background-color: var(--secondary);
+    border-bottom: var(--tertiary-two) 0.0625rem solid;
     height: 3.75rem;
     width: 100%;
     display: flex;
@@ -11,9 +12,12 @@
     z-index: 50;
 }
 
+.navigation-bar.top-position {
+    border-bottom-color: transparent;
+}
+
 .navigation.side-navigation {
     background-color: transparent;
-    border-bottom-color: transparent;
 }
 
 .navigation-bar-container {
@@ -26,26 +30,21 @@
     justify-content: space-between;
 }
 
-.logo {
-    color: var(--accent-two);
-    font-size: 1.5rem;
-    font-weight: 600;
-    transition: color 0.1s ease-in-out;
-}
-
-.logo:hover {
-    color: var(--accent-one);
-}
-
 .search-bar {
     background-color: var(--accent-four);
     border-radius: 2rem;
+    outline: transparent 0.125rem solid;
     height: 2.25rem;
     max-width: 32rem;
     width: 100%;
     display: none;
     align-items: center;
     justify-content: space-between;
+    transition: outline 0.2s ease-in-out;
+}
+
+.search-bar:focus-within {
+    outline: var(--accent-two) 0.125rem solid;
 }
 
 .search-input {
@@ -71,7 +70,6 @@
     height: 100%;
     width: 2.5rem;
     padding: 0.625rem 1rem 0.625rem 0.5rem;
-    cursor: pointer;
 }
 
 .search-icon-wrapper:hover .search-icon {
@@ -96,41 +94,16 @@
 }
 
 .navigation-link {
-    border: none;
     font-size: 0.875rem;
     font-weight: 500;
     display: none;
-    cursor: pointer;
-    transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
-}
-
-.non-CTA-link {
-    background-color: transparent;
-    color: var(--primary);
-    padding: 0.75rem;
-}
-
-.non-CTA-link:hover {
-    color: var(--accent-two);
-}
-
-.CTA-link {
-    background-color: var(--accent-two);
-    border-radius: 2rem;
-    color: var(--secondary);
-    padding: 0.75rem 1.125rem;
-}
-
-.CTA-link:hover {
-    background-color: var(--accent-one);
 }
 
 .mobile-search-wrapper {
     background-color: transparent;
     border: none;
     padding: 0.5625rem;
-    display: none;
-    cursor: pointer;
+    display: none; /** Disabled for now **/
     transform: translateY(0.03125rem);
 }
 
@@ -157,7 +130,6 @@
     justify-content: center;
     position: relative;
     left: 0.625rem;
-    cursor: pointer;
 }
 
 .hamburger-menu.is-active .hamburger-line {
@@ -204,12 +176,15 @@
     border-top: var(--tertiary-two) 0.0625rem solid;
     height: 100vh;
     width: calc(100% - 2rem);
-    padding: 3.75rem 1.5rem;
+    padding: 3.75rem 1.5rem 1.875rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 1.875rem;
     position: fixed;
     top: 0;
     left: 2rem;
     opacity: 0;
-    overflow: auto;
     transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
     visibility: hidden;
     z-index: 40;
@@ -230,39 +205,50 @@
     z-index: 45;
 }
 
+.side-navigation-lists {
+    overflow: auto;
+}
+
+.side-navigation-title {
+    color: var(--accent-two);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+    margin: 0 0.875rem 1rem;
+}
+
 .side-navigation-list {
     display: flex;
     flex-direction: column;
     row-gap: 0.5rem;
 }
 
-.CTA-side-link {
-    border: none;
-    border-radius: 2rem;
+.side-navigation-link {
+    background-color: transparent;
+    color: var(--primary);
     font-size: 0.875rem;
     font-weight: 500;
     width: 100%;
-    padding: 0.75rem 1.125rem;
-    cursor: pointer;
-    transition: background-color 0.1s ease-in-out;
+    padding: 0.625rem 0.875rem;
+    display: block;
+    text-align: start;
+    transition: color 0.1s ease-in-out;
 }
 
-.login-side-link {
-    background-color: var(--tertiary-two);
-    color: var(--primary);
+.side-navigation-link:hover {
+    color: var(--accent-two);
 }
 
-.login-side-link:hover {
-    background-color: var(--tertiary-one);
+.side-navigation-user-account {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.75rem;
 }
 
-.sign-up-side-link {
-    background-color: var(--accent-two);
-    color: var(--secondary);
-}
-
-.sign-up-side-link:hover {
-    background-color: var(--accent-one);
+.side-navigation-user-account .CTA-button-one, .side-navigation-user-account .CTA-button-two {
+    font-size: 0.875rem;
+    font-weight: 500;
+    width: 100%;
 }
 
 .side-navigation-overlay {
@@ -296,10 +282,6 @@
 }
 
 @media only screen and (min-width: 64rem) {
-    .logo {
-        font-size: 1.75rem;
-    }
-
     .search-bar {
         display: flex;
     }

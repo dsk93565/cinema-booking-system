@@ -32,20 +32,28 @@ h1 {
     color: var(--primary);
     font-size: 2.25rem;
     font-weight: 700;
+    line-height: 150%;
 }
 
 h2 {
     color: var(--primary);
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 600;
+    line-height: 150%;
 }
 
 h3 {
     color: var(--primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 150%;
 }
 
 p {
     color: var(--primary);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 150%;
 }
 
 a {
@@ -56,123 +64,101 @@ ol li, ul li {
     list-style-type: none;
 }
 
-.universal-section-container {
+button {
+    appearance: none;
+    border: none;
+    cursor: pointer;
+}
+
+.logo {
+    color: var(--accent-two);
+    font-size: 1.5rem;
+    font-weight: 600;
+    transition: color 0.1s ease-in-out;
+}
+
+.logo:hover {
+    color: var(--accent-one);
+}
+
+.section-wrapper {
     background-color: var(--secondary);
     padding: 0 1.5rem;
     display: flex;
     justify-content: center;
 }
 
-.small-section-container {
-    max-width: none;
-    width: 100%;
-    padding: 4rem 0;
-    display: flex;
-    flex-direction: column;
-    align-items: normal;
-    justify-content: normal;
-    row-gap: 3rem;
-}
-
-.large-section-container {
+.section-container {
     max-width: 72rem;
     width: 100%;
-}
-
-.user-info-form {
+    padding: 6rem 0 0;
     display: flex;
-    flex-direction: column;
-    align-items: normal;
-    justify-content: normal;
-    row-gap: 2.5rem;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.user-info {
-    display: flex;
-    flex-direction: column;
-    align-items: normal;
-    justify-content: normal;
-    row-gap: 1rem;
-}
-
-.user-info-label {
-    color: var(--primary);
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.user-info-input {
-    background-color: var(--accent-four);
-    border: none;
-    border-radius: 2rem;
-    color: var(--primary);
-    font-size: 1rem;
-    font-weight: 500;
+.section-container-narrow {
+    max-width: 40rem;
     width: 100%;
-    padding: 1rem;
-    outline: transparent 0.125rem solid;
-    transition: outline 0.2s ease-in-out;
+    padding: 3rem 0 0;
 }
 
-.user-info-input::placeholder {
-    color: var(--accent-three);
-}
-
-.user-info-input:focus {
-    outline: var(--accent-two) 0.125rem solid;
-}
-
-.vertical-link {
-    margin-top: 0.25rem;
+.section-container-top {
+    max-width: 72rem;
+    width: 100%;
+    padding: 3rem 0 0;
     display: flex;
-    align-self: end;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.sub-action-link {
-    background-color: transparent;
-    border: none;
-    color: var(--accent-three);
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: color 0.1s ease-in-out;
-}
-
-.sub-action-link:hover {
-    color: var(--primary);
-}
-
-.CTA-form-button {
+.CTA-button-one {
     background-color: var(--accent-two);
-    border: none;
     border-radius: 2rem;
     color: var(--secondary);
-    font-size: 1rem;
-    font-weight: 500;
-    width: 100%;
     padding: 0.75rem 1.125rem;
-    cursor: pointer;
     transition: background-color 0.1s ease-in-out;
 }
 
-.CTA-form-button:hover {
+.CTA-button-one:hover {
     background-color: var(--accent-one);
 }
 
-@media only screen and (min-width: 40rem) {
-    .small-section-container {
-        max-width: 32rem;
-    }
+.CTA-button-two {
+    background-color: var(--tertiary-two);
+    border-radius: 2rem;
+    color: var(--primary);
+    padding: 0.75rem 1.125rem;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.CTA-button-two:hover {
+    background-color: var(--tertiary-one);
+}
+
+.non-CTA-button {
+    background-color: transparent;
+    color: var(--primary);
+    padding: 0.75rem;
+    transition: color 0.1s ease-in-out;
+}
+
+.non-CTA-button:hover {
+    color: var(--accent-two);
 }
 
 @media only screen and (min-width: 48rem) {
-    .universal-section-container {
-        padding: 0 3rem;
+    .section-container, .section-container-top {
+        padding: 6rem 0 2rem;
     }
 }
 
 @media only screen and (min-width: 64rem) {
-    .universal-section-container {
-        padding: 0 6rem;
+    .logo {
+        font-size: 1.75rem;
+    }
+
+    .section-container, .section-container-top {
+        padding: 6rem 0;
     }
 }

@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import '../stylings/navigation.css'
+import '../stylings/navigation.css';
 
 const Navigation = (props) => {
+  const [navBar, setNavBar] = useState(true);
   const [sideNav, setSideNav] = useState(false);
-  const handleSideNav = () => setSideNav(!sideNav);
+  const handleSideNav = () => {
+    setSideNav(!sideNav);
+    if (window.scrollY > 32) {
+      setNavBar(!navBar);
+    }
+  };
   const nonHamburgerMenuScreenWidth = window.matchMedia('(min-width: 64rem)');
 
   nonHamburgerMenuScreenWidth.onchange = (width) => {
@@ -13,6 +19,16 @@ const Navigation = (props) => {
       setSideNav(!sideNav);
     } // if
   }
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 32) {
+        setNavBar(false);
+      } else {
+        setNavBar(true);
+      }
+    });
+  });
 
   useEffect(() => {
     if (sideNav) {
@@ -25,15 +41,15 @@ const Navigation = (props) => {
   return (
     <>
       {/* Navigation Bar */}
-      <header className={`navigation-bar ${sideNav ? 'side-navigation' : ''}`}>
+      <header className={`navigation-bar ${navBar ? 'top-position' : ''} ${sideNav ? 'side-navigation' : ''}`}>
         <div className='navigation-bar-container'>
           {/* Logo */}
-          <Link to='/'><div className='logo'>Cinebook</div></Link>
+          <Link to='/'><div className='logo'>Cinera</div></Link>
 
           {/* Search Bar */}
           <div className='search-bar'>
             <input type='text' placeholder='Search' className='search-input' />
-            <Link to='results'>
+            <Link to='search-results'>
               <button className='search-icon-wrapper'>
                 <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='search-icon' />
               </button>
@@ -44,9 +60,9 @@ const Navigation = (props) => {
           <nav className='navigation-menu'>
             <ol>
               {/* Log In */}
-              <Link to='login'><button className='navigation-link non-CTA-link'>Log in</button></Link>
+              <Link to='login'><button className='navigation-link non-CTA-button'>Log in</button></Link>
               {/* Sign Up */}
-              <Link to='signup'><button className='navigation-link CTA-link'>Sign up</button></Link>
+              <Link to='sign-up'><button className='navigation-link CTA-button-one'>Sign up</button></Link>
               {/* Search Icon */}
               <button onClick={props.toggleSearchResults} className={`mobile-search-wrapper ${sideNav ? 'is-hidden' : ''}`}>
                 <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='mobile-search-icon' />
@@ -65,9 +81,17 @@ const Navigation = (props) => {
         {/* Side Navigation Menu */}
         <nav className={`side-navigation-menu ${sideNav ? 'is-active' : ''}`}>
           <div className='side-navigation-header'></div>
-          <ol className='side-navigation-list'>
-            <li><Link to='login'><button onClick={handleSideNav} className='CTA-side-link login-side-link'>Log in</button></Link></li>
-            <li><Link to='signup'><button onClick={handleSideNav} className='CTA-side-link sign-up-side-link'>Sign up</button></Link></li>
+          <div className='side-navigation-lists'>
+            <div className='side-navigation-title'>Movies</div>
+            <ol className='side-navigation-list'>
+              <li><Link to='trending'><button onClick={handleSideNav} className='side-navigation-link'>Trending</button></Link></li>
+              <li><Link to='now-playing'><button onClick={handleSideNav} className='side-navigation-link'>Now Playing</button></Link></li>
+              <li><Link to='coming-soon'><button onClick={handleSideNav} className='side-navigation-link'>Coming Soon</button></Link></li>
+            </ol>
+          </div>
+          <ol className='side-navigation-user-account'>
+            <li><Link to='login'><button onClick={handleSideNav} className='CTA-button-two'>Log in</button></Link></li>
+            <li><Link to='sign-up'><button onClick={handleSideNav} className='CTA-button-one'>Sign up</button></Link></li>
           </ol>
         </nav>
 
