@@ -75,10 +75,17 @@ button {
     font-size: 1.5rem;
     font-weight: 600;
     transition: color 0.1s ease-in-out;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }
 
 .logo:hover {
     color: var(--accent-one);
+}
+
+.copyright {
+    color: var(--primary);
+    font-size: 0.875rem;
+    font-weight: 500;
 }
 
 .section-wrapper {
@@ -97,12 +104,6 @@ button {
     justify-content: space-between;
 }
 
-.section-container-narrow {
-    max-width: 40rem;
-    width: 100%;
-    padding: 3rem 0 0;
-}
-
 .section-container-top {
     max-width: 72rem;
     width: 100%;
@@ -110,6 +111,31 @@ button {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.section-container-narrow {
+    max-width: 30rem;
+    width: 100%;
+    padding: 3rem 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: 3rem;
+}
+
+.section-container-narrow h2 {
+    font-size: 2rem;
+}
+
+.footer-container {
+    border-top: var(--tertiary-two) 0.0625rem solid;
+    max-width: 72rem;
+    width: 100%;
+    margin-top: 6rem;
+    padding: 3rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1.5rem;
 }
 
 .CTA-button-one {
@@ -147,9 +173,75 @@ button {
     color: var(--accent-two);
 }
 
+.user-info-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-info-form a {
+    width: fit-content;
+    align-self: end;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+.user-info:first-child {
+    margin-top: 0;
+}
+
+.user-info-label {
+    color: var(--primary);
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.user-info-input {
+    background-color: var(--accent-four);
+    border: none;
+    border-radius: 2rem;
+    outline: transparent 0.125rem solid;
+    color: var(--primary);
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 1rem 1.125rem;
+    transition: outline 0.2s ease-in-out;
+}
+
+.user-info-input:focus {
+    outline: var(--accent-two) 0.125rem solid;
+}
+
+.user-info-option {
+    background-color: transparent;
+    color: var(--accent-three);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-top: 1.5rem;
+    transition: color 0.1s ease-in-out;
+}
+
+.user-info-option:hover {
+    color: var(--primary);
+}
+
+@media only screen and (min-width: 40rem) {
+    .section-container-narrow {
+        max-width: 32rem;
+    }
+}
+
 @media only screen and (min-width: 48rem) {
     .section-container, .section-container-top {
         padding: 6rem 0 2rem;
+    }
+
+    .section-container-narrow {
+        padding: 6rem 0;
     }
 }
 

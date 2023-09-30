@@ -8,7 +8,7 @@ const Hero = () => {
             <div className='hero-info'>
                 <h1>The new era of cinema</h1>
                 <p>Reserve your tickets in a convenient and timely manner</p>
-                <Link to='login'><button className='CTA-button-one'>Get started</button></Link>
+                <Link to='sign-up'><button className='CTA-button-one'>Get started</button></Link>
             </div>
             <img src={HeroImage} alt='Hero image' className='hero-image' />
         </div>

@@ -1,14 +1,15 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { Routes, Route } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import Home from './Home';
 import Login from './Login';
+import ForgotPassword from './ForgotPassword';
 import SignUp from './SignUp';
 import SearchResults from './SearchResults';
 
-library.add(fas, faSearch);
+library.add(fas, faSearch, faEye, faEyeSlash);
 
 function App() {
   return (
@@ -16,7 +17,10 @@ function App() {
       <Navigation />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='login' element={<Login />} />
+        <Route path='login/*'>
+          <Route path='' element={<Login />} />
+          <Route path='forgot' element={<ForgotPassword />} />
+        </Route>
         <Route path='sign-up' element={<SignUp />} />
         <Route path='search-results' element={<SearchResults />} />
       </Routes>

@@ -44,7 +44,7 @@ const Navigation = (props) => {
       <header className={`navigation-bar ${navBar ? 'top-position' : ''} ${sideNav ? 'side-navigation' : ''}`}>
         <div className='navigation-bar-container'>
           {/* Logo */}
-          <Link to='/'><div className='logo'>Cinera</div></Link>
+          <Link to='/'><div className={`logo ${sideNav ? 'is-hidden' : ''}`}>Cinera</div></Link>
 
           {/* Search Bar */}
           <div className='search-bar'>
