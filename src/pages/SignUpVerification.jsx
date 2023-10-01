@@ -14,7 +14,7 @@ const SignUpVerification = () => {
           <input type='text' className='verification-number' />
           <input type='text' className='verification-number' />
         </div>
-        <Link to='/'><button className='CTA-button-one'>Create account</button></Link>
+        <Link to='../confirmation'><button className='CTA-button-one'>Confirm account</button></Link>
       </div>
     </section>
   )

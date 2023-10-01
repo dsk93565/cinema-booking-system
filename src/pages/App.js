@@ -10,6 +10,7 @@ import SignUp from './SignUp';
 import SignUpShippingAddress from './SignUpShippingAddress';
 import SignUpPaymentInfo from './SignUpPaymentInfo';
 import SignUpVerification from './SignUpVerification';
+import SignUpConfirmation from './SignUpConfirmation';
 import SearchResults from './SearchResults';
 
 library.add(fas, faSearch, faEye, faEyeSlash);
@@ -29,6 +30,7 @@ function App() {
           <Route path='shipping-address' element={<SignUpShippingAddress />} />
           <Route path='payment-info' element={<SignUpPaymentInfo />} />
           <Route path='verification' element={<SignUpVerification />} />
+          <Route path='confirmation' element={<SignUpConfirmation />} />
         </Route>
         <Route path='search-results' element={<SearchResults />} />
       </Routes>

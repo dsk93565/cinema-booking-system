@@ -34,7 +34,7 @@
     margin-top: 0;
 }
 
-.verification h2 {
+.verification h2, .confirmation h2 {
     margin-bottom: 2rem;
 }
 
@@ -43,7 +43,7 @@
     margin-bottom: 3rem;
 }
 
-.verification .section-container-narrow {
+.verification .section-container-narrow, .confirmation .section-container-narrow {
     row-gap: 0;
 }
 
@@ -72,6 +72,11 @@
 
 .verification-number:focus {
     outline: var(--accent-two) 0.125rem solid;
+}
+
+.confirmation p {
+    font-size: 1.25rem;
+    margin-bottom: 4rem;
 }
 
 @media only screen and (min-width: 22rem) {
