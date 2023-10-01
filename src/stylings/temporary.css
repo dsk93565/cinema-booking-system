@@ -1,0 +1,11 @@
+.temporary .CTA-button-one, .temporary .CTA-button-two {
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%;
+    padding: 1rem 1.25rem;
+}
+
+.temporary .user-info-option {
+    width: fit-content;
+    align-self: end;
+}
