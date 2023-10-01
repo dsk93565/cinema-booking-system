@@ -45,7 +45,7 @@ h2 {
 h3 {
     color: var(--primary);
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 150%;
 }
 
@@ -86,6 +86,8 @@ button {
     color: var(--primary);
     font-size: 0.875rem;
     font-weight: 500;
+    line-height: 150%;
+    text-align: center;
 }
 
 .section-wrapper {
@@ -184,13 +186,15 @@ button {
 }
 
 .user-info {
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
-    margin-top: 2rem;
 }
 
-.user-info:first-child {
-    margin-top: 0;
+.user-infos {
+    display: flex;
+    justify-content: space-between;
+    column-gap: 1.5rem;
 }
 
 .user-info-label {
@@ -208,6 +212,7 @@ button {
     color: var(--primary);
     font-size: 1rem;
     font-weight: 400;
+    width: 100%;
     padding: 1rem 1.125rem;
     transition: outline 0.2s ease-in-out;
 }
@@ -227,6 +232,19 @@ button {
 
 .user-info-option:hover {
     color: var(--primary);
+}
+
+.user-info-CTA {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+}
+
+@media only screen and (min-width: 22rem) {
+    .user-infos {
+        column-gap: 3rem;
+    }
 }
 
 @media only screen and (min-width: 40rem) {

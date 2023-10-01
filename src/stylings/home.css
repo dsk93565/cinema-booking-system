@@ -63,9 +63,7 @@
 
 .movie-title {
     color: var(--primary);
-    font-size: 1.25rem;
     font-weight: 600;
-    line-height: 150%;
     margin-top: 1rem;
     cursor: pointer;
     text-align: center;
@@ -112,6 +110,12 @@
     width: 100%;
 }
 
+.promo-subscription .user-info-input::placeholder {
+    color: var(--accent-three);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
 .promo-subscription .CTA-button-one {
     padding: 1rem 2.5rem;
 }
@@ -126,6 +130,10 @@
     }
 
     .promo-subscription .user-info-input {
+        font-size: 1rem;
+    }
+
+    .promo-subscription .user-info-input::placeholder {
         font-size: 1rem;
     }
 }

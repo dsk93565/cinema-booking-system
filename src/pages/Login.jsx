@@ -3,7 +3,7 @@ import '../stylings/account.css';
 
 const Login = () => {
   return (
-    <section className='login section-wrapper'>
+    <section className='login account section-wrapper'>
       <div className='section-container-narrow'>
         <h2>Log in to your account</h2>
         <form className='user-info-form'>

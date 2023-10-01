@@ -1,6 +1,95 @@
-.login .CTA-button-one {
+.account .CTA-button-one, .account .CTA-button-two {
     font-size: 1rem;
     font-weight: 500;
     width: 100%;
     padding: 1rem 1.25rem;
+}
+
+.login .user-info:first-child {
+    margin-top: 0;
+}
+
+.sign-up .user-infos .user-info {
+    margin-top: 0;
+}
+
+.shipping-address .user-info:nth-last-child(3) {
+    margin-top: 0;
+}
+
+.payment-info .user-info:first-child {
+    margin-top: 0;
+}
+
+.payment-info .user-infos .user-info {
+    margin-top: 2rem;
+}
+
+.payment-info .user-info-option {
+    width: fit-content;
+    align-self: end;
+}
+
+.payment-info .user-info-CTA {
+    margin-top: 0;
+}
+
+.verification h2 {
+    margin-bottom: 2rem;
+}
+
+.verification p {
+    font-size: 1.25rem;
+    margin-bottom: 3rem;
+}
+
+.verification .section-container-narrow {
+    row-gap: 0;
+}
+
+.verification-code {
+    margin-bottom: 5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 1.25rem;
+    row-gap: 1.25rem;
+}
+
+.verification-number {
+    color: var(--primary);
+    background-color: var(--accent-four);
+    border: none;
+    border-radius: 1rem;
+    outline: transparent 0.125rem solid;
+    font-size: 1.25rem;
+    font-weight: 400;
+    height: 4rem;
+    width: 4rem;
+    transition: outline 0.2s ease-in-out;
+    text-align: center;
+}
+
+.verification-number:focus {
+    outline: var(--accent-two) 0.125rem solid;
+}
+
+@media only screen and (min-width: 22rem) {
+    .verification-code {
+        justify-content: space-between;
+        column-gap: 0;
+        row-gap: 0;
+    }
+
+    .verification-number {
+        height: 4.25rem;
+        width: 4.25rem;
+    }
+}
+
+@media only screen and (min-width: 40rem) {
+    .verification-number {
+        height: 4.5rem;
+        width: 4.5rem;
+    }
 }
