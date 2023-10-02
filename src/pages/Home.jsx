@@ -9,12 +9,17 @@ const Home = () => {
       <Hero />
       <section className='section-wrapper'> {/* Trending */}
         <div className='section-container'>
-        <MoviesCard titleOne='Trending' />
+        <MoviesCard sectionTitle='Trending' />
         </div>
       </section>
-      <section className='section-wrapper'> {/* Now Playing & Coming Soon */}
+      <section className='section-wrapper'> {/* Now Playing */}
         <div className='section-container'>
-          <MoviesCard titleOne='Now Playing' titleTwo='Coming Soon' />
+          <MoviesCard sectionTitle='Now Playing' />
+        </div>
+      </section>
+      <section className='section-wrapper'> {/* Coming Soon */}
+        <div className='section-container'>
+          <MoviesCard sectionTitle='Coming Soon' />
         </div>
       </section>
       <section className='promo-subscription section-wrapper'>

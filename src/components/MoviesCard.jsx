@@ -10,28 +10,42 @@ const MoviesCard = (props) => {
     const [movies, setMovies] = useState([]);
 
     useEffect(() => {
-        fetchMovies()
+        fetchMovies(props.sectionTitle);
     }, []);
 
-    const fetchMovies = async() => {
-        const {data} = await axios.get(`${API_URL}trending/movie/week?language=en-US`, {
-            params: {
-                api_key: API_KEY
-            }
-        });
+    const fetchMovies = async (sectionTitle) => {
+        if (sectionTitle == 'Trending') {
+            var {data} = await axios.get(`${API_URL}trending/movie/day?language=en-US`, {
+                params: {
+                    api_key: API_KEY
+                }
+            });
+        } else if (sectionTitle == 'Now Playing') {
+            var {data} = await axios.get(`${API_URL}movie/now_playing?language=en-US&page=1`, {
+                params: {
+                    api_key: API_KEY
+                }
+            });
+        } else if (sectionTitle == 'Coming Soon') {
+            var {data} = await axios.get(`${API_URL}movie/upcoming?language=en-US&page=1`, {
+                params: {
+                    api_key: API_KEY
+                }
+            });
+        } // if else-if else-if
 
         setMovies(data.results);
     };
 
     return (
         <div className='movies-card'>
-            <h2>{props.titleOne}</h2>
+            <h2>{props.sectionTitle}</h2>
             <div className='movies'>
                 {movies.map(movie => (
                     <div className='movie' key={movie.id}>
                         <MovieCard key={movie.id} movie={movie} poster={movie.poster_path} />
                     </div>
-                ))};
+                ))}
             </div>
             <Link to='trending'><button className='CTA-button-one'>View all</button></Link>
         </div>

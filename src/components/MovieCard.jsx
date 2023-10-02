@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 const MovieCard = ({movie}) => {
     const IMAGE_PATH ='https://image.tmdb.org/t/p/w500';
 

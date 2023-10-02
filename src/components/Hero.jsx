@@ -10,7 +10,7 @@ const Hero = () => {
                 <p>Reserve your tickets in a convenient and timely manner</p>
                 <Link to='sign-up'><button className='CTA-button-one'>Get started</button></Link>
             </div>
-            <img src={HeroImage} alt='Hero image' className='hero-image' />
+            <img src={HeroImage} alt='Cartoons' className='hero-image' />
         </div>
     </section>
   )

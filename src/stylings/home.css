@@ -47,6 +47,11 @@
     display: flex;
     column-gap: 2.25rem;
     overflow-x: scroll;
+    scrollbar-width: none;
+}
+
+.movies::-webkit-scrollbar {
+    display: none;
 }
 
 .movie-poster {
@@ -141,6 +146,10 @@
     .movies-card {
         padding: 3rem;
         row-gap: 3rem;
+    }
+
+    .movies-card-titles {
+        column-gap: 2.5rem;
     }
 
     .movies {
