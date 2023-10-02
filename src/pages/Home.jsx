@@ -1,20 +1,32 @@
 import Hero from '../components/Hero';
-import Trending from '../components/Trending';
-import Showings from '../components/Showings';
-import TemporaryComingSoon from '../components/TemporaryComingSoon';
-import PromoSubscription from '../components/PromoSubscription';
+import MoviesCard from '../components/MoviesCard';
 import Footer from '../components/Footer';
 import '../stylings/home.css';
 
 const Home = () => {
   return (
     <div className='home'>
-    <Hero />
-    <Trending />
-    <Showings />
-    <TemporaryComingSoon /> {/* Temporary component until a feature is implemented */}
-    <PromoSubscription />
-    <Footer />
+      <Hero />
+      <section className='section-wrapper'> {/* Trending */}
+        <div className='section-container'>
+        <MoviesCard titleOne='Trending' />
+        </div>
+      </section>
+      <section className='section-wrapper'> {/* Now Playing & Coming Soon */}
+        <div className='section-container'>
+          <MoviesCard titleOne='Now Playing' titleTwo='Coming Soon' />
+        </div>
+      </section>
+      <section className='promo-subscription section-wrapper'>
+        <div className='section-container'>
+          <h2>Want to receive promotional codes and weekly newsletters?</h2>
+          <form>
+            <input type='email' placeholder='Email' className='user-info-input' />
+            <button className='CTA-button-one'>Subscribe</button>
+          </form>
+        </div>
+      </section>
+      <Footer />
     </div>
   )
 }
