@@ -49,18 +49,13 @@ const SearchBar = () => {
                 </button>
             </form>
             <div className={`temporary-search-results ${temp ? 'is-active' : ''}`}>
-                <div className='top-container'>
-                    <h2>Search results</h2>
-                    <div onClick={() => setTemp(false)} className='temp-close'>Close</div>
-                </div>
-                <div className='search-list'>
-                    {movies && movies.map(movie => (
-                        <div className='temporary-search-result'>
-                            <img src={'https://image.tmdb.org/t/p/w500' + movie.poster_path} alt={movie.title} className='search-result-image' />
-                            <div>{movie.title}</div>
-                        </div>
-                    ))}
-                </div>
+                {movies && movies.map(movie => (
+                    <div className='temporary-search-result'>
+                        <div>{movie.title}</div>
+                        <img src={'https://image.tmdb.org/t/p/w500' + movie.poster_path} alt={movie.title} className='search-result-image' />
+                    </div>
+                ))}
+                <div onClick={() => setTemp(false)} className='temp-close'>Close</div>
             </div>
         </>
     )
