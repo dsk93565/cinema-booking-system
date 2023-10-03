@@ -7,7 +7,7 @@ const TemporaryManageMovies = () => {
             <h2>Manage movies</h2>
             <p>No movies</p>
             <button className='CTA-button-one'>Add movie</button>
-            <button className='CTA-button-one'>Remove movie</button>
+            <button className='CTA-button-one'>Hide movie</button>
             <button className='CTA-button-one'>Schedule movie</button>
         </div>
     </section>
