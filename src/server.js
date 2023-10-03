@@ -19,14 +19,14 @@ var database = mysql.createConnection({
 database.connect(err => {
     if (err) throw err;
     console.log('MySQL Connected');
-    server.listen(3001, 'localhost'); 
+    server.listen(3000, 'localhost'); 
     console.log('mySql Connected'); 
     server.on('listening', function() {
         console.log('Express server started on port %s at %s', server.address().port, server.address().address);
     })
 });
 
-server.get('/get-movies', (req, res) => {
+server.get('/api/get-movies', (req, res) => {
     //this can change for the search function bar
     sql = 'SELECT * FROM movies';
     
