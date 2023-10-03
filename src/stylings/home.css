@@ -132,6 +132,19 @@
     text-align: center;
 }
 
+.movie-trailer-container {
+    background-color: rgba(20, 20, 20, 0.5);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
 .promo-subscription .section-container {
     flex-direction: column;
     justify-content: center;
