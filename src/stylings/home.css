@@ -145,6 +145,11 @@
     z-index: 100;
 }
 
+.close { /** Temporary css **/
+    color: var(--secondary);
+    font-size: 3rem;
+}
+
 .promo-subscription .section-container {
     flex-direction: column;
     justify-content: center;
