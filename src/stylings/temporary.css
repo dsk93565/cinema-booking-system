@@ -16,8 +16,8 @@
     width: 100%;
     padding: 4rem;
     display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
+    flex-direction: column;
+    row-gap: 3rem;
     position: fixed;
     top: 0;
     left: 0;
@@ -33,10 +33,12 @@
 
 .temporary-search-result {
     max-width: 16rem;
+    text-align: center;
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    overflow: auto;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1rem;
 }
 
 .search-result-image {
@@ -50,6 +52,25 @@
     color: var(--accent-two);
     font-size: 2rem;
     font-weight: 700;
+    font-size: 1.5rem;
+    font-weight: 600;
     z-index: 40;
     cursor: pointer;
+}
+
+.top-container {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.top-container h2 {
+    font-size: 2rem;
+}
+
+.search-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
 }
