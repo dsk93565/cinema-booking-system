@@ -11,7 +11,7 @@ server.use(cors({ origin: true, credentials: true}));
 server.get('/', (req, res) => res.send('Hello world!'));
 
 var database = mysql.createConnection({
-    host: '127.0.0.1',
+    host: 'localhost',
     user: 'root',
     password: 'we$%^789',
     database: 'mydb'
