@@ -15,11 +15,23 @@ const MoviesCard = (props) => {
 
     const fetchMovies = async (sectionTitle) => {
         if (sectionTitle === 'Trending') {
-            var {data} = await axios.get(`http://localhost:3000/api/get-movies`);
+            var {data} = await axios.get(`${API_URL}trending/movie/day?language=en-US`, {
+                params: {
+                    api_key: API_KEY
+                }
+            });
         } else if (sectionTitle === 'Now Playing') {
-            var {data} = await axios.get(`http://localhost:3000/api/get-movies`);
+            var {data} = await axios.get(`${API_URL}movie/now_playing?language=en-US&page=1`, {
+                params: {
+                    api_key: API_KEY
+                }
+            });
         } else if (sectionTitle === 'Coming Soon') {
-            var {data} = await axios.get(`http://localhost:3000/api/get-movies`);
+            var {data} = await axios.get(`${API_URL}movie/upcoming?language=en-US&page=1`, {
+                params: {
+                    api_key: API_KEY
+                }
+            });
         } // if else-if else-if
 
         setMovies(data.results);
