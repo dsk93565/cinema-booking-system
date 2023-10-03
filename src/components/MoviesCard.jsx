@@ -42,7 +42,7 @@ const MoviesCard = (props) => {
             <h2>{props.sectionTitle}</h2>
             <div className='movies'>
                 {movies.map(movie => (
-                    <div className='movie' key={movie.id}>
+                    <div key={movie.id}>
                         <MovieCard key={movie.id} movie={movie} poster={movie.poster_path} />
                     </div>
                 ))}

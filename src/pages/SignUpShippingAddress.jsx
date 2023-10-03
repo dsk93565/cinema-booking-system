@@ -26,7 +26,7 @@ const SignUpShippingAddress = () => {
             </div>
           </div>
         </form>
-        <div className='user-info-CTA'>
+        <div className='user-info-CTA-button'>
           <Link to='../payment-info'><button className='CTA-button-two'>Skip</button></Link>
           <Link to='../payment-info'><button className='CTA-button-one'>Next</button></Link>
         </div>

@@ -8,9 +8,10 @@ const Navigation = (props) => {
   const [sideNav, setSideNav] = useState(false);
   const handleSideNav = () => {
     setSideNav(!sideNav);
+
     if (window.scrollY > 32) {
       setNavBar(!navBar);
-    }
+    } // if
   };
   const nonHamburgerMenuScreenWidth = window.matchMedia('(min-width: 64rem)');
 
@@ -26,7 +27,7 @@ const Navigation = (props) => {
         setNavBar(false);
       } else {
         setNavBar(true);
-      }
+      } // if else
     });
   });
 

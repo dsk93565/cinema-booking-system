@@ -44,7 +44,7 @@ const SignUpPaymentInfo = () => {
           </div>
           <button className='user-info-option'>Use shipping address</button>
         </form>
-        <div className='user-info-CTA'>
+        <div className='user-info-CTA-button'>
           <Link to='../verification'><button className='CTA-button-two'>Skip</button></Link>
           <Link to='../verification'><button className='CTA-button-one'>Next</button></Link>
         </div>

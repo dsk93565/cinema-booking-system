@@ -234,7 +234,7 @@ button {
     color: var(--primary);
 }
 
-.user-info-CTA {
+.user-info-CTA-button {
     margin-top: 1rem;
     display: flex;
     flex-direction: column;

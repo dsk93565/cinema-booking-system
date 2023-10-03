@@ -30,7 +30,7 @@ const SignUp = () => {
             <input type='password' className='user-info-input' />
           </div>
         </form>
-        <div className='user-info-CTA'>
+        <div className='user-info-CTA-button'>
           <Link to='shipping-address'><button className='CTA-button-one'>Next</button></Link>
         </div>
       </div>

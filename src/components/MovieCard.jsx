@@ -1,10 +1,30 @@
+import { useState } from 'react';
+import ReactCardFlip from 'react-card-flip';
+
 const MovieCard = ({movie}) => {
-    const IMAGE_PATH ='https://image.tmdb.org/t/p/w500';
+    const moviePosterImage = 'https://image.tmdb.org/t/p/w500' + movie.poster_path;
+    const [isFlipped, setIsFlipped] = useState(false);
+    const handlePosterFlip = () => {
+        setIsFlipped(!isFlipped);
+    };
 
     return (
         <div className='movie-card'>
-            <img className='movie-poster' src={IMAGE_PATH + movie.poster_path} alt={movie.title} />
-            <h3 className='movie-title'>{movie.title}</h3>
+            <div className='movie-poster-container'>
+                <ReactCardFlip isFlipped={isFlipped} flipDirection='horizontal'>
+                    <div>
+                        <img src={moviePosterImage} alt={movie.title} onClick={handlePosterFlip}className='movie-poster' />
+                    </div>
+
+                    <div className='movie-poster-back'>
+                        <img src={moviePosterImage} alt={movie.title} onClick={handlePosterFlip} className='movie-poster' />
+                        <button className='CTA-button-one'>Watch trailer</button>
+                        <button className='CTA-button-one'>Movie info</button>
+                        <button className='CTA-button-one'>Book tickets</button>
+                    </div>
+                </ReactCardFlip>
+            </div>
+            <h3 onClick={handlePosterFlip} className='movie-title'>{movie.title}</h3>
             <div className='movie-brief-info'>2 HR 7 MIN • PG13</div>
         </div>
     )
