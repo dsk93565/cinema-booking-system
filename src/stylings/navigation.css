@@ -48,7 +48,7 @@
     transition: outline 0.2s ease-in-out;
 }
 
-.search-bar:focus-within {
+.search-bar.is-active {
     outline: var(--accent-two) 0.125rem solid;
 }
 
