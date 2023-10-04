@@ -6,12 +6,14 @@ const API_KEY = '8d517deb777b86cccc91638c870c1b89';
 
 const MovieCard = ({movie}) => {
     const moviePosterImage = 'https://image.tmdb.org/t/p/w500' + movie.poster_path;
+
+    // Poster Flip
     const [isFlipped, setIsFlipped] = useState(false);
     const handlePosterFlip = () => {
         setIsFlipped(!isFlipped);
     };
 
-    {/* Movie Trailer */}
+    // Movie Trailer
     const [showTrailer, setShowTrailer] = useState(false);
     const [youtubeKey, setYoutubeKey] = useState('');
     const handleTrailer = async (event) => {

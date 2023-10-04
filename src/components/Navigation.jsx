@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import SearchBar from './SearchBar';
 import '../stylings/navigation.css';
 
 const Navigation = (props) => {
   const [navBar, setNavBar] = useState(true);
   const [sideNav, setSideNav] = useState(false);
-  const nonHamburgerMenuScreenWidth = window.matchMedia('(min-width: 64rem)');
-  
   const handleSideNav = () => {
     setSideNav(!sideNav);
 
@@ -17,11 +14,28 @@ const Navigation = (props) => {
     } // if
   };
 
+  // Disable Side Navigation Bar With Certain Screen Width
+  const nonHamburgerMenuScreenWidth = window.matchMedia('(min-width: 64rem)');
   nonHamburgerMenuScreenWidth.onchange = (width) => {
     if ((width.matches) && (sideNav === true)) {
       setSideNav(!sideNav);
     } // if
-  }
+  };
+
+  // Search Bar Outline
+  const [searchInput, setSearchInput] = useState(false);
+  const handleInputFocus = () => {
+    setSearchInput(true);
+  };
+  const handleInputBlur = () => {
+    setSearchInput(false);
+  };
+
+  // Disable Search Button With Empty Search Input
+  const [inputData, setInputData] = useState('');
+  const handleInputData = (e) => {
+    setInputData(e.target.value);
+  };
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -50,7 +64,17 @@ const Navigation = (props) => {
           <Link to='/'><div className={`logo ${sideNav ? 'is-hidden' : ''}`}>Cinera</div></Link>
 
           {/* Search Bar */}
-          <SearchBar />
+          <form className={`search-bar ${searchInput ? 'is-active' : ''}`}>
+            <input
+              type='text' placeholder='Search' onFocus={handleInputFocus} onBlur={handleInputBlur}
+              onChange={(e) => handleInputData(e)} className='search-input'
+            />
+            <Link to='search-results' state='inputData'>
+              <button type='submit' disabled={!inputData} className='search-icon-wrapper'>
+                <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='search-icon' />
+              </button>
+            </Link>
+          </form>
 
           {/* Navigation Menu */}
           <nav className='navigation-menu'>

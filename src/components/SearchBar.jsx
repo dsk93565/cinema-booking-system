@@ -1,66 +1,42 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
 
 const SearchBar = () => {
-    const SEARCH_PATH = 'https://api.themoviedb.org/3/search/movie?';
-    const API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ZDUxN2RlYjc3N2I4NmNjY2M5MTYzOGM4NzBjMWI4OSIsInN1YiI6IjY1MTYyOGU4YTE5OWE2MDBjNDljZTA2OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.fucbYcepOY0pWh2WQI7Zkyy29pOADVUfv9YdpPdXruk';
     
+    // Search Bar Outline
     const [searchInput, setSearchInput] = useState(false);
-    const [inputValue, setInputValue] = useState('');
-    const [query, setQuery] = useState('');
-    const [movies, setMovies] = useState([]);
-    const [temp, setTemp] = useState(false);
-
-    const handleSearchInputFocus = () => {
+    const handleInputFocus = () => {
         setSearchInput(true);
-    }
-
-    const handleSearchInputBlur = () => {
+    };
+    const handleInputBlur = () => {
         setSearchInput(false);
-    }
+    };
 
-    const handleEmptyInput = (e) => {
-        setInputValue(e.target.value);
-    }
-    
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    // Disable Search Button With Empty Search Input
+    const [inputData, setinputData] = useState('');
+    const handleinputData = (e) => {
+        setinputData(e.target.value);
+    };
 
-        const query_url = `${SEARCH_PATH}query=${query}&language=en-US`;
 
-        const options = {
-            method: 'GET',
-            url: query_url,
-            headers: {
-                accept: 'application/json',
-                Authorization: `Bearer ${API_KEY}`
-            }
-        };
-
-        axios
-            .request(options)
-            .then((response) => {
-                setMovies(response.data.results);
-                setTemp(true);
-            })
-            .catch((error) => {
-                console.error(error);
-            }) // request then catch
-    }
+    const handleSubmit = () => {
+        // You can access the input data from the 'inputData' state variable.
+        console.log('Submitted data:', inputData);
+        // You can now perform further actions, such as sending the data to a server or processing it.
+      };
 
     return (
-        <form className={`search-bar ${searchInput ? 'is-active' : ''}`} onSubmit={handleSubmit}>
-            <input 
-                type='text' placeholder='Search' onFocus={handleSearchInputFocus} onBlur={handleSearchInputBlur}
-                onChange={e => {handleEmptyInput(e); setQuery(e.target.value)}} className='search-input'
-            />
-            <Link to='search-results'>
-                <button type='submit' disabled={!inputValue} className='search-icon-wrapper' >
-                    <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='search-icon' />
-                </button>
-            </Link>
+        <form className={`search-bar ${searchInput ? 'is-active' : ''}`}>
+          <input 
+            type='text' placeholder='Search' onFocus={handleInputFocus} onBlur={handleInputBlur}
+            onChange={(e) => handleinputData(e)} className='search-input'
+          />
+          <Link to='search-results' state='inputData'>
+            <button type='submit' disabled={!inputData} className='search-icon-wrapper'>
+              <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='search-icon' />
+            </button>
+          </Link>
         </form>
     )
 }
