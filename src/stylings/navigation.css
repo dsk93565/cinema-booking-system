@@ -109,7 +109,7 @@
     background-color: transparent;
     border: none;
     padding: 0.5625rem;
-    display: none; /** Disabled for now **/
+    display: flex;
     transform: translateY(0.03125rem);
     transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }

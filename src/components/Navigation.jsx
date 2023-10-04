@@ -7,6 +7,8 @@ import '../stylings/navigation.css';
 const Navigation = (props) => {
   const [navBar, setNavBar] = useState(true);
   const [sideNav, setSideNav] = useState(false);
+  const nonHamburgerMenuScreenWidth = window.matchMedia('(min-width: 64rem)');
+  
   const handleSideNav = () => {
     setSideNav(!sideNav);
 
@@ -14,7 +16,6 @@ const Navigation = (props) => {
       setNavBar(!navBar);
     } // if
   };
-  const nonHamburgerMenuScreenWidth = window.matchMedia('(min-width: 64rem)');
 
   nonHamburgerMenuScreenWidth.onchange = (width) => {
     if ((width.matches) && (sideNav === true)) {
