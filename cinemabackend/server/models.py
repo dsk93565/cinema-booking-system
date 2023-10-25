@@ -9,7 +9,14 @@ class CustomUser(AbstractUser):
 
 class Movies(models.Model):
     id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=40)
-    release_date = models.DateField()
-    #ForeignKey example
-    # #screenings = models.ForeignKey(MovieTimes, ...)
+    category = models.CharField(max_length=255, default='')
+    cast = models.CharField(max_length=255, default='')
+    director = models.CharField(max_length=255, default='')
+    producer = models.CharField(max_length=255, default='')
+    synopsis = models.CharField(max_length=1027, default='')
+    reviews = models.CharField(max_length=1027, default='')
+    trailer = models.CharField(max_length=1027, default='')
+    rating = models.CharField(max_length=255, default='')
+    name = models.CharField(max_length=255, default='')
+
+    

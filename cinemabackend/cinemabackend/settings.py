@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = "server.CustomUser"
 
 # Application definition
 # may want to add 'django.contrib.contenttypes', to have permissions be associated with the models
@@ -94,7 +95,7 @@ DATABASES = {
         'NAME': 'mydb',
         'USER': 'root',
         'PASSWORD': 'we$%^789',
-        'HOST': '172.23.55.138',  # or the hostname of your MySQL server
+        'HOST': '172.20.198.145',  # or the hostname of your MySQL server
         'PORT': '3306',  # MySQL default port
     }
 }
@@ -118,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = "server.CustomUser"
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
