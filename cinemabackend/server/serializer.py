@@ -3,8 +3,7 @@ from .models import Movies
 
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
-        db_table: 'movies'
         model = Movies
         # this passes all the fields
-        fields = '__all__'
+        fields = ['mid', 'category', 'cast', 'director', 'producer', 'synopsis', 'reviews', 'trailer', 'rating', 'title']
         # to restrict the fields do fields = [value1, value2, ...]

@@ -22,8 +22,9 @@ const MoviesCard = (props) => {
             var {data} = await axios.get(`http://localhost:8000/api/get-movies`);
         } else if (sectionTitle === 'Now Playing') {
             var {data} = await axios.get(`http://localhost:8000/api/get-movies`);
-        } else if (sectionTitle === 'Coming Soon') {
+        } else {
             var {data} = await axios.get(`http://localhost:8000/api/get-movies`);
+            console.log(JSON.stringify(data))
         } // if else-if else-if
 
         setMovies(data.results);
