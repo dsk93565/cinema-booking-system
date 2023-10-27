@@ -1,3 +1,43 @@
+.search-results .section-container-top {
+    align-items: normal;
+    flex-direction: column;
+    row-gap: 3rem;
+}
+
 .search-results h2 {
     font-size: 2rem;
+}
+
+.search-results-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 3rem;
+}
+
+.search-result {
+    background-color: var(--accent-four);
+    border-radius: 2rem;
+    width: 100%;
+    padding: 2.25rem;
+    display: flex;
+}
+
+@media only screen and (min-width: 48rem) {
+    .search-result {
+        padding: 3rem;
+    }
+}
+
+@media only screen and (min-width: 64rem) {
+    .search-results-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        column-gap: 3rem;
+    }
+
+    .search-result {
+        width: calc(50% - 1.5rem);
+    }
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDataContext } from '../DataContext';
 import '../stylings/navigation.css';
 
 const Navigation = (props) => {
@@ -31,11 +32,16 @@ const Navigation = (props) => {
     setSearchInput(false);
   };
 
-  // Disable Search Button With Empty Search Input
-  const [inputData, setInputData] = useState('');
-  const handleInputData = (e) => {
-    setInputData(e.target.value);
+  // Store Search Input & Disable Search Button With Empty Search Input
+  const [movieInputData, setMovieInputData] = useState('');
+  const handleMovieInputData = (e) => {
+    setMovieInputData(e.target.value);
   };
+
+  const { setSharedData } = useDataContext();
+  const sendMovieInputData = () => {
+    setSharedData(movieInputData);
+  }
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -67,10 +73,10 @@ const Navigation = (props) => {
           <form className={`search-bar ${searchInput ? 'is-active' : ''}`}>
             <input
               type='text' placeholder='Search' onFocus={handleInputFocus} onBlur={handleInputBlur}
-              onChange={(e) => handleInputData(e)} className='search-input'
+              onChange={(e) => handleMovieInputData(e)} className='search-input'
             />
-            <Link to='search-results' state='inputData'>
-              <button type='submit' disabled={!inputData} className='search-icon-wrapper'>
+            <Link to='search-results'>
+              <button type='submit' onClick={sendMovieInputData} disabled={!movieInputData} className='search-icon-wrapper'>
                 <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='search-icon' />
               </button>
             </Link>
