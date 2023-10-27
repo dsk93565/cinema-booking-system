@@ -5,6 +5,10 @@ import MovieCard from './MovieCard';
 
 const API_URL = 'https://api.themoviedb.org/3/';
 const API_KEY = '8d517deb777b86cccc91638c870c1b89';
+const PORT = 8000;
+
+
+
 
 const MoviesCard = (props) => {
     const [movies, setMovies] = useState([]);
@@ -15,23 +19,12 @@ const MoviesCard = (props) => {
 
     const fetchMovies = async (sectionTitle) => {
         if (sectionTitle === 'Trending') {
-            var {data} = await axios.get(`${API_URL}trending/movie/day?language=en-US`, {
-                params: {
-                    api_key: API_KEY
-                }
-            });
+            var {data} = await axios.get(`http://localhost:8000/api/get-movies`);
         } else if (sectionTitle === 'Now Playing') {
-            var {data} = await axios.get(`${API_URL}movie/now_playing?language=en-US&page=1`, {
-                params: {
-                    api_key: API_KEY
-                }
-            });
-        } else if (sectionTitle === 'Coming Soon') {
-            var {data} = await axios.get(`${API_URL}movie/upcoming?language=en-US&page=1`, {
-                params: {
-                    api_key: API_KEY
-                }
-            });
+            var {data} = await axios.get(`http://localhost:8000/api/get-movies`);
+        } else {
+            var {data} = await axios.get(`http://localhost:8000/api/get-movies`);
+            console.log(JSON.stringify(data))
         } // if else-if else-if
 
         setMovies(data.results);
