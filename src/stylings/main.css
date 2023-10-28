@@ -221,6 +221,17 @@ button {
     outline: var(--accent-two) 0.125rem solid;
 }
 
+.enhanced-input {
+    background-color: transparent;
+    border: none;
+    color: var(--primary);
+    outline: none;
+    font-size: 1rem;
+    font-weight: 400;
+    width: 100%;
+    padding: 1rem 0 1rem 1.125rem;
+}
+
 .user-info-option {
     background-color: transparent;
     color: var(--accent-three);

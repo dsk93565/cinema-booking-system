@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDataContext } from '../DataContext';
 import '../stylings/navigation.css';
 
-const Navigation = (props) => {
+const Navigation = () => {
   const [navBar, setNavBar] = useState(true);
   const [sideNav, setSideNav] = useState(false);
   const handleSideNav = () => {
@@ -43,6 +43,8 @@ const Navigation = (props) => {
     setSharedData(movieInputData);
   }
 
+  const location = useLocation();
+
   useEffect(() => {
     window.addEventListener('scroll', () => {
       if (window.scrollY > 32) {
@@ -70,33 +72,42 @@ const Navigation = (props) => {
           <Link to='/'><div className={`logo ${sideNav ? 'is-hidden' : ''}`}>Cinera</div></Link>
 
           {/* Search Bar */}
-          <form className={`search-bar ${searchInput ? 'is-active' : ''}`}>
-            <input
-              type='text' placeholder='Search' onFocus={handleInputFocus} onBlur={handleInputBlur}
-              onChange={(e) => handleMovieInputData(e)} className='search-input'
-            />
-            <Link to='search-results'>
-              <button type='submit' onClick={sendMovieInputData} disabled={!movieInputData} className='search-icon-wrapper'>
-                <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='search-icon' />
-              </button>
-            </Link>
-          </form>
+          {location.pathname === '/login' ? null :
+            <form className={`search-bar ${searchInput ? 'is-active' : ''}`}>
+              <input
+                type='text' placeholder='Search' onFocus={handleInputFocus} onBlur={handleInputBlur}
+                onChange={(e) => handleMovieInputData(e)} className='search-input'
+              />
+              <Link to='search-results'>
+                <button type='submit' onClick={sendMovieInputData} disabled={!movieInputData} className='search-icon-wrapper'>
+                  <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='search-icon' />
+                </button>
+              </Link>
+            </form>}
 
           {/* Navigation Menu */}
           <nav className='navigation-menu'>
             <ol>
               {/* Log In */}
-              <Link to='login'><button className='navigation-link non-CTA-button'>Log in</button></Link>
+              {location.pathname === '/login' ? null : <Link to='login'><button className='navigation-link non-CTA-button'>Log in</button></Link>}
               {/* Sign Up */}
-              <Link to='sign-up'><button className='navigation-link CTA-button-one'>Sign up</button></Link>
+              {location.pathname === '/login' ?
+                <div className='login-page-nav-item'>
+                  <p>Don't have a Cinera account?</p>
+                  <Link to='sign-up'><button className='fixed-navigation-link'>Sign up</button></Link>
+                </div>
+                :
+                <Link to='sign-up'><button className='navigation-link CTA-button-one'>Sign up</button></Link>}
               {/* Search Icon */}
-              <button onClick={props.toggleSearchResults} className={`mobile-search-wrapper ${sideNav ? 'is-hidden' : ''}`}>
-                <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='mobile-search-icon' />
-              </button>
+              {location.pathname === '/login' ? null :
+                <button className={`mobile-search-wrapper ${sideNav ? 'is-hidden' : ''}`}>
+                  <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='mobile-search-icon' />
+                </button>}
               {/* Hamburger Menu */}
-              <button onClick={handleSideNav} className={`hamburger-menu ${sideNav ? 'is-active' : ''}`}>
-                <div className='hamburger-line'></div>
-              </button>
+              {location.pathname === '/login' ? null :
+                <button onClick={handleSideNav} className={`hamburger-menu ${sideNav ? 'is-active' : ''}`}>
+                  <div className='hamburger-line'></div>
+                </button>}
             </ol>
           </nav>
         </div>
