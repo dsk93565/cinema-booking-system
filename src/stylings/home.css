@@ -30,7 +30,6 @@
 .movies-card {
     background-color: var(--accent-four);
     border-radius: 2rem;
-    color: var(--primary);
     width: 100%;
     padding: 2.25rem;
     display: flex;

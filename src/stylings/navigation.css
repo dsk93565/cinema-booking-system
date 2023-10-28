@@ -105,6 +105,32 @@
     display: none;
 }
 
+.login-page-nav-item {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+}
+
+.login-page-nav-item p {
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: none;
+}
+
+.fixed-navigation-link {
+    background-color: var(--tertiary-two);
+    border-radius: 2rem;
+    color: var(--primary);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    padding: 0.75rem 1.125rem;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.fixed-navigation-link:hover {
+    background-color: var(--tertiary-one);
+}
+
 .mobile-search-wrapper {
     background-color: transparent;
     border: none;
@@ -284,6 +310,16 @@
 
     .side-navigation-overlay {
         width: calc(100% - 20rem);
+    }
+}
+
+@media only screen and (min-width: 48rem) {
+    .login-page-nav-item p {
+        display: flex;
+    }
+
+    .fixed-navigation-link {
+        font-size: 0.875rem;
     }
 }
 

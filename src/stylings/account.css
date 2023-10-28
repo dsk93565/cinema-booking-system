@@ -9,6 +9,37 @@
     margin-top: 0;
 }
 
+.password-info {
+    background-color: var(--accent-four);
+    border-radius: 2rem;
+    outline: transparent 0.125rem solid;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    transition: outline 0.2s ease-in-out;
+}
+
+.password-info.is-active {
+    outline: var(--accent-two) 0.125rem solid;
+}
+
+.eye-icon-wrapper {
+    background-color: transparent;
+    border: none;
+    height: 100%;
+    padding: 0 1.125rem 0 0.5625rem;
+}
+
+.eye-icon-wrapper:hover .eye-icon {
+    color: var(--primary);
+}
+
+.eye-icon {
+    color: var(--accent-three);
+    height: 1.125rem;
+    transition: color 0.1s ease-in-out;
+}
+
 .sign-up .user-infos .user-info {
     margin-top: 0;
 }
