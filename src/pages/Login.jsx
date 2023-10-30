@@ -1,7 +1,9 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/account.css';
+import axios from 'axios'; // Import Axios for API requests
+
+const BACKEND_URL = 'http://localhost:8000/api'; // Replace with your backend API URL
 
 const Login = () => {
   // Password Input Outline
@@ -19,19 +21,41 @@ const Login = () => {
   const passwordInputRef = useRef(null);
   const handleTogglePasswordVisibility = (e) => {
     e.preventDefault();
-  
+
     if (passwordInputRef.current) {
       const caretPosition = passwordInputRef.current.selectionStart;
-  
+
       setPasswordVisible(!passwordVisible);
-  
+
       setTimeout(() => {
         if (passwordInputRef.current) {
           passwordInputRef.current.focus();
           passwordInputRef.current.setSelectionRange(caretPosition, caretPosition);
-        } // if
+        }
       });
-    } // if
+    }
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Make an API POST request to your login endpoint with email and password
+      const response = await axios.post(`${BACKEND_URL}/login`, {
+        email: 'user@example.com', // Replace with the user's email input
+        password: password, // Use the password state
+      });
+
+      if (response.status === 200) {
+        // Authentication was successful, you can handle the response as needed
+        console.log('Login successful:', response.data);
+      } else {
+        // Handle authentication errors here, e.g., show an error message
+        console.error('Login failed:', response.data);
+      }
+    } catch (error) {
+      console.error('Failed to log in:', error);
+    }
   };
 
   return (
@@ -47,22 +71,35 @@ const Login = () => {
             <label className='user-info-label'>Password</label>
             <div className={`password-info ${passwordInput ? 'is-active' : ''}`}>
               <input
-                type={passwordVisible ? 'text' : 'password'} value={password} ref={passwordInputRef} onFocus={handleInputFocus}
-                onBlur={handleInputBlur} onChange={(e) => setPassword(e.target.value)} className='enhanced-input'
+                type={passwordVisible ? 'text' : 'password'}
+                value={password}
+                ref={passwordInputRef}
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
+                onChange={(e) => setPassword(e.target.value)}
+                className='enhanced-input'
               />
-              <button onClick={handleTogglePasswordVisibility} onFocus={handleInputFocus} onBlur={handleInputBlur} className='eye-icon-wrapper'>
+              <button
+                onClick={handleTogglePasswordVisibility}
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
+                className='eye-icon-wrapper'
+              >
                 <FontAwesomeIcon
-                  icon={passwordVisible ? 'fa-solid fa-eye-slash fa-1x' : 'fa-solid fa-eye fa-1x'} className='eye-icon'
+                  icon={passwordVisible ? 'fa-solid fa-eye-slash fa-1x' : 'fa-solid fa-eye fa-1x'}
+                  className='eye-icon'
                 />
               </button>
             </div>
           </div>
-          <Link to='/forgot'><button className='user-info-option'>Forgot password</button></Link>
+          <a href='/forgot' className='user-info-option'>Forgot password</a>
+          <button onClick={handleLogin} className='CTA-button-one'>
+            Log in
+          </button>
         </form>
-        <Link to='/'><button className='CTA-button-one'>Log in</button></Link>
       </div>
     </section>
-  )
-}
+  );
+};
 
 export default Login;

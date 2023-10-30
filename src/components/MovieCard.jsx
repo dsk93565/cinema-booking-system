@@ -2,7 +2,6 @@ import { useState } from 'react';
 import ReactCardFlip from 'react-card-flip';
 import axios from 'axios';
 
-const API_KEY = '8d517deb777b86cccc91638c870c1b89';
 
 const MovieCard = ({movie}) => {
     const moviePosterImage = 'https://image.tmdb.org/t/p/w500' + movie.poster_path;
@@ -20,7 +19,7 @@ const MovieCard = ({movie}) => {
         event.stopPropagation();
 
         try {
-            const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=${API_KEY}&language=en-US`);
+            const response = await axios.get(`http://localhost:8000/api/get-movies/${movie.id}/`);
             const youtubeVideo = response.data.results.find(video => video.site === 'YouTube');
             if (youtubeVideo) {
                 setYoutubeKey(youtubeVideo.key);

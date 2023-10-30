@@ -65,7 +65,7 @@ const SignUp = () => {
         billingZipCodeAddress,
       };
   
-      fetch('https://your-api-endpoint.com/signup', {
+      fetch('http://localhost:8000/api/create-user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

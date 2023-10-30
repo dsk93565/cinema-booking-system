@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import MovieCard from './MovieCard';
 
-const API_URL = 'https://api.themoviedb.org/3/';
-const API_KEY = '8d517deb777b86cccc91638c870c1b89';
-const PORT = 8000;
 
 
 
