@@ -42,6 +42,7 @@ class Create_User(APIView):
         new_card = Card.objects.create(user_id=new_user.pk, card_type=cardType, card_number=cardNumber, 
                                        card_expiration=expiration, card_city=billingCity, card_street=billingStreet, 
                                        card_state=billingState, card_zip=billingZip)
+        new_card.save()
 class Login(APIView):
     def get(self, request):
         user = authenticate(request, self['username'], self['password'])
