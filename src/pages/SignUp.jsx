@@ -184,6 +184,60 @@ const SignUp = () => {
 
   // ----- Shipping Address Information Section -----
 
+  // US States
+  const usStates = [
+    { name: 'Alabama', abbreviation: 'AL' },
+    { name: 'Alaska', abbreviation: 'AK' },
+    { name: 'Arizona', abbreviation: 'AZ' },
+    { name: 'Arkansas', abbreviation: 'AR' },
+    { name: 'California', abbreviation: 'CA' },
+    { name: 'Colorado', abbreviation: 'CO' },
+    { name: 'Connecticut', abbreviation: 'CT' },
+    { name: 'Delaware', abbreviation: 'DE' },
+    { name: 'Florida', abbreviation: 'FL' },
+    { name: 'Georgia', abbreviation: 'GA' },
+    { name: 'Hawaii', abbreviation: 'HI' },
+    { name: 'Idaho', abbreviation: 'ID' },
+    { name: 'Illinois', abbreviation: 'IL' },
+    { name: 'Indiana', abbreviation: 'IN' },
+    { name: 'Iowa', abbreviation: 'IA' },
+    { name: 'Kansas', abbreviation: 'KS' },
+    { name: 'Kentucky', abbreviation: 'KY' },
+    { name: 'Louisiana', abbreviation: 'LA' },
+    { name: 'Maine', abbreviation: 'ME' },
+    { name: 'Maryland', abbreviation: 'MD' },
+    { name: 'Massachusetts', abbreviation: 'MA' },
+    { name: 'Michigan', abbreviation: 'MI' },
+    { name: 'Minnesota', abbreviation: 'MN' },
+    { name: 'Mississippi', abbreviation: 'MS' },
+    { name: 'Missouri', abbreviation: 'MO' },
+    { name: 'Montana', abbreviation: 'MT' },
+    { name: 'Nebraska', abbreviation: 'NE' },
+    { name: 'Nevada', abbreviation: 'NV' },
+    { name: 'New Hampshire', abbreviation: 'NH' },
+    { name: 'New Jersey', abbreviation: 'NJ' },
+    { name: 'New Mexico', abbreviation: 'NM' },
+    { name: 'New York', abbreviation: 'NY' },
+    { name: 'North Carolina', abbreviation: 'NC' },
+    { name: 'North Dakota', abbreviation: 'ND' },
+    { name: 'Ohio', abbreviation: 'OH' },
+    { name: 'Oklahoma', abbreviation: 'OK' },
+    { name: 'Oregon', abbreviation: 'OR' },
+    { name: 'Pennsylvania', abbreviation: 'PA' },
+    { name: 'Rhode Island', abbreviation: 'RI' },
+    { name: 'South Carolina', abbreviation: 'SC' },
+    { name: 'South Dakota', abbreviation: 'SD' },
+    { name: 'Tennessee', abbreviation: 'TN' },
+    { name: 'Texas', abbreviation: 'TX' },
+    { name: 'Utah', abbreviation: 'UT' },
+    { name: 'Vermont', abbreviation: 'VT' },
+    { name: 'Virginia', abbreviation: 'VA' },
+    { name: 'Washington', abbreviation: 'WA' },
+    { name: 'West Virginia', abbreviation: 'WV' },
+    { name: 'Wisconsin', abbreviation: 'WI' },
+    { name: 'Wyoming', abbreviation: 'WY' }
+  ];
+
   // Zip Code Validity
   const [isShippingZipCodeAddressValid, setIsShippingZipCodeAddressValid] = useState(true);
 
@@ -232,11 +286,12 @@ const SignUp = () => {
 
   // Expiration Date Validity
   const isExpirationDateValid = (expirationDate) => {
-    const isValidFormat = /^(0[1-9]|1[0-2])\/\d{4}$/.test(expirationDate);
+    const isValidFormat = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expirationDate);
     const [month, year] = expirationDate.split('/');
     const currentDate = new Date();
     const isValidMonth = parseInt(month, 10) >= 1 && parseInt(month, 10) <= 12;
-    const isValidYear = parseInt(year, 10) >= currentDate.getFullYear() && parseInt(year, 10) <= currentDate.getFullYear() + 10;
+    const currentYear = currentDate.getFullYear() % 100;
+    const isValidYear = parseInt(year, 10) >= currentYear && parseInt(year, 10) <= currentYear + 10;
   
     return isValidFormat && isValidMonth && isValidYear;
   };
@@ -250,9 +305,13 @@ const SignUp = () => {
     if (formattedValue.length >= 2) {
       formattedValue = formattedValue.slice(0, 2) + (formattedValue.length > 2 ? '/' : '') + formattedValue.slice(2);
     } // if
-
+  
     if (formattedValue.endsWith('/')) {
       formattedValue = formattedValue.slice(0, -1);
+    } // if
+  
+    if (formattedValue.length >= 5) {
+      formattedValue = formattedValue.slice(0, 5);
     } // if
   
     return formattedValue;
@@ -446,11 +505,22 @@ const SignUp = () => {
                 <input type='text' onChange={(e) => setShippingCityAddress(e.target.value)} className='user-info-input' />
               </div>
               <div className='user-infos'>
-                <div className='user-info'>
+                <div className='user-info state'>
                   <label className='user-info-label'>State</label>
-                  <input type='text' onChange={(e) => setShippingStateAddress(e.target.value)} className='user-info-input' />
+                  <select
+                    value={shippingStateAddress}
+                    onChange={(e) => setShippingStateAddress(e.target.value)}
+                    className='user-info-input'
+                  >
+                    <option value='' selected disabled>Select a state</option>
+                    {usStates.map((state) => (
+                      <option key={state.abbreviation} value={state.abbreviation}>
+                        {state.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                <div className='user-info'>
+                <div className='user-info zip'>
                   <label className='user-info-label'>Zip code</label>
                   <input
                     type='text'
@@ -485,15 +555,18 @@ const SignUp = () => {
             <form className='user-info-form'>
               <div className='user-info'>
                 <label className='user-info-label'>Card type</label>
-                <input
-                  type='text'
+                <select
                   value={cardType}
                   onChange={(e) => setCardType(e.target.value)}
                   className='user-info-input'
-                />
+                >
+                  <option value='' selected disabled>Select card type</option>
+                  <option value='Credit'>Credit</option>
+                  <option value='Debit'>Debit</option>
+                </select>
               </div>
               <div className='user-infos'>
-                <div className='user-info'>
+                <div className='user-info card-num'>
                   <label className='user-info-label'>Card number</label>
                   <input
                     type='text'
@@ -504,14 +577,14 @@ const SignUp = () => {
                   />
                   <div className={`input-error ${!isCardNumberValid(cardNumber) && cardNumber.length > 0 ? 'visible' : ''}`}>Please enter all 16 digits</div>
                 </div>
-                <div className='user-info'>
-                  <label className='user-info-label'>Expiration date</label>
+                <div className='user-info exp-date'>
+                  <label className='user-info-label'>Exp. date</label>
                   <input
                     type='text'
-                    placeholder='MM/YYYY'
+                    placeholder='MM/YY'
                     value={expirationDate}
                     onChange={(e) => setExpirationDate(formatExpirationDate(e.target.value))}
-                    maxLength={7}
+                    maxLength={5}
                     className='user-info-input'
                   />
                   <div className={`input-error ${!isExpirationDateValid(expirationDate) && expirationDate.length > 0 ? 'visible' : ''}`}>Please enter a valid date</div>
@@ -539,16 +612,22 @@ const SignUp = () => {
                 />
               </div>
               <div className='user-infos'>
-                <div className='user-info'>
+                <div className='user-info state'>
                   <label className='user-info-label'>State</label>
-                  <input
-                    type='text'
+                  <select
                     value={billingStateAddress}
                     onChange={(e) => setBillingStateAddress(e.target.value)}
                     className='user-info-input'
-                  />
+                  >
+                    <option value='' selected disabled>Select a state</option>
+                    {usStates.map((state) => (
+                      <option key={state.abbreviation} value={state.abbreviation}>
+                        {state.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                <div className='user-info'>
+                <div className='user-info zip'>
                   <label className='user-info-label'>Zip code</label>
                   <input
                     type='text'

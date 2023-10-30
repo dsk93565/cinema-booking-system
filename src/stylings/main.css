@@ -69,6 +69,14 @@ input::placeholder {
     color: var(--accent-three);
 }
 
+select {
+    appearance: none;
+}
+
+option[value=''][disabled] {
+    display: none;
+}
+
 button {
     appearance: none;
     border: none;
@@ -209,7 +217,7 @@ button {
 .user-infos {
     display: flex;
     justify-content: space-between;
-    column-gap: 1.5rem;
+    column-gap: 3rem;
 }
 
 .user-info-label {
@@ -282,12 +290,6 @@ button {
     display: flex;
     flex-direction: column;
     row-gap: 2rem;
-}
-
-@media only screen and (min-width: 22rem) {
-    .user-infos {
-        column-gap: 3rem;
-    }
 }
 
 @media only screen and (min-width: 40rem) {
