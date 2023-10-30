@@ -10,24 +10,81 @@ const SignUp = () => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState(''); // Not needed in database due to implemented password match checker
-  const [streetShippingAddress, setStreetShippingAddress] = useState('');
-  const [cityShippingAddress, setCityShippingAddress] = useState('');
-  const [stateShippingAddress, setStateShippingAddress] = useState('');
-  const [zipCodeShippingAddress, setZipCodeShippingAddress] = useState('');
+  const [shippingStreetAddress, setShippingStreetAddress] = useState('');
+  const [shippingCityAddress, setShippingCityAddress] = useState('');
+  const [shippingStateAddress, setShippingStateAddress] = useState('');
+  const [shippingZipCodeAddress, setShippingZipCodeAddress] = useState('');
+  const [cardType, setCardType] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [expirationDate, setExpirationDate] = useState('');
+  const [billingStreetAddress, setBillingStreetAddress] = useState('');
+  const [billingCityAddress, setBillingCityAddress] = useState('');
+  const [billingStateAddress, setBillingStateAddress] = useState('');
+  const [billingZipCodeAddress, setBillingZipCodeAddress] = useState('');
 
   // Sign Up Process
   const [signUpStep, setSignUpStep] = useState(1);
   const handleSkipButtonClick = () => {
+    if (signUpStep === 2) {
+      setShippingStreetAddress('');
+      setShippingCityAddress('');
+      setShippingStateAddress('');
+      setShippingZipCodeAddress('');
+    } else if (signUpStep === 3) {
+      setCardType('');
+      setCardNumber('');
+      setExpirationDate('');
+      setBillingStreetAddress('');
+      setBillingCityAddress('');
+      setBillingStateAddress('');
+      setBillingZipCodeAddress('');
+
+      sendVerificationCode();
+    } // if else-if
+
     setSignUpStep(signUpStep + 1);
   }
   const handleNextButtonClick = () => {
-    if (signUpStep === 1) {
-      // Send basic user information to database
-    } else if (signUpStep === 2) {
-      // Send shipping address information to database
-    } else if (signUpStep === 3) {
-      // Send payment information to database
-    } // if else-if else-if
+    if (signUpStep === 3) { // Send account information to database and verification code to account email
+      const basicUserData = {
+        firstName,
+        lastName,
+        email,
+        mobileNumber,
+        password,
+        shippingStreetAddress,
+        shippingCityAddress,
+        shippingStateAddress,
+        shippingZipCodeAddress,
+        cardType,
+        cardNumber,
+        expirationDate,
+        billingStreetAddress,
+        billingCityAddress,
+        billingStateAddress,
+        billingZipCodeAddress,
+      };
+  
+      fetch('https://your-api-endpoint.com/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(basicUserData),
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            setSignUpStep(signUpStep + 1);
+          } else {
+            console.error('Failed to send basic user data to the server.');
+          } // if
+        })
+        .catch((error) => {
+          console.error('Error occurred while sending basic user data:', error);
+        });
+      
+      sendVerificationCode();
+    } // if
 
     setSignUpStep(signUpStep + 1);
   };
@@ -127,78 +184,146 @@ const SignUp = () => {
 
   // ----- Shipping Address Information Section -----
 
-  // US States
-  const usStates = [
-    { label: 'Alabama', value: 'AL' },
-    { label: 'Alaska', value: 'AK' },
-    { label: 'Arizona', value: 'AZ' },
-    { label: 'Arkansas', value: 'AR' },
-    { label: 'California', value: 'CA' },
-    { label: 'Colorado', value: 'CO' },
-    { label: 'Connecticut', value: 'CT' },
-    { label: 'Delaware', value: 'DE' },
-    { label: 'Florida', value: 'FL' },
-    { label: 'Georgia', value: 'GA' },
-    { label: 'Hawaii', value: 'HI' },
-    { label: 'Idaho', value: 'ID' },
-    { label: 'Illinois', value: 'IL' },
-    { label: 'Indiana', value: 'IN' },
-    { label: 'Iowa', value: 'IA' },
-    { label: 'Kansas', value: 'KS' },
-    { label: 'Kentucky', value: 'KY' },
-    { label: 'Louisiana', value: 'LA' },
-    { label: 'Maine', value: 'ME' },
-    { label: 'Maryland', value: 'MD' },
-    { label: 'Massachusetts', value: 'MA' },
-    { label: 'Michigan', value: 'MI' },
-    { label: 'Minnesota', value: 'MN' },
-    { label: 'Mississippi', value: 'MS' },
-    { label: 'Missouri', value: 'MO' },
-    { label: 'Montana', value: 'MT' },
-    { label: 'Nebraska', value: 'NE' },
-    { label: 'Nevada', value: 'NV' },
-    { label: 'New Hampshire', value: 'NH' },
-    { label: 'New Jersey', value: 'NJ' },
-    { label: 'New Mexico', value: 'NM' },
-    { label: 'New York', value: 'NY' },
-    { label: 'North Carolina', value: 'NC' },
-    { label: 'North Dakota', value: 'ND' },
-    { label: 'Ohio', value: 'OH' },
-    { label: 'Oklahoma', value: 'OK' },
-    { label: 'Oregon', value: 'OR' },
-    { label: 'Pennsylvania', value: 'PA' },
-    { label: 'Rhode Island', value: 'RI' },
-    { label: 'South Carolina', value: 'SC' },
-    { label: 'South Dakota', value: 'SD' },
-    { label: 'Tennessee', value: 'TN' },
-    { label: 'Texas', value: 'TX' },
-    { label: 'Utah', value: 'UT' },
-    { label: 'Vermont', value: 'VT' },
-    { label: 'Virginia', value: 'VA' },
-    { label: 'Washington', value: 'WA' },
-    { label: 'West Virginia', value: 'WV' },
-    { label: 'Wisconsin', value: 'WI' },
-    { label: 'Wyoming', value: 'WY' },
-  ];  
-
   // Zip Code Validity
-  const [isZipCodeShippingAddressValid, setIsZipCodeShippingAddressValid] = useState(true);
+  const [isShippingZipCodeAddressValid, setIsShippingZipCodeAddressValid] = useState(true);
 
   // Zip Code Input Format
   useEffect(() => {
-    const isValid = zipCodeShippingAddress.trim().length === 5;
+    const isValid = shippingZipCodeAddress.trim().length === 5;
     
-    setIsZipCodeShippingAddressValid(isValid);
-  }, [zipCodeShippingAddress]);
+    setIsShippingZipCodeAddressValid(isValid);
+  }, [shippingZipCodeAddress]);
 
   // Filled Form Checker For Shipping Address Section
   const isShippingAddressFormFilled = () => {
     return (
-      streetShippingAddress.trim() !== '' &&
-      cityShippingAddress.trim() !== '' &&
-      stateShippingAddress.trim() !== '' &&
-      zipCodeShippingAddress.trim() !== ''
+      shippingStreetAddress.trim() !== '' &&
+      shippingCityAddress.trim() !== '' &&
+      shippingStateAddress.trim() !== '' &&
+      shippingZipCodeAddress.trim() !== ''
     );
+  };
+
+  // ----- Payment Information Section -----
+
+  // Card Number Validity
+  const isCardNumberValid = (cardNumber) => {
+    const numericValue = cardNumber.replace(/\D/g, '');
+    
+    return numericValue.length === 16;
+  };
+
+  // Card Number Input Format
+  const formatCardNumber = (inputValue) => {
+    const numericValue = inputValue.replace(/\D/g, '').slice(0, 16);
+  
+    let formattedValue = '';
+
+    for (let i = 0; i < numericValue.length; i++) {
+      if (i > 0 && i % 4 === 0) {
+        formattedValue += ' ';
+      } // if
+
+      formattedValue += numericValue[i];
+    } // for
+  
+    return formattedValue;
+  };
+
+  // Expiration Date Validity
+  const isExpirationDateValid = (expirationDate) => {
+    const isValidFormat = /^(0[1-9]|1[0-2])\/\d{4}$/.test(expirationDate);
+    const [month, year] = expirationDate.split('/');
+    const currentDate = new Date();
+    const isValidMonth = parseInt(month, 10) >= 1 && parseInt(month, 10) <= 12;
+    const isValidYear = parseInt(year, 10) >= currentDate.getFullYear() && parseInt(year, 10) <= currentDate.getFullYear() + 10;
+  
+    return isValidFormat && isValidMonth && isValidYear;
+  };
+
+  // Expiration Date Input Format
+  const formatExpirationDate = (inputValue) => {
+    const numericValue = inputValue.replace(/\D/g, '').slice(0, 7);
+  
+    let formattedValue = numericValue;
+  
+    if (formattedValue.length >= 2) {
+      formattedValue = formattedValue.slice(0, 2) + (formattedValue.length > 2 ? '/' : '') + formattedValue.slice(2);
+    } // if
+
+    if (formattedValue.endsWith('/')) {
+      formattedValue = formattedValue.slice(0, -1);
+    } // if
+  
+    return formattedValue;
+  };
+
+  // Zip Code Validity
+  const [isBillingZipCodeAddressValid, setIsBillingZipCodeAddressValid] = useState(true);
+
+  // Zip Code Input Format
+  useEffect(() => {
+    const isValid = billingZipCodeAddress.trim().length === 5;
+    
+    setIsBillingZipCodeAddressValid(isValid);
+  }, [billingZipCodeAddress]);
+
+  // Filled Shipping Address Checker
+  const [isShippingAddressEmpty, setIsShippingAddressEmpty] = useState(true);
+  useEffect(() => {
+    const isEmpty =
+      shippingStreetAddress.trim() === '' ||
+      shippingCityAddress.trim() === '' ||
+      shippingStateAddress.trim() === '' ||
+      shippingZipCodeAddress.trim() === '';
+  
+    setIsShippingAddressEmpty(isEmpty);
+  }, [shippingStreetAddress, shippingCityAddress, shippingStateAddress, shippingZipCodeAddress]);
+  
+
+  // Use Shipping Address As Billing Address
+  const [useShippingAddressForBilling, setUseShippingAddressForBilling] = useState(false);
+  const handleUseShippingAddressForBilling = (e) => {
+    e.preventDefault();
+    setBillingStreetAddress(shippingStreetAddress);
+    setBillingCityAddress(shippingCityAddress);
+    setBillingStateAddress(shippingStateAddress);
+    setBillingZipCodeAddress(shippingZipCodeAddress);
+  };
+
+  // Filled Form Checker For Payment Information Section
+  const isPaymentInfoFormFilled = () => {
+    return (
+      cardType.trim() !== '' &&
+      billingStreetAddress.trim() !== '' &&
+      billingCityAddress.trim() !== '' &&
+      billingStateAddress.trim() !== '' &&
+      billingZipCodeAddress.trim() !== ''
+    );
+  };
+
+  // ----- Account Verification Section -----
+
+  // Verification Code
+  const [verificationCode, setVerificationCode] = useState('');
+  const [isVerificationCodeValid, setIsVerificationCodeValid] = useState(false);
+  const generateRandomVerificationCode = () => {
+    return Math.floor(10000 + Math.random() * 90000);
+  };
+  const sendVerificationCode = () => {
+    const code = generateRandomVerificationCode();
+    // Use your email service to send the code to the user's email (implement this part)
+    // For demonstration, we'll log the code to the console
+    console.log('Verification code sent to email:', code);
+    setVerificationCode(code.toString());
+  };
+
+  // Verification Input Format
+  const handleVerificationCodeChange = (e) => {
+    const code = e.target.value;
+    
+    setVerificationCode(code);
+    setIsVerificationCodeValid(code.length === 5 && /^\d+$/.test(code));
   };
 
   return (
@@ -314,27 +439,27 @@ const SignUp = () => {
             <form className='user-info-form'>
               <div className='user-info'>
                 <label className='user-info-label'>Street</label>
-                <input type='text' onChange={(e) => setStreetShippingAddress(e.target.value)} className='user-info-input' />
+                <input type='text' onChange={(e) => setShippingStreetAddress(e.target.value)} className='user-info-input' />
               </div>
               <div className='user-info'>
                 <label className='user-info-label'>City</label>
-                <input type='text' onChange={(e) => setCityShippingAddress(e.target.value)} className='user-info-input' />
+                <input type='text' onChange={(e) => setShippingCityAddress(e.target.value)} className='user-info-input' />
               </div>
               <div className='user-infos'>
                 <div className='user-info'>
                   <label className='user-info-label'>State</label>
-                  <input type='text' onChange={(e) => setStateShippingAddress(e.target.value)} className='user-info-input' />
+                  <input type='text' onChange={(e) => setShippingStateAddress(e.target.value)} className='user-info-input' />
                 </div>
                 <div className='user-info'>
                   <label className='user-info-label'>Zip code</label>
                   <input
                     type='text'
-                    value={zipCodeShippingAddress}
-                    onChange={(e) => setZipCodeShippingAddress(e.target.value)}
+                    value={shippingZipCodeAddress}
+                    onChange={(e) => setShippingZipCodeAddress(e.target.value)}
                     maxLength={5}
                     className='user-info-input'
                   />
-                  <div className={`input-error ${!isZipCodeShippingAddressValid && zipCodeShippingAddress.length > 0 ? 'visible' : ''}`}>Please enter all 5 digits</div>
+                  <div className={`input-error ${!isShippingZipCodeAddressValid && shippingZipCodeAddress.length > 0 ? 'visible' : ''}`}>Please enter all 5 digits</div>
                 </div>
               </div>
             </form>
@@ -342,12 +467,150 @@ const SignUp = () => {
               <button onClick={handleSkipButtonClick} className='CTA-button-two'>Skip</button>
               <button
                 onClick={handleNextButtonClick}
-                disabled={!isZipCodeShippingAddressValid || !isShippingAddressFormFilled()}
-                className={`CTA-button-one ${isZipCodeShippingAddressValid && isShippingAddressFormFilled() ? '' : 'disabled-button'}`}
+                disabled={!isShippingZipCodeAddressValid || !isShippingAddressFormFilled()}
+                className={`CTA-button-one ${isShippingZipCodeAddressValid && isShippingAddressFormFilled() ? '' : 'disabled-button'}`}
               >
                 Next
               </button>
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* Payment Information */}
+      {signUpStep === 3 && (
+        <section className='payment-info account section-wrapper'>
+          <div className='section-container-narrow'>
+            <h2>Enter payment information</h2>
+            <form className='user-info-form'>
+              <div className='user-info'>
+                <label className='user-info-label'>Card type</label>
+                <input
+                  type='text'
+                  value={cardType}
+                  onChange={(e) => setCardType(e.target.value)}
+                  className='user-info-input'
+                />
+              </div>
+              <div className='user-infos'>
+                <div className='user-info'>
+                  <label className='user-info-label'>Card number</label>
+                  <input
+                    type='text'
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
+                    maxLength={19}
+                    className='user-info-input'
+                  />
+                  <div className={`input-error ${!isCardNumberValid(cardNumber) && cardNumber.length > 0 ? 'visible' : ''}`}>Please enter all 16 digits</div>
+                </div>
+                <div className='user-info'>
+                  <label className='user-info-label'>Expiration date</label>
+                  <input
+                    type='text'
+                    placeholder='MM/YYYY'
+                    value={expirationDate}
+                    onChange={(e) => setExpirationDate(formatExpirationDate(e.target.value))}
+                    maxLength={7}
+                    className='user-info-input'
+                  />
+                  <div className={`input-error ${!isExpirationDateValid(expirationDate) && expirationDate.length > 0 ? 'visible' : ''}`}>Please enter a valid date</div>
+                </div>
+              </div>
+            </form>
+            <form className='user-info-form'>
+              <h3>Billing address</h3>
+              <div className='user-info'>
+                <label className='user-info-label'>Street</label>
+                <input
+                  type='text'
+                  value={billingStreetAddress}
+                  onChange={(e) => setBillingStreetAddress(e.target.value)}
+                  className='user-info-input'
+                />
+              </div>
+              <div className='user-info'>
+                <label className='user-info-label'>City</label>
+                <input
+                  type='text'
+                  value={billingCityAddress}
+                  onChange={(e) => setBillingCityAddress(e.target.value)}
+                  className='user-info-input'
+                />
+              </div>
+              <div className='user-infos'>
+                <div className='user-info'>
+                  <label className='user-info-label'>State</label>
+                  <input
+                    type='text'
+                    value={billingStateAddress}
+                    onChange={(e) => setBillingStateAddress(e.target.value)}
+                    className='user-info-input'
+                  />
+                </div>
+                <div className='user-info'>
+                  <label className='user-info-label'>Zip code</label>
+                  <input
+                    type='text'
+                    value={billingZipCodeAddress}
+                    onChange={(e) => setBillingZipCodeAddress(e.target.value)}
+                    maxLength={5}
+                    className='user-info-input'
+                  />
+                  <div className={`input-error ${!isBillingZipCodeAddressValid && billingZipCodeAddress.length > 0 ? 'visible' : ''}`}>Please enter all 5 digits</div>
+                </div>
+              </div>
+              <button
+                onClick={handleUseShippingAddressForBilling}
+                disabled={isShippingAddressEmpty}
+                className={`user-info-option ${isShippingAddressEmpty ? 'disabled-user-option' : ''}`}
+              >
+                Use shipping address
+              </button>
+            </form>
+            <div className='user-info-CTA-button'>
+              <button onClick={handleSkipButtonClick} className='CTA-button-two'>Skip</button>
+              <button
+                onClick={handleNextButtonClick}
+                disabled={!isCardNumberValid(cardNumber) || !isExpirationDateValid(expirationDate) || !isPaymentInfoFormFilled()}
+                className={`CTA-button-one ${isCardNumberValid(cardNumber) && isExpirationDateValid(expirationDate) && isPaymentInfoFormFilled() ? '' : 'disabled-button'}`}
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Account Verification */}
+      {signUpStep === 4 && (
+        <section className='verification account section-wrapper'>
+          <div className='section-container-narrow'>
+            <h2>Verification code sent</h2>
+            <p>Please check your email and enter the code down below to confirm your account</p>
+            <div className='verification-code'>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <input
+                  type='text'
+                  value={verificationCode[index] || ''}
+                  key={index}
+                  onChange={handleVerificationCodeChange}
+                  className='verification-number'
+                />
+              ))}
+            </div>
+            <button disabled={!isVerificationCodeValid} className='CTA-button-one'>Confirm account</button>
+          </div>
+        </section>
+      )}
+
+      {/* Account Confirmation */}
+      {signUpStep === 5 && (
+        <section className='confirmation account section-wrapper'>
+          <div className='section-container-narrow'>
+            <h2>Account confirmed</h2>
+            <p>Congratulations! Your account has been successfully created. Jump right in to explore the new era of cinema.</p>
+            <button className='CTA-button-one'>Browse Cinera</button>
           </div>
         </section>
       )}
