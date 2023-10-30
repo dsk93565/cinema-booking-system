@@ -17,13 +17,20 @@ const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState('');
   const passwordInputRef = useRef(null);
-  
   const handleTogglePasswordVisibility = (e) => {
-    setPasswordVisible(!passwordVisible);
     e.preventDefault();
-
+  
     if (passwordInputRef.current) {
-      passwordInputRef.current.focus();
+      const caretPosition = passwordInputRef.current.selectionStart;
+  
+      setPasswordVisible(!passwordVisible);
+  
+      setTimeout(() => {
+        if (passwordInputRef.current) {
+          passwordInputRef.current.focus();
+          passwordInputRef.current.setSelectionRange(caretPosition, caretPosition);
+        } // if
+      });
     } // if
   };
 
@@ -50,7 +57,7 @@ const Login = () => {
               </button>
             </div>
           </div>
-          <Link to='forgot'><button className='user-info-option'>Forgot password</button></Link>
+          <Link to='/forgot'><button className='user-info-option'>Forgot password</button></Link>
         </form>
         <Link to='/'><button className='CTA-button-one'>Log in</button></Link>
       </div>

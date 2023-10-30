@@ -40,8 +40,17 @@
     transition: color 0.1s ease-in-out;
 }
 
+.sign-up .user-infos {
+    flex-direction: column;
+    row-gap: 2rem;
+}
+
 .sign-up .user-infos .user-info {
     margin-top: 0;
+}
+
+.shipping-address .user-infos {
+    flex-direction: column;
 }
 
 .shipping-address .user-info:nth-last-child(3) {
@@ -111,6 +120,15 @@
 }
 
 @media only screen and (min-width: 22rem) {
+    .sign-up .user-infos {
+        flex-direction: row;
+        row-gap: 0;
+    }
+
+    .shipping-address .user-infos {
+        flex-direction: row;
+    }
+
     .verification-code {
         justify-content: space-between;
         column-gap: 0;

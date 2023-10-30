@@ -9,6 +9,7 @@
     --accent-two: #7D41E1;
     --accent-three: #7D7387;
     --accent-four: #D7CDEB;
+    --error: #CD3C3C;
 }
 
 * {
@@ -62,6 +63,10 @@ a {
 
 ol li, ul li {
     list-style-type: none;
+}
+
+input::placeholder {
+    color: var(--accent-three);
 }
 
 button {
@@ -175,6 +180,16 @@ button {
     color: var(--accent-two);
 }
 
+.disabled-button {
+    background-color: var(--tertiary-two);
+    color: var(--accent-three);
+    cursor: not-allowed;
+}
+
+.disabled-button:hover {
+    background-color: var(--tertiary-two);
+}
+
 .user-info-form {
     display: flex;
     flex-direction: column;
@@ -232,6 +247,19 @@ button {
     padding: 1rem 0 1rem 1.125rem;
 }
 
+.input-error {
+    color: var(--error);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-top: 1rem;
+    display: none;
+    align-self: end;
+}
+
+.input-error.visible {
+    display: flex;
+}
+
 .user-info-option {
     background-color: transparent;
     color: var(--accent-three);
@@ -249,7 +277,7 @@ button {
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
-    row-gap: 1.5rem;
+    row-gap: 2rem;
 }
 
 @media only screen and (min-width: 22rem) {

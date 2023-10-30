@@ -66,7 +66,6 @@
 }
 
 .search-input::placeholder {
-    color: var(--accent-three);
     font-weight: 500;
 }
 
@@ -123,7 +122,7 @@
     color: var(--primary);
     font-size: 0.8125rem;
     font-weight: 500;
-    padding: 0.75rem 1.125rem;
+    padding: 0.625rem 1rem;
     transition: background-color 0.1s ease-in-out;
 }
 
@@ -317,10 +316,6 @@
     .login-page-nav-item p {
         display: flex;
     }
-
-    .fixed-navigation-link {
-        font-size: 0.875rem;
-    }
 }
 
 @media only screen and (min-width: 64rem) {
@@ -334,6 +329,11 @@
 
     .navigation-link {
         display: flex;
+    }
+
+    .fixed-navigation-link {
+        font-size: 0.875rem;
+        padding: 0.75rem 1.125rem;
     }
 
     .mobile-search-wrapper {

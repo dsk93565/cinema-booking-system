@@ -72,42 +72,62 @@ const Navigation = () => {
           <Link to='/'><div className={`logo ${sideNav ? 'is-hidden' : ''}`}>Cinera</div></Link>
 
           {/* Search Bar */}
-          {location.pathname === '/login' ? null :
+          {location.pathname !== '/login' && location.pathname !== '/sign-up' ? (
             <form className={`search-bar ${searchInput ? 'is-active' : ''}`}>
               <input
                 type='text' placeholder='Search' onFocus={handleInputFocus} onBlur={handleInputBlur}
                 onChange={(e) => handleMovieInputData(e)} className='search-input'
               />
-              <Link to='search-results'>
+              <Link to='/search-results'>
                 <button type='submit' onClick={sendMovieInputData} disabled={!movieInputData} className='search-icon-wrapper'>
                   <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='search-icon' />
                 </button>
               </Link>
-            </form>}
+            </form>
+          ) : null}
 
           {/* Navigation Menu */}
           <nav className='navigation-menu'>
             <ol>
               {/* Log In */}
-              {location.pathname === '/login' ? null : <Link to='login'><button className='navigation-link non-CTA-button'>Log in</button></Link>}
-              {/* Sign Up */}
-              {location.pathname === '/login' ?
+              {location.pathname !== '/login' && location.pathname !== '/sign-up' ? (
+                <Link to='/login'><button className='navigation-link non-CTA-button'>Log in</button></Link>
+              ) : null}
+
+              {/* Log In Page Nav Item */}
+              {location.pathname === '/login' ? (
                 <div className='login-page-nav-item'>
                   <p>Don't have a Cinera account?</p>
-                  <Link to='sign-up'><button className='fixed-navigation-link'>Sign up</button></Link>
+                  <Link to='/sign-up'><button className='fixed-navigation-link'>Sign up</button></Link>
                 </div>
-                :
-                <Link to='sign-up'><button className='navigation-link CTA-button-one'>Sign up</button></Link>}
+              ) : null}
+
+              {/* Sign Up */}
+              {location.pathname !== '/login' && location.pathname !== '/sign-up' ? (
+                <Link to='/sign-up'><button className='navigation-link CTA-button-one'>Sign up</button></Link>
+              ) : null}
+
+              {/* Sign Up Page Nav Item */}
+              {location.pathname === '/sign-up' ? (
+                <div className='login-page-nav-item'>
+                  <p>Already have a Cinera account?</p>
+                  <Link to='/login'><button className='fixed-navigation-link'>Log in</button></Link>
+                </div>
+              ) : null}
+
               {/* Search Icon */}
-              {location.pathname === '/login' ? null :
+              {location.pathname !== '/login' && location.pathname !== '/sign-up' ? (
                 <button className={`mobile-search-wrapper ${sideNav ? 'is-hidden' : ''}`}>
                   <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='mobile-search-icon' />
-                </button>}
+                </button>
+              ) : null}
+              
               {/* Hamburger Menu */}
-              {location.pathname === '/login' ? null :
+              {location.pathname !== '/login' && location.pathname !== '/sign-up' ? (
                 <button onClick={handleSideNav} className={`hamburger-menu ${sideNav ? 'is-active' : ''}`}>
                   <div className='hamburger-line'></div>
-                </button>}
+                </button>
+              ) : null}
             </ol>
           </nav>
         </div>
@@ -121,14 +141,14 @@ const Navigation = () => {
           <div className='side-navigation-lists'>
             <div className='side-navigation-title'>Movies</div>
             <ol className='side-navigation-list'>
-              <li><Link to='trending'><button onClick={handleSideNav} className='side-navigation-link'>Trending</button></Link></li>
-              <li><Link to='now-playing'><button onClick={handleSideNav} className='side-navigation-link'>Now Playing</button></Link></li>
-              <li><Link to='coming-soon'><button onClick={handleSideNav} className='side-navigation-link'>Coming Soon</button></Link></li>
+              <li><Link to='/trending'><button onClick={handleSideNav} className='side-navigation-link'>Trending</button></Link></li>
+              <li><Link to='/now-playing'><button onClick={handleSideNav} className='side-navigation-link'>Now Playing</button></Link></li>
+              <li><Link to='/coming-soon'><button onClick={handleSideNav} className='side-navigation-link'>Coming Soon</button></Link></li>
             </ol>
           </div>
           <ol className='side-navigation-user-account'>
-            <li><Link to='login'><button onClick={handleSideNav} className='CTA-button-two'>Log in</button></Link></li>
-            <li><Link to='sign-up'><button onClick={handleSideNav} className='CTA-button-one'>Sign up</button></Link></li>
+            <li><Link to='/login'><button onClick={handleSideNav} className='CTA-button-two'>Log in</button></Link></li>
+            <li><Link to='/sign-up'><button onClick={handleSideNav} className='CTA-button-one'>Sign up</button></Link></li>
           </ol>
         </nav>
 
