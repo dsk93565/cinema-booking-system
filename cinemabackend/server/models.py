@@ -36,7 +36,7 @@ class Movies(models.Model):
     trailer = models.CharField(db_column='trailer',max_length=1027, default='')
     rating = models.CharField(db_column='rating',max_length=255, default='')
     title = models.CharField(db_column='title',max_length=255, default='')
-    img_link = models.CharField(db_column='images',max_length=255, default='')
+    poster_path = models.CharField(db_column='images',max_length=255, default='')
     class Meta: 
         db_table: 'movies'
 
