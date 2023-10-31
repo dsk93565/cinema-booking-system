@@ -10,7 +10,7 @@ class CustomUser(AbstractUser):
     user_password = models.CharField(db_column='user_password', max_length=255, default='')
     first_name = models.CharField(db_column='first_name', max_length=255, default='')
     last_name = models.CharField(db_column='last_name', max_length=255, default='')
-    phone_number = models.IntegerField(db_column='phone_number', default='')
+    phone_number = models.IntegerField(db_column='phone_number')
     state_id = models.IntegerField(db_column='state_id', default='')
     promotions = models.IntegerField(db_column='promotions', default='')
 
@@ -36,7 +36,7 @@ class Movies(models.Model):
     trailer = models.CharField(db_column='trailer',max_length=1027, default='')
     rating = models.CharField(db_column='rating',max_length=255, default='')
     title = models.CharField(db_column='title',max_length=255, default='')
-    poster_path = models.CharField(db_column='images',max_length=255, default='')
+    poster_path = models.CharField(db_column='image',max_length=255, default='')
     class Meta: 
         db_table: 'movies'
 

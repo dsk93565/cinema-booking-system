@@ -62,5 +62,6 @@ class MovieList(APIView):
         print("queryset:", queryset)
         serializer_class = MovieSerializer(queryset, many=True)
         print(serializer_class.data)
-        return Response(serializer_class.data)
+        movieList = {"movies":serializer_class.data}
+        return Response(movieList)
 # Create your views here.
