@@ -7,6 +7,8 @@ from .serializer import MovieSerializer, UserSerializer
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 import json
+from cryptography.fernet import Fernet
+
 
 #TODO: define error class and error codes and properly throw errors
 
@@ -32,13 +34,15 @@ class Create_User(APIView):
         new_user = CustomUser.objects.create(username=new_username, email=new_email, password=make_password(new_password), 
                                              first_name=new_first, last_name=new_last, phone_number=new_number, state_id=0)
         new_user.save()
-        cardType = data.get('cardType')
-        cardNumber = data.get('cardNumber')
-        expiration = data.get('expirationDate')
-        billingStreet = data.get('billingStreetAddress')
-        billingCity = data.get('billingCityAddress')
-        billingState = data.get('billingStateAddress')
-        billingZip = data.get('billingZipCodeAddress')
+        key = Fernet.generate_key()
+        fern = Fernet(key)
+        cardType = fern.encrypt(data.get('cardType'))
+        cardNumber = fern.encrypt(data.get('cardNumber'))
+        expiration = fern.encrypt(data.get('expirationDate'))
+        billingStreet = fern.encrypt(data.get('billingStreetAd)dress'))
+        billingCity = fern.encrypt(data.get('billingCityAddress'))
+        billingState = fern.encrypt(data.get('billingStateAddress)'))
+        billingZip = fern.encrypt(data.get('billingZipCodeAddress'))
         new_card = Card.objects.create(user_id=new_user.pk, card_type=cardType, card_number=cardNumber, 
                                        card_expiration=expiration, card_city=billingCity, card_street=billingStreet, 
                                        card_state=billingState, card_zip=billingZip)
