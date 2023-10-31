@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
-
+#comment
 class CustomUser(AbstractUser):
     id = models.IntegerField(db_column='uid', primary_key=True)
     type_id = models.IntegerField(db_column='type_id', default='1')
@@ -16,7 +16,7 @@ class CustomUser(AbstractUser):
 
 class Card(models.Model):
     cid = models.IntegerField(db_column='cid', primary_key=True)
-    user_id = models.ForeignKey(CustomUser, db_column='user_id')
+    user_id = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING, db_column='user_id')
     card_type = models.CharField(db_column='card_type', max_length=255, default='')
     card_number = models.IntegerField(db_column='card_number')
     card_expiration = models.DateField(db_column='card_expiration')

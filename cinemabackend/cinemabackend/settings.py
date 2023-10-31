@@ -95,7 +95,7 @@ DATABASES = {
         'NAME': 'mydb',
         'USER': 'root',
         'PASSWORD': 'we$%^789',
-        'HOST': '172.20.198.145',  # or the hostname of your MySQL server
+        'HOST': '192.168.1.229',  # or the hostname of your MySQL server
         'PORT': '3306',  # MySQL default port
     }
 }
