@@ -53,12 +53,20 @@
     flex-direction: column;
 }
 
+.user-info.state, .user-info.zip, .user-info.card-num, .user-info.exp-date {
+    width: 100%;
+}
+
 .shipping-address .user-info:nth-last-child(3) {
     margin-top: 0;
 }
 
 .payment-info .user-info:first-child {
     margin-top: 0;
+}
+
+.payment-info .user-infos {
+    flex-direction: column;
 }
 
 .payment-info .user-infos .user-info {
@@ -120,13 +128,21 @@
 }
 
 @media only screen and (min-width: 22rem) {
-    .sign-up .user-infos {
+    .sign-up .user-infos, .payment-info .user-infos {
         flex-direction: row;
         row-gap: 0;
     }
 
     .shipping-address .user-infos {
         flex-direction: row;
+    }
+
+    .user-info.state, .user-info.card-num {
+        width: 65%;
+    }
+
+    .user-info.zip, .user-info.exp-date {
+        width: 35%;
     }
 
     .verification-code {

@@ -6,6 +6,10 @@ import axios from 'axios'; // Import Axios for API requests
 const BACKEND_URL = 'http://localhost:8000/api'; // Replace with your backend API URL
 
 const Login = () => {
+  // Form Data
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   // Password Input Outline
   const [passwordInput, setPasswordInput] = useState(false);
   const handleInputFocus = () => {
@@ -17,7 +21,6 @@ const Login = () => {
 
   // Password Visibility
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [password, setPassword] = useState('');
   const passwordInputRef = useRef(null);
   const handleTogglePasswordVisibility = (e) => {
     e.preventDefault();
@@ -36,7 +39,12 @@ const Login = () => {
     }
   };
 
-  const handleLogin = async (e) => {
+  // Filled Form Checker
+  const isLoginFormFilled = () => {
+    return !!email && !!password;
+  };
+
+  const handleLoginClick = async (e) => {
     e.preventDefault();
 
     try {
@@ -62,10 +70,15 @@ const Login = () => {
     <section className='login account section-wrapper'>
       <div className='section-container-narrow'>
         <h2>Log in to your account</h2>
-        <form className='user-info-form'>
+        <form id='login-form' className='user-info-form'>
           <div className='user-info'>
             <label className='user-info-label'>Email</label>
-            <input type='email' className='user-info-input' />
+            <input
+              type='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className='user-info-input'
+            />
           </div>
           <div className='user-info'>
             <label className='user-info-label'>Password</label>
@@ -93,10 +106,14 @@ const Login = () => {
             </div>
           </div>
           <a href='/forgot' className='user-info-option'>Forgot password</a>
-          <button onClick={handleLogin} className='CTA-button-one'>
-            Log in
-          </button>
         </form>
+        <button
+          onClick={handleLoginClick}
+          disabled={!isLoginFormFilled()}
+          className={`CTA-button-one ${isLoginFormFilled() ? '' : 'disabled-button'}`}
+        >
+          Log in
+        </button>
       </div>
     </section>
   );
