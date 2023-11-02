@@ -27,12 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+<<<<<<< HEAD
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST = 'cineraecinemabooking@gmail.com'
 EMAIL_PASS = 'SDERCV#$'
+=======
+AUTH_USER_MODEL = "server.CustomUser"
+>>>>>>> 72331c1534641a67b1f5ed029462af42ef57f944
 
 # Application definition
 # may want to add 'django.contrib.contenttypes', to have permissions be associated with the models
@@ -48,7 +52,6 @@ INSTALLED_APPS = [
     'cryptography.fernet',
     'server',
 ]
-AUTH_USER_MODEL = "server.CustomUser"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

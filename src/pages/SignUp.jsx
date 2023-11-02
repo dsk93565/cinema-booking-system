@@ -100,31 +100,38 @@ const SignUp = () => {
   // Mobile Number Input Format
   const formatMobileNumber = (inputValue) => {
     const mobileNumber = inputValue.replace(/\D/g, '');
-
+  
     if (mobileNumber.length <= 3) {
       return `(${mobileNumber}`;
     } else if (mobileNumber.length <= 6) {
       return `(${mobileNumber.slice(0, 3)}) ${mobileNumber.slice(3)}`;
     } else {
       return `(${mobileNumber.slice(0, 3)}) ${mobileNumber.slice(3, 6)}-${mobileNumber.slice(6, 10)}`;
-    } // if else-if else
+    }
   };
+  
   const handleMobileNumberChange = (e) => {
     const inputValue = e.target.value;
     let formattedNumber = formatMobileNumber(inputValue);
-
+  
     if (formattedNumber.length === 14) {
       setIsMobileNumberValid(true);
     } else {
       setIsMobileNumberValid(false);
-    } // if else
-
+    }
+  
     if (formattedNumber.startsWith('(') && !/\d/.test(formattedNumber)) {
       formattedNumber = '';
-    } // if
-
+    }
+  
     setMobileNumber(formattedNumber);
+  
+    // Convert the formatted number to an integer before sending it to the database
+    const mobileNumberForDatabase = parseInt(formattedNumber.replace(/\D/g, ''), 10);
+    
+    // Now you can send `mobileNumberForDatabase` to your database as an integer.
   };
+  
 
   // Password Input Outline
   const [passwordInput, setPasswordInput] = useState(false);
