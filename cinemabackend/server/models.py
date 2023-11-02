@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser
 
 #comment
 class CustomUser(AbstractUser):
+    class Meta: 
+        db_table = 'users'
     id = models.IntegerField(db_column='uid', primary_key=True)
     type_id = models.IntegerField(db_column='type_id', default='1')
     email = models.EmailField(db_column='email', unique=True, max_length=255, default='')
