@@ -124,12 +124,7 @@ const SignUp = () => {
       formattedNumber = '';
     }
   
-    setMobileNumber(formattedNumber);
-  
-    // Convert the formatted number to an integer before sending it to the database
-    const mobileNumberForDatabase = parseInt(formattedNumber.replace(/\D/g, ''), 10);
-    
-    // Now you can send `mobileNumberForDatabase` to your database as an integer.
+    setMobileNumber(parseInt(formattedNumber.replace(/\D/g, ''), 10)); // Store the integer representation
   };
   
 
