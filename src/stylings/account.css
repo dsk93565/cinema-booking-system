@@ -127,6 +127,7 @@
     margin-bottom: 4rem;
 }
 
+
 @media only screen and (min-width: 22rem) {
     .sign-up .user-infos, .payment-info .user-infos {
         flex-direction: row;
