@@ -45,8 +45,7 @@ class Create_User(APIView):
         new_number = data.get('mobileNumber')
         new_first = data.get('firstName')
         new_last = data.get('lastName')
-        serializer = UserSerializer
-        new_user = CustomUser.objects.create(uuid.UUID('0e337d11-c7fc-4c47-baf5-182e072d1ec1'), username=new_username, email=new_email, password=make_password(new_password), 
+        new_user = CustomUser.objects.create(username=new_username, email=new_email, password=make_password(new_password), 
                                              first_name=new_first, last_name=new_last, phone_number=new_number, state_id=0)
         new_user.save()
         key = Fernet.generate_key()

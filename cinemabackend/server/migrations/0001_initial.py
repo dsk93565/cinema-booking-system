@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
                 ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('uid', models.IntegerField(db_column='uid', primary_key=True, serialize=False)),
+                ('uid', models.IntegerField(db_column='uid', primary_key=True, default='1',serialize=False)),
                 ('type_id', models.IntegerField(db_column='type_id', default='1')),
                 ('email', models.EmailField(db_column='email', default='', max_length=255, unique=True)),
                 ('password', models.CharField(db_column='user_password', default='', max_length=255)),
