@@ -6,11 +6,24 @@ from .models import Movies, CustomUser, Card
 from .serializer import MovieSerializer, UserSerializer
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
+from django.core.mail import send_mail
 import json
 from cryptography.fernet import Fernet
 
-
 #TODO: define error class and error codes and properly throw errors
+
+class Send_Verification_Email(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error: could not decode json object": -5})
+        subject = 'Cinera Verifcation Code'
+        verification_code = data.get('verificationCode')
+        email = data.get('email')
+        send_mail(subject, verification_code, 'cineraecinemabooking@gmail.com', email)
+        return Response({'email sent': 1})
+
 
 #creates user and card in database
 class Create_User(APIView):

@@ -23,5 +23,6 @@ urlpatterns = [
     path('api/get-movies', views.MovieList.as_view()),
     path('api/create-user', views.Create_User.as_view()),
     path('api/login', views.Login.as_view()),
+    path('api/verify-email', views.Send_Verification_Email.as_view())
 #    path('api/forgot-password', views.ForgotPassword.as_view()),
 ]

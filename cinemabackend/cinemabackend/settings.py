@@ -27,7 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = "server.CustomUser"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST = 'cineraecinemabooking@gmail.com'
 
 # Application definition
 # may want to add 'django.contrib.contenttypes', to have permissions be associated with the models
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
     'cryptography.fernet',
     'server',
 ]
+AUTH_USER_MODEL = "server.CustomUser"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -94,9 +99,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mydb',
-        'USER': 'root',
+        'USER': 'user',
         'PASSWORD': 'we$%^789',
-        'HOST': '172.20.198.145',  # or the hostname of your MySQL server
+        'HOST': '172.20.247.73',  # or the hostname of your MySQL server
         'PORT': '3306',  # MySQL default port
     }
 }

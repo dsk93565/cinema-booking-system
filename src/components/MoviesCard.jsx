@@ -24,7 +24,7 @@ const MoviesCard = (props) => {
             console.log(JSON.stringify(data))
         } // if else-if else-if
 
-        setMovies(JSON.parse(data));
+        setMovies(data.movies);
     };
 
     return (
