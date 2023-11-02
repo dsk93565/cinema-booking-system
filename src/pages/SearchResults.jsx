@@ -10,10 +10,10 @@ const SearchResults = () => {
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        // Replace 'YOUR_BACKEND_URL' with the actual URL of your Django backend
+        
         const BACKEND_URL = 'http://localhost:8000/api/search'; // Adjust the URL as needed
 
-        // Make a GET request to your Django API endpoint for movie search
+        
         const response = await axios.get(`${BACKEND_URL}/movies/?search=${data}`);
         
         // Assuming your API returns an array of movies in the 'results' property
