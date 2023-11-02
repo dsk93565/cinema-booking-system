@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 import json
+import uuid
 from cryptography.fernet import Fernet
 
 #TODO: define error class and error codes and properly throw errors
@@ -34,9 +35,9 @@ class Create_User(APIView):
             return Response({"error: could not decode json object": -5})
         new_username = data.get('username')
         new_email = data.get('email')
-        exsisting_users = CustomUser.objects.filter(username=new_username)       
-        if exsisting_users.exists():
-            return Response({"error: username is already registered to an exsisting user": -1})
+        #exsisting_users = CustomUser.objects.filter(username=new_username)       
+        #if exsisting_users.exists():
+        #    return Response({"error: username is already registered to an exsisting user": -1})
         exsisting_users = CustomUser.objects.filter(email=new_email)
         if exsisting_users.exists():
             return Response({"error: email is already registered to an exsisting user": -1})
@@ -44,7 +45,8 @@ class Create_User(APIView):
         new_number = data.get('mobileNumber')
         new_first = data.get('firstName')
         new_last = data.get('lastName')
-        new_user = CustomUser.objects.create(username=new_username, email=new_email, password=make_password(new_password), 
+        serializer = UserSerializer
+        new_user = CustomUser.objects.create(uuid.UUID('0e337d11-c7fc-4c47-baf5-182e072d1ec1'), username=new_username, email=new_email, password=make_password(new_password), 
                                              first_name=new_first, last_name=new_last, phone_number=new_number, state_id=0)
         new_user.save()
         key = Fernet.generate_key()
