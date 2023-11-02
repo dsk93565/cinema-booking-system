@@ -32,6 +32,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST = 'cineraecinemabooking@gmail.com'
+EMAIL_PASS = 'SDERCV#$'
 
 # Application definition
 # may want to add 'django.contrib.contenttypes', to have permissions be associated with the models
@@ -99,9 +100,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mydb',
-        'USER': 'user',
+        'USER': 'root',
         'PASSWORD': 'we$%^789',
-        'HOST': '172.20.247.73',  # or the hostname of your MySQL server
+        'HOST': '172.21.86.50',  # or the hostname of your MySQL server
         'PORT': '3306',  # MySQL default port
     }
 }
