@@ -27,7 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST = 'cineraecinemabooking@gmail.com'
+EMAIL_PASS = 'SDERCV#$'
+
 AUTH_USER_MODEL = "server.CustomUser"
+
 
 # Application definition
 # may want to add 'django.contrib.contenttypes', to have permissions be associated with the models

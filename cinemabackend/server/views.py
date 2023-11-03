@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 import json
+import uuid
 from cryptography.fernet import Fernet
 
 #TODO: define error class and error codes and properly throw errors
@@ -34,9 +35,9 @@ class Create_User(APIView):
             return Response({"error: could not decode json object": -5})
         new_username = data.get('username')
         new_email = data.get('email')
-        exsisting_users = CustomUser.objects.filter(username=new_username)       
-        if exsisting_users.exists():
-            return Response({"error: username is already registered to an exsisting user": -1})
+        #exsisting_users = CustomUser.objects.filter(username=new_username)       
+        #if exsisting_users.exists():
+        #    return Response({"error: username is already registered to an exsisting user": -1})
         exsisting_users = CustomUser.objects.filter(email=new_email)
         if exsisting_users.exists():
             return Response({"error: email is already registered to an exsisting user": -1})
