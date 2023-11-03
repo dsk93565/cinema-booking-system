@@ -311,6 +311,14 @@ button {
     row-gap: 2rem;
 }
 
+.status-message {
+    color: var(--error);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-top: 1.5rem;
+    text-align: end;
+}
+
 @media only screen and (min-width: 40rem) {
     .section-container-narrow {
         max-width: 32rem;

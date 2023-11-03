@@ -51,13 +51,27 @@ const Login = () => {
     setRememberMe(!rememberMe);
   };
 
-  // Filled Form Checker
-  const isLoginFormFilled = () => {
-    return !!email && !!password;
-  };
+  // Login Status Message
+  const [statusMessage, setStatusMessage] = useState('');
 
+  // Login Button
   const handleLoginClick = async (e) => {
     e.preventDefault();
+
+    if (!email && !password) {
+      setStatusMessage('Please enter an email and password');
+      return;
+    } // if
+
+    if (!email) {
+      setStatusMessage('Please enter an email');
+      return;
+    } // if
+
+    if (!password) {
+      setStatusMessage('Please enter a password');
+      return;
+    } // if
 
     try {
       const response = await axios.post(`${BACKEND_URL}/login`, {
@@ -67,6 +81,7 @@ const Login = () => {
 
       if (response.status === 200) {
         console.log('Login successful:', response.data);
+        setStatusMessage('');
 
         if (rememberMe) {
           localStorage.setItem('rememberMe', 'true');
@@ -76,9 +91,11 @@ const Login = () => {
       } else {
         // Handle authentication errors here, e.g., show an error message
         console.error('Login failed:', response.data);
+        setStatusMessage('Invalid email and/or password');
       } // if else
     } catch (error) {
       console.error('Failed to log in:', error);
+      setStatusMessage('Invalid email and/or password');
     } // try catch
   };
 
@@ -126,13 +143,15 @@ const Login = () => {
             <a href='/forgot' className='user-info-option'>Forgot password</a>
           </div>
         </form>
-        <button
-          onClick={handleLoginClick}
-          disabled={!isLoginFormFilled()}
-          className={`CTA-button-one ${isLoginFormFilled() ? '' : 'disabled-button'}`}
-        >
-          Log in
-        </button>
+        <div>
+          <button
+            onClick={handleLoginClick}
+            className='CTA-button-one'
+          >
+            Log in
+          </button>
+          <div className='status-message'>{statusMessage}</div>
+        </div>
       </div>
     </section>
   );
