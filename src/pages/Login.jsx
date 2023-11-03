@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/account.css';
 import axios from 'axios'; // Import Axios for API requests
@@ -39,6 +39,18 @@ const Login = () => {
     }
   };
 
+  // Remember Me Functionality
+  const [rememberMe, setRememberMe] = useState(false);
+  useEffect(() => {
+    const rememberMePreference = localStorage.getItem('rememberMe');
+    if (rememberMePreference === 'true') {
+      setRememberMe(true);
+    } // if
+  }, []);
+  const handleRememberMeChange = () => {
+    setRememberMe(!rememberMe);
+  };
+
   // Filled Form Checker
   const isLoginFormFilled = () => {
     return !!email && !!password;
@@ -48,22 +60,26 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // Make an API POST request to your login endpoint with email and password
       const response = await axios.post(`${BACKEND_URL}/login`, {
         email: 'user@example.com', // Replace with the user's email input
-        password: password, // Use the password state
+        password: password,
       });
 
       if (response.status === 200) {
-        // Authentication was successful, you can handle the response as needed
         console.log('Login successful:', response.data);
+
+        if (rememberMe) {
+          localStorage.setItem('rememberMe', 'true');
+        } else {
+          localStorage.removeItem('rememberMe');
+        } // if else
       } else {
         // Handle authentication errors here, e.g., show an error message
         console.error('Login failed:', response.data);
-      }
+      } // if else
     } catch (error) {
       console.error('Failed to log in:', error);
-    }
+    } // try catch
   };
 
   return (
@@ -105,7 +121,10 @@ const Login = () => {
               </button>
             </div>
           </div>
-          <a href='/forgot' className='user-info-option'>Forgot password</a>
+          <div className='user-options'>
+          <label className='user-checkbox-option'><input type='checkbox' />Remember me</label>
+            <a href='/forgot' className='user-info-option'>Forgot password</a>
+          </div>
         </form>
         <button
           onClick={handleLoginClick}

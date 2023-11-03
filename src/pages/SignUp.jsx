@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Select from 'react-select';
 import '../stylings/account.css';
 
 const SignUp = () => {
@@ -45,6 +46,10 @@ const SignUp = () => {
     setSignUpStep(signUpStep + 1);
   }
   const handleNextButtonClick = () => {
+    if (signUpStep === 1) {
+      const mobileNumberIntFormat = parseInt(mobileNumber.replace(/\D/g, ''), 10);
+      setMobileNumber(mobileNumberIntFormat)
+    }
     if (signUpStep === 3) { // Send account information to database and verification code to account email
       const basicUserData = {
         firstName,
@@ -89,6 +94,66 @@ const SignUp = () => {
     setSignUpStep(signUpStep + 1);
   };
 
+  // Select Styling
+  const selectStyling = {
+    control: (provided, state) => ({
+      ...provided,
+      backgroundColor: '#D7CDEB',
+      border: 'none',
+      borderRadius: '2rem',
+      boxShadow: 'none',
+      outline: state.isFocused ? '#7D41E1 0.125rem solid' : 'transparent 0.125rem solid',
+      fontSize: '1rem',
+      fontWeight: '400',
+      width: '100%',
+      padding: '1rem 1.125rem',
+      transition: 'outline 0.2s ease-in-out',
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: '0',
+      padding: '0',
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: '#0F1419',
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: '0',
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: '#7D7387',
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: '#7D7387',
+      padding: '0',
+      ':hover': {
+        color: '#7D7387',
+      }
+    }),
+    indicatorSeparator: (provided) => ({
+      ...provided,
+      display: 'none',
+    }),
+    indicatorsContainer: (provided) => ({
+      ...provided,
+      margin: '0',
+      padding: '0',
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isSelected ? '#FFFFFF' : '#0F1419',
+      backgroundColor: state.isSelected ? '#7D41E1' : '',
+      '&:hover': {
+        ...provided,
+        backgroundColor: state.isSelected ? '#7D41E1' : '#D7CDEB',
+      },
+    }),
+  };
+
   // ----- Basic User Information Section -----
 
   // Email Validity
@@ -107,7 +172,7 @@ const SignUp = () => {
       return `(${mobileNumber.slice(0, 3)}) ${mobileNumber.slice(3)}`;
     } else {
       return `(${mobileNumber.slice(0, 3)}) ${mobileNumber.slice(3, 6)}-${mobileNumber.slice(6, 10)}`;
-    }
+    } // if else-if else
   };
   
   const handleMobileNumberChange = (e) => {
@@ -118,13 +183,13 @@ const SignUp = () => {
       setIsMobileNumberValid(true);
     } else {
       setIsMobileNumberValid(false);
-    }
+    } // if else
   
     if (formattedNumber.startsWith('(') && !/\d/.test(formattedNumber)) {
       formattedNumber = '';
-    }
+    } // if
   
-    setMobileNumber(parseInt(formattedNumber.replace(/\D/g, ''), 10)); // Store the integer representation
+    setMobileNumber(formattedNumber);
   };
   
 
@@ -188,56 +253,56 @@ const SignUp = () => {
 
   // US States
   const usStates = [
-    { name: 'Alabama', abbreviation: 'AL' },
-    { name: 'Alaska', abbreviation: 'AK' },
-    { name: 'Arizona', abbreviation: 'AZ' },
-    { name: 'Arkansas', abbreviation: 'AR' },
-    { name: 'California', abbreviation: 'CA' },
-    { name: 'Colorado', abbreviation: 'CO' },
-    { name: 'Connecticut', abbreviation: 'CT' },
-    { name: 'Delaware', abbreviation: 'DE' },
-    { name: 'Florida', abbreviation: 'FL' },
-    { name: 'Georgia', abbreviation: 'GA' },
-    { name: 'Hawaii', abbreviation: 'HI' },
-    { name: 'Idaho', abbreviation: 'ID' },
-    { name: 'Illinois', abbreviation: 'IL' },
-    { name: 'Indiana', abbreviation: 'IN' },
-    { name: 'Iowa', abbreviation: 'IA' },
-    { name: 'Kansas', abbreviation: 'KS' },
-    { name: 'Kentucky', abbreviation: 'KY' },
-    { name: 'Louisiana', abbreviation: 'LA' },
-    { name: 'Maine', abbreviation: 'ME' },
-    { name: 'Maryland', abbreviation: 'MD' },
-    { name: 'Massachusetts', abbreviation: 'MA' },
-    { name: 'Michigan', abbreviation: 'MI' },
-    { name: 'Minnesota', abbreviation: 'MN' },
-    { name: 'Mississippi', abbreviation: 'MS' },
-    { name: 'Missouri', abbreviation: 'MO' },
-    { name: 'Montana', abbreviation: 'MT' },
-    { name: 'Nebraska', abbreviation: 'NE' },
-    { name: 'Nevada', abbreviation: 'NV' },
-    { name: 'New Hampshire', abbreviation: 'NH' },
-    { name: 'New Jersey', abbreviation: 'NJ' },
-    { name: 'New Mexico', abbreviation: 'NM' },
-    { name: 'New York', abbreviation: 'NY' },
-    { name: 'North Carolina', abbreviation: 'NC' },
-    { name: 'North Dakota', abbreviation: 'ND' },
-    { name: 'Ohio', abbreviation: 'OH' },
-    { name: 'Oklahoma', abbreviation: 'OK' },
-    { name: 'Oregon', abbreviation: 'OR' },
-    { name: 'Pennsylvania', abbreviation: 'PA' },
-    { name: 'Rhode Island', abbreviation: 'RI' },
-    { name: 'South Carolina', abbreviation: 'SC' },
-    { name: 'South Dakota', abbreviation: 'SD' },
-    { name: 'Tennessee', abbreviation: 'TN' },
-    { name: 'Texas', abbreviation: 'TX' },
-    { name: 'Utah', abbreviation: 'UT' },
-    { name: 'Vermont', abbreviation: 'VT' },
-    { name: 'Virginia', abbreviation: 'VA' },
-    { name: 'Washington', abbreviation: 'WA' },
-    { name: 'West Virginia', abbreviation: 'WV' },
-    { name: 'Wisconsin', abbreviation: 'WI' },
-    { name: 'Wyoming', abbreviation: 'WY' }
+    { value: 'AL', label: 'Alabama' },
+    { value: 'AK', label: 'Alaska' },
+    { value: 'AZ', label: 'Arizona' },
+    { value: 'AR', label: 'Arkansas' },
+    { value: 'CA', label: 'California' },
+    { value: 'CO', label: 'Colorado' },
+    { value: 'CT', label: 'Connecticut' },
+    { value: 'DE', label: 'Delaware' },
+    { value: 'FL', label: 'Florida' },
+    { value: 'GA', label: 'Georgia' },
+    { value: 'HI', label: 'Hawaii' },
+    { value: 'ID', label: 'Idaho' },
+    { value: 'IL', label: 'Illinois' },
+    { value: 'IN', label: 'Indiana' },
+    { value: 'IA', label: 'Iowa' },
+    { value: 'KS', label: 'Kansas' },
+    { value: 'KY', label: 'Kentucky' },
+    { value: 'LA', label: 'Louisiana' },
+    { value: 'ME', label: 'Maine' },
+    { value: 'MD', label: 'Maryland' },
+    { value: 'MA', label: 'Massachusetts' },
+    { value: 'MI', label: 'Michigan' },
+    { value: 'MN', label: 'Minnesota' },
+    { value: 'MS', label: 'Mississippi' },
+    { value: 'MO', label: 'Missouri' },
+    { value: 'MT', label: 'Montana' },
+    { value: 'NE', label: 'Nebraska' },
+    { value: 'NV', label: 'Nevada' },
+    { value: 'NH', label: 'New Hampshire' },
+    { value: 'NJ', label: 'New Jersey' },
+    { value: 'NM', label: 'New Mexico' },
+    { value: 'NY', label: 'New York' },
+    { value: 'NC', label: 'North Carolina' },
+    { value: 'ND', label: 'North Dakota' },
+    { value: 'OH', label: 'Ohio' },
+    { value: 'OK', label: 'Oklahoma' },
+    { value: 'OR', label: 'Oregon' },
+    { value: 'PA', label: 'Pennsylvania' },
+    { value: 'RI', label: 'Rhode Island' },
+    { value: 'SC', label: 'South Carolina' },
+    { value: 'SD', label: 'South Dakota' },
+    { value: 'TN', label: 'Tennessee' },
+    { value: 'TX', label: 'Texas' },
+    { value: 'UT', label: 'Utah' },
+    { value: 'VT', label: 'Vermont' },
+    { value: 'VA', label: 'Virginia' },
+    { value: 'WA', label: 'Washington' },
+    { value: 'WV', label: 'West Virginia' },
+    { value: 'WI', label: 'Wisconsin' },
+    { value: 'WY', label: 'Wyoming' },
   ];
 
   // Zip Code Validity
@@ -261,6 +326,11 @@ const SignUp = () => {
   };
 
   // ----- Payment Information Section -----
+
+  const cardTypeOptions = [
+    { value: 'Credit', label: 'Credit' },
+    { value: 'Debit', label: 'Debit' },
+  ];
 
   // Card Number Validity
   const isCardNumberValid = (cardNumber) => {
@@ -509,18 +579,13 @@ const SignUp = () => {
               <div className='user-infos'>
                 <div className='user-info state'>
                   <label className='user-info-label'>State</label>
-                  <select
-                    value={shippingStateAddress}
-                    onChange={(e) => setShippingStateAddress(e.target.value)}
-                    className='user-info-input'
-                  >
-                    <option value='' selected disabled>Select a state</option>
-                    {usStates.map((state) => (
-                      <option key={state.abbreviation} value={state.abbreviation}>
-                        {state.name}
-                      </option>
-                    ))}
-                  </select>
+                  <Select
+                    placeholder=''
+                    value={usStates.find((state) => state.value === shippingStateAddress)}
+                    onChange={(selectedOption) => setShippingStateAddress(selectedOption.value)}
+                    options={usStates}
+                    styles={selectStyling}
+                  />
                 </div>
                 <div className='user-info zip'>
                   <label className='user-info-label'>Zip code</label>
@@ -557,15 +622,13 @@ const SignUp = () => {
             <form className='user-info-form'>
               <div className='user-info'>
                 <label className='user-info-label'>Card type</label>
-                <select
-                  value={cardType}
-                  onChange={(e) => setCardType(e.target.value)}
-                  className='user-info-input'
-                >
-                  <option value='' selected disabled>Select card type</option>
-                  <option value='Credit'>Credit</option>
-                  <option value='Debit'>Debit</option>
-                </select>
+                <Select
+                  placeholder=''
+                  value={cardTypeOptions.find((option) => option.value === cardType)}
+                  onChange={(selectedOption) => setCardType(selectedOption.value)}
+                  options={cardTypeOptions}
+                  styles={selectStyling}
+                />
               </div>
               <div className='user-infos'>
                 <div className='user-info card-num'>
@@ -616,18 +679,13 @@ const SignUp = () => {
               <div className='user-infos'>
                 <div className='user-info state'>
                   <label className='user-info-label'>State</label>
-                  <select
-                    value={billingStateAddress}
-                    onChange={(e) => setBillingStateAddress(e.target.value)}
-                    className='user-info-input'
-                  >
-                    <option value='' selected disabled>Select a state</option>
-                    {usStates.map((state) => (
-                      <option key={state.abbreviation} value={state.abbreviation}>
-                        {state.name}
-                      </option>
-                    ))}
-                  </select>
+                  <Select
+                    placeholder=''
+                    value={usStates.find((state) => state.value === billingStateAddress)}
+                    onChange={(selectedOption) => setBillingStateAddress(selectedOption.value)}
+                    options={usStates}
+                    styles={selectStyling}
+                  />
                 </div>
                 <div className='user-info zip'>
                   <label className='user-info-label'>Zip code</label>

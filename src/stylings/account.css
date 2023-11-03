@@ -128,6 +128,19 @@
 }
 
 @media only screen and (min-width: 22rem) {
+    .verification-code {
+        justify-content: space-between;
+        column-gap: 0;
+        row-gap: 0;
+    }
+
+    .verification-number {
+        height: 4.25rem;
+        width: 4.25rem;
+    }
+}
+
+@media only screen and (min-width: 24rem) {
     .sign-up .user-infos, .payment-info .user-infos {
         flex-direction: row;
         row-gap: 0;
@@ -143,17 +156,6 @@
 
     .user-info.zip, .user-info.exp-date {
         width: 35%;
-    }
-
-    .verification-code {
-        justify-content: space-between;
-        column-gap: 0;
-        row-gap: 0;
-    }
-
-    .verification-number {
-        height: 4.25rem;
-        width: 4.25rem;
     }
 }
 
