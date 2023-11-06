@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     class Meta: 
         db_table = 'users'
-#    uid = models.IntegerField(db_column='uid', defprimary_key=True)
+    uid = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     type_id = models.IntegerField(db_column='type_id', default='1')
     email = models.EmailField(db_column='email', unique=True, max_length=255, default='')
     password = models.CharField(db_column='user_password', max_length=255, default='')
