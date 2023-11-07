@@ -9,9 +9,28 @@ from .models import Movies, CustomUser, Card
 from .serializer import MovieSerializer, UserSerializer
 from .utils import Save_Card
 import json
-import uuid
+
 
 #TODO: define error class and error codes and properly throw errors
+
+
+#might want a json auth token of some sort
+class Email_Is_Verified(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error: could not decode json object": -5})
+        verified_email = data.get('email')
+        user_to_verify = CustomUser.objects.filter(email=verified_email)
+        #user_to_verify contains only contain 1 object due to unique email requirement
+        if user_to_verify is None:
+            return Response({"error: user not found": -1})
+        for obj in user_to_verify:
+            obj.state_id = 2
+            obj.save()
+        return Response({'email verified': 1})
+
 
 class Send_Verification_Email(APIView):
     def post(self, request):
@@ -25,7 +44,7 @@ class Send_Verification_Email(APIView):
         send_mail(subject, verification_code, 'cineraecinemabooking@gmail.com', email)
         return Response({'email sent': 1})
 
-#creates user and card in database
+
 class Create_User(APIView):
     def post(self, request):
         try: 
@@ -51,9 +70,8 @@ class Create_User(APIView):
 
 class Login(APIView):
     def get(self, request):
-        user = authenticate(request, self['username'], self['password'])
+        user = authenticate(request.data.get['email'], request.data.get['password'])
         if user is not None:
-            login(request, user)
             token, created = Token.objects.get_or_create(user=user)
             return Response(token.key)
         else: 
