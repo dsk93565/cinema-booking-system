@@ -18,15 +18,17 @@ class CustomUser(AbstractUser):
     promotions = models.IntegerField(db_column='promotions', default='0')
 
 class Card(models.Model):
-    cid = models.IntegerField(db_column='cid', primary_key=True)
+    class Meta: 
+        db_table = 'cards'
+    cid = models.BigAutoField(auto_created=True, serialize=False, db_column='cid', primary_key=True)
     user_id = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING, db_column='user_id')
     card_type = models.CharField(db_column='card_type', max_length=255, default='')
-    card_number = models.IntegerField(db_column='card_number')
-    card_expiration = models.DateField(db_column='card_expiration')
+    card_number = models.CharField(db_column='card_number', max_length=255, default='')
+    card_expiration = models.CharField(db_column='card_expiration', max_length=255, default='')
     card_street = models.CharField(db_column='card_street', max_length=255, default='')
     card_city = models.CharField(db_column='card_city', max_length=255, default='')
     card_state = models.CharField(db_column='card_state', max_length=255, default='')
-    card_zip = models.IntegerField(db_column='card_zip')
+    card_zip = models.CharField(db_column='card_zip', max_length=255, default='')
 
 class Movies(models.Model):
     mid = models.IntegerField(db_column='mid',primary_key=True)
