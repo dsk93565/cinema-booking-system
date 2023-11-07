@@ -1,3 +1,4 @@
+from .models import Card
 from cryptography.fernet import Fernet
 
 class Save_Card():
