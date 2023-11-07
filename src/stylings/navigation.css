@@ -56,7 +56,7 @@
     background-color: transparent;
     border: none;
     color: var(--primary);
-    outline: none;
+    outline-color: transparent;
     font-size: 0.875rem;
     font-weight: 400;
     height: 100%;
