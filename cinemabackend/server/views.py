@@ -48,15 +48,30 @@ class Create_User(APIView):
         new_user = CustomUser.objects.create(username=new_username, email=new_email, password=make_password(new_password), 
                                              first_name=new_first, last_name=new_last, phone_number=new_number, state_id=1)
         new_user.save()
+        
         key = Fernet.generate_key()
         fern = Fernet(key)
-        cardType = fern.encrypt(data.get('cardType'))
-        cardNumber = fern.encrypt(data.get('cardNumber'))
-        expiration = fern.encrypt(data.get('expirationDate'))
-        billingStreet = fern.encrypt(data.get('billingStreetAddress'))
-        billingCity = fern.encrypt(data.get('billingCityAddress'))
-        billingState = fern.encrypt(data.get('billingStateAddress)'))
-        billingZip = fern.encrypt(data.get('billingZipCodeAddress'))
+        cardType = data.get('cardType')
+        cardNumber = data.get('cardNumber')
+        expiration = data.get('expirationDate')
+        billingStreet = data.get('billingStreetAddress')
+        billingCity = data.get('billingCityAddress')
+        billingState = data.get('billingStateAddress)')
+        billingZip = data.get('billingZipCodeAddress')
+        if cardType is not None:
+            cardType = fern.encrypt(cardType)
+        if cardNumber is not None:
+            cardNumber = fern.encrypt(cardNumber)
+        if expiration is not None:
+            expiration = fern.encrypt(expiration)
+        if billingStreet is not None:
+            billingStreet = fern.encrypt(billingStreet)
+        if billingCity is not None:
+            billingCity = fern.encrypt(billingCity)
+        if billingState is not None:
+            billingState = fern.encrypt(billingState)
+        if billingZip is not None: 
+            billingZip = fern.encrypt()
         new_card = Card.objects.create(user_id=new_user.pk, card_type=cardType, card_number=cardNumber, 
                                        card_expiration=expiration, card_city=billingCity, card_street=billingStreet, 
                                        card_state=billingState, card_zip=billingZip)
