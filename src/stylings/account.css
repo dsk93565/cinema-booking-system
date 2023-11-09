@@ -96,7 +96,7 @@
 }
 
 .verification-code {
-    margin-bottom: 5rem;
+    margin-bottom: 1.5rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -120,6 +120,12 @@
 
 .verification-number:focus {
     outline: var(--accent-two) 0.125rem solid;
+}
+
+.verification .user-info-option {
+    width: fit-content;
+    margin: 0 0 3rem 0;
+    align-self: end;
 }
 
 .confirmation p {

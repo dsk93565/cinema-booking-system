@@ -40,7 +40,42 @@ const SignUp = () => {
       setBillingStateAddress('');
       setBillingZipCodeAddress('');
 
-      sendVerificationCode();
+      const basicUserData = {
+        firstName,
+        lastName,
+        email,
+        mobileNumber,
+        password,
+        shippingStreetAddress,
+        shippingCityAddress,
+        shippingStateAddress,
+        shippingZipCodeAddress,
+        cardType,
+        cardNumber,
+        expirationDate,
+        billingStreetAddress,
+        billingCityAddress,
+        billingStateAddress,
+        billingZipCodeAddress,
+      };
+  
+      fetch('http://localhost:8000/api/create-user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(basicUserData),
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            sendVerificationCode();
+          } else {
+            console.error('Failed to send basic user data to the server.');
+          } // if
+        })
+        .catch((error) => {
+          console.error('Error occurred while sending basic user data:', error);
+        });
     } // if else-if
 
     setSignUpStep(signUpStep + 1);
@@ -79,7 +114,7 @@ const SignUp = () => {
       })
         .then((response) => {
           if (response.status === 200) {
-            setSignUpStep(signUpStep + 1);
+            sendVerificationCode();
           } else {
             console.error('Failed to send basic user data to the server.');
           } // if
@@ -87,12 +122,13 @@ const SignUp = () => {
         .catch((error) => {
           console.error('Error occurred while sending basic user data:', error);
         });
-      
-      sendVerificationCode();
     } // if
 
     setSignUpStep(signUpStep + 1);
   };
+  
+  // Sign Up Status Message
+  const [statusMessage, setStatusMessage] = useState('');
 
   // Select Styling
   const selectStyling = {
@@ -413,7 +449,6 @@ const SignUp = () => {
   
 
   // Use Shipping Address As Billing Address
-  const [useShippingAddressForBilling, setUseShippingAddressForBilling] = useState(false);
   const handleUseShippingAddressForBilling = (e) => {
     e.preventDefault();
     setBillingStreetAddress(shippingStreetAddress);
@@ -436,25 +471,94 @@ const SignUp = () => {
   // ----- Account Verification Section -----
 
   // Verification Code
-  const [verificationCode, setVerificationCode] = useState('');
-  const [isVerificationCodeValid, setIsVerificationCodeValid] = useState(false);
-  const generateRandomVerificationCode = () => {
-    return Math.floor(10000 + Math.random() * 90000);
+  const [verificationCodeInputs, setVerificationCodeInputs] = useState(['', '', '', '', '']);
+  const verificationInputRefs = [
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+  ];
+  const handleVerificationCodeChange = (index, e) => {
+    const value = e.target.value;
+    const newInputs = [...verificationCodeInputs];
+    newInputs[index] = value;
+    setVerificationCodeInputs(newInputs);
+
+    if (value && /^\d$/.test(value) && index < verificationInputRefs.length - 1) {
+      verificationInputRefs[index + 1].current.focus();
+    } // if
   };
+  const handleVerificationCodeKeyUp = (index, e) => {
+    if (e.key === 'Backspace' && index > 0) {
+      verificationInputRefs[index - 1].current.focus();
+    } // if
+  };
+  const [verificationCode, setVerificationCode] = useState('');
   const sendVerificationCode = () => {
-    const code = generateRandomVerificationCode();
-    // Use your email service to send the code to the user's email (implement this part)
-    // For demonstration, we'll log the code to the console
-    console.log('Verification code sent to email:', code);
-    setVerificationCode(code.toString());
+    fetch('http://localhost:8000/api/verify-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: email }),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          console.error('Sent user email to the server.');
+        } else {
+          setStatusMessage('Failed to send email');
+        } // if else
+      })
+      .catch((error) => {
+        console.error('Error occurred while sending email:', error);
+      });
+  };
+  const handleVerificationCodeSubmit = () => {
+    const enteredVerificationCode = verificationCodeInputs.join('');
+
+    fetch('http://localhost:8000/api/email-is-verified', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, code: enteredVerificationCode }),
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            setSignUpStep(signUpStep + 1);
+          } else {
+            setStatusMessage('Failed to send new verification code');
+          } // if else
+        })
+        .catch((error) => {
+          console.error('Error occurred while sending verification code:', error);
+        });
   };
 
-  // Verification Input Format
-  const handleVerificationCodeChange = (e) => {
-    const code = e.target.value;
-    
-    setVerificationCode(code);
-    setIsVerificationCodeValid(code.length === 5 && /^\d+$/.test(code));
+  // Resend Verification Code
+  const [verificationHeaderText, setVerificationHeaderText] = useState('Verification code sent');
+  const resendVerificationCode = () => {
+    fetch('http://localhost:8000/api/verify-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: email }),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          setVerificationHeaderText('New verification code sent');
+          const newInputs = Array(5).fill('');
+          setVerificationCodeInputs(newInputs);
+          setStatusMessage('');
+        } else {
+          setStatusMessage('Failed to send email');
+        } // if else
+      })
+      .catch((error) => {
+        console.error('Error occurred while sending email:', error);
+      });
   };
 
   return (
@@ -548,6 +652,7 @@ const SignUp = () => {
                 </div>
                 <div className={`input-error ${!doesPasswordMatch && confirmPassword !== '' ? 'visible' : ''}`}>Passwords do not match</div>
               </div>
+              <label className='user-checkbox-option'><input type='checkbox' />Opt in for promo emails</label>
             </form>
             <div className='user-info-CTA-button'>
               <button
@@ -725,20 +830,32 @@ const SignUp = () => {
       {signUpStep === 4 && (
         <section className='verification account section-wrapper'>
           <div className='section-container-narrow'>
-            <h2>Verification code sent</h2>
+            <h2>{verificationHeaderText}</h2>
             <p>Please check your email and enter the code down below to confirm your account</p>
             <div className='verification-code'>
-              {Array.from({ length: 5 }).map((_, index) => (
+              {verificationCodeInputs.map((value, index) => (
                 <input
-                  type='text'
-                  value={verificationCode[index] || ''}
                   key={index}
-                  onChange={handleVerificationCodeChange}
+                  type='text'
+                  maxLength={1}
+                  ref={verificationInputRefs[index]}
+                  value={value}
+                  onChange={(e) => handleVerificationCodeChange(index, e)}
+                  onKeyUp={(e) => handleVerificationCodeKeyUp(index, e)}
                   className='verification-number'
                 />
               ))}
             </div>
-            <button disabled={!isVerificationCodeValid} className='CTA-button-one'>Confirm account</button>
+            <button
+              onClick={resendVerificationCode}
+              className='user-info-option'
+            >
+              Resend email
+            </button>
+            <div>
+              <button onClick={handleVerificationCodeSubmit} className='CTA-button-one'>Confirm account</button>
+              <div className='status-message'>{statusMessage}</div>
+            </div>
           </div>
         </section>
       )}

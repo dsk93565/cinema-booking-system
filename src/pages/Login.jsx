@@ -80,7 +80,6 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        console.log('Login successful:', response.data);
         setStatusMessage('');
 
         if (rememberMe) {
@@ -89,12 +88,9 @@ const Login = () => {
           localStorage.removeItem('rememberMe');
         } // if else
       } else {
-        // Handle authentication errors here, e.g., show an error message
-        console.error('Login failed:', response.data);
         setStatusMessage('Invalid email and/or password');
       } // if else
     } catch (error) {
-      console.error('Failed to log in:', error);
       setStatusMessage('Invalid email and/or password');
     } // try catch
   };
@@ -139,7 +135,7 @@ const Login = () => {
             </div>
           </div>
           <div className='user-options'>
-          <label className='user-checkbox-option'><input type='checkbox' />Remember me</label>
+            <label className='user-checkbox-option'><input type='checkbox' />Remember me</label>
             <a href='/forgot' className='user-info-option'>Forgot password</a>
           </div>
         </form>
