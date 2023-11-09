@@ -8,7 +8,7 @@ from django.core.mail import send_mail
 from .models import Movies, CustomUser, Card
 from .serializer import MovieSerializer, UserSerializer
 from .utils import *
-import json
+import json, random
 
 
 #TODO: define error class and error codes and properly throw errors
@@ -24,9 +24,12 @@ class Email_Is_Verified(APIView):
         user_to_verify = CustomUser.objects.filter(email=verified_email)[0]
         if user_to_verify is None:
             return Response({"error: user not found": -1})
-        user_to_verify.state_id = 2
-        user_to_verify.save()
-        return Response({'email verified': 1})
+        if data.get('verificationCode') == user_to_verify.verification_code:
+            user_to_verify.state_id = 2
+            user_to_verify.save()
+            return Response({'email verified': 200})
+        else:
+            return Response({'wrong code': -1})
 
 
 class Send_Verification_Email(APIView):
@@ -36,8 +39,13 @@ class Send_Verification_Email(APIView):
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
         subject = 'Cinera Verifcation Code'
-        verification_code = data.get('verificationCode')
+        verification_code = random.randint(10000, 99999)
         email = data.get('email')
+        user_to_verify = CustomUser.objects.filter(email=email)[0]
+        if user_to_verify is None:
+            return Response({"error: user not found": -1})
+        user_to_verify.verification_code = verification_code
+        user_to_verify.save()
         send_mail(subject, verification_code, 'cineraecinemabooking@gmail.com', email)
         return Response({'email sent': 1})
 
@@ -68,10 +76,6 @@ class Edit_User(APIView):
             user_to_modify.last_name = new_last
         user_to_modify.save()
 
-        
-
-
-
 class Create_User(APIView):
     def post(self, request):
         try: 
@@ -90,10 +94,11 @@ class Create_User(APIView):
         new_user = CustomUser.objects.create(username=new_username, email=new_email, password=make_password(new_password), 
                                              first_name=new_first, last_name=new_last, phone_number=new_number, state_id=1)
         new_user.save()
-        new_request = [new_user, data]
-        card = Save_Card()
-        key = card.saveCard(new_request)
-        return Response({"User and Card saved": 1})
+        if data.get('cardNumber') is not None:
+            new_request = [new_user, data]
+            card = Save_Card()
+            key = card.saveCard(new_request)
+        return Response({"User saved": 1})
 
 class Login(APIView):
     def get(self, request):

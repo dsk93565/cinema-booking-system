@@ -15,7 +15,8 @@ class CustomUser(AbstractUser):
     username = models.CharField(default='nothing', unique=True, max_length=255)
     phone_number = models.IntegerField(db_column='phone_number')
     state_id = models.IntegerField(db_column='state_id', default='')
-    promotions = models.IntegerField(db_column='promotions', default='0')
+    verification_code = models.IntegerField(db_column='verification_code', default='')
+    promotions = models.IntegerField(db_column='promotions', default=0)
 
 class Card(models.Model):
     class Meta: 
