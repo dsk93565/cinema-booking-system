@@ -99,7 +99,8 @@ class Create_User(APIView):
             new_request = [new_user, data]
             card = Save_Card()
             key = card.saveCard(new_request)
-        return Response({"User saved": 1})
+        token, created = Token.objects.get_or_create(user=new_user)
+        return Response(token.key)
 
 class Login(APIView):
     def get(self, request):
@@ -127,6 +128,6 @@ class Movie(APIView):
         queryset = Movies.objects.filter(mid=data.get('mid'))
         serializer_class = MovieSerializer(queryset, many=True)
         print(serializer_class.data)
-        movieList = {serializer_class.data}
+        movieList = {"movies":serializer_class.data}
         return Response(movieList)
 

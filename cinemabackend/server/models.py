@@ -18,6 +18,10 @@ class CustomUser(AbstractUser):
     verification_code = models.IntegerField(db_column='verification_code', default='')
     promotions = models.IntegerField(db_column='promotions', default=0)
 
+class Encryption_Keys(models.Model):
+    encryption_key = models.CharField(db_column='encryption_key', max_length=255)
+    user_id = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING, db_column='user_id')
+
 class Card(models.Model):
     class Meta: 
         db_table = 'cards'
