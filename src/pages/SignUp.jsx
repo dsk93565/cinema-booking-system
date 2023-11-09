@@ -522,7 +522,7 @@ const SignUp = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: email, code: enteredVerificationCode }),
+        body: JSON.stringify({ email: email, verficationCode: enteredVerificationCode }),
       })
         .then((response) => {
           if (response.status === 200) {
