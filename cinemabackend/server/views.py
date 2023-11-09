@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from .models import Movies, CustomUser, Card
 from .serializer import MovieSerializer, UserSerializer
+from django.conf import settings
 from .utils import *
 import json, random
 
@@ -46,7 +47,7 @@ class Send_Verification_Email(APIView):
             return Response({"error: user not found": -1})
         user_to_verify.verification_code = verification_code
         user_to_verify.save()
-        send_mail(subject, verification_code, 'cineraecinemabooking@gmail.com', email)
+        send_mail(subject, str(verification_code), "cineraecinemabooking@gmail.com", [email])
         return Response({'email sent': 1})
 
 
