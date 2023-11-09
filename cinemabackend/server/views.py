@@ -7,12 +7,11 @@ from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from .models import Movies, CustomUser, Card
 from .serializer import MovieSerializer, UserSerializer
-from .utils import Save_Card
+from .utils import *
 import json
 
 
 #TODO: define error class and error codes and properly throw errors
-
 
 #might want a json auth token of some sort
 class Email_Is_Verified(APIView):
@@ -22,13 +21,11 @@ class Email_Is_Verified(APIView):
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
         verified_email = data.get('email')
-        user_to_verify = CustomUser.objects.filter(email=verified_email)
-        #user_to_verify contains only contain 1 object due to unique email requirement
+        user_to_verify = CustomUser.objects.filter(email=verified_email)[0]
         if user_to_verify is None:
             return Response({"error: user not found": -1})
-        for obj in user_to_verify:
-            obj.state_id = 2
-            obj.save()
+        user_to_verify.state_id = 2
+        user_to_verify.save()
         return Response({'email verified': 1})
 
 
@@ -43,6 +40,36 @@ class Send_Verification_Email(APIView):
         email = data.get('email')
         send_mail(subject, verification_code, 'cineraecinemabooking@gmail.com', email)
         return Response({'email sent': 1})
+
+
+#How this is currently implemented besides Email, pass only the fields that you want to modify
+#Need a way to distinguish which card is being edited!
+class Edit_User(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error: could not decode json object": -5})
+        user_email = data.get('email')
+        user_to_modify = CustomUser.objects.filter(email=user_email)[0]
+        if user_to_modify is None:
+            return Response({"error: user not found": -1})
+        new_password = data.get('password')
+        new_number = data.get('mobileNumber')
+        new_first = data.get('firstName')
+        new_last = data.get('lastName')
+        if new_password is not None:
+            user_to_modify.password = new_password
+        if new_number is not None:
+            user_to_modify.phone_number = new_number
+        if new_first is not None: 
+            user_to_modify.first_name = new_first
+        if new_last is not None: 
+            user_to_modify.last_name = new_last
+        user_to_modify.save()
+
+        
+
 
 
 class Create_User(APIView):

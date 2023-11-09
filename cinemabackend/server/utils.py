@@ -1,8 +1,14 @@
-from .models import Card
+from .models import CustomUser, Card
 from cryptography.fernet import Fernet
 
 #Saves card to database
 class Save_Card():
+    def editCard(self, request):
+        user = request[0]
+        data = request[1]
+        cardToEdit = Card.objects.filter()
+        #...
+        #possibly refactor the encryption 
     def saveCard(self, request):
         key = Fernet.generate_key()
         fern = Fernet(key)
@@ -10,7 +16,7 @@ class Save_Card():
         data = request[1]
         cardInfo = [data.get('cardType'), data.get('cardNumber'),  data.get('expirationDate'), data.get('billingStreetAddress'), 
                     data.get('billingCityAddress'), data.get('billingStateAddress)'), data.get('billingZipCodeAddress')]
-        for i in cardInfo:
+        for i in range(len(cardInfo)):
             if cardInfo[i] is not None:
                 cardInfo[i] = fern.encrypt(cardInfo[i].encode('utf-8'))
             else: 
