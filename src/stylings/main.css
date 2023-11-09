@@ -1,346 +1,349 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 :root {
-    --primary: #0F1419;
-    --secondary: #FFFFFF;
-    --tertiary-one: #BEBEC8;
-    --tertiary-two: #DCDCE6;
-    --accent-one: #5F23C3;
-    --accent-two: #7D41E1;
-    --accent-three: #7D7387;
-    --accent-four: #D7CDEB;
-    --error: #CD3C3C;
+  --primary: #0f1419;
+  --secondary: #ffffff;
+  --tertiary-one: #bebec8;
+  --tertiary-two: #dcdce6;
+  --accent-one: #5f23c3;
+  --accent-two: #7d41e1;
+  --accent-three: #7d7387;
+  --accent-four: #d7cdeb;
+  --error: #cd3c3c;
 }
 
 * {
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: var(--secondary);
-    color: var(--primary);
-    width: 100%;
+  background-color: var(--secondary);
+  color: var(--primary);
+  width: 100%;
 }
 
 section {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 h1 {
-    color: var(--primary);
-    font-size: 2.25rem;
-    font-weight: 700;
-    line-height: 150%;
+  color: var(--primary);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 150%;
 }
 
 h2 {
-    color: var(--primary);
-    font-size: 1.75rem;
-    font-weight: 600;
-    line-height: 150%;
+  color: var(--primary);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 150%;
 }
 
 h3 {
-    color: var(--primary);
-    font-size: 1.25rem;
-    font-weight: 500;
-    line-height: 150%;
+  color: var(--primary);
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 150%;
 }
 
 p {
-    color: var(--primary);
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 150%;
+  color: var(--primary);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 150%;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
-ol li, ul li {
-    list-style-type: none;
+ol li,
+ul li {
+  list-style-type: none;
 }
 
 input::placeholder {
-    color: var(--accent-three);
+  color: var(--accent-three);
 }
 
 select {
-    appearance: none;
+  appearance: none;
 }
 
-option[value=''][disabled] {
-    display: none;
+option[value=""][disabled] {
+  display: none;
 }
 
 button {
-    appearance: none;
-    border: none;
-    cursor: pointer;
+  appearance: none;
+  border: none;
+  cursor: pointer;
 }
 
 .logo {
-    color: var(--accent-two);
-    font-size: 1.5rem;
-    font-weight: 600;
-    transition: color 0.1s ease-in-out;
-    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  color: var(--accent-two);
+  font-size: 1.5rem;
+  font-weight: 600;
+  transition: color 0.1s ease-in-out;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }
 
 .logo:hover {
-    color: var(--accent-one);
+  color: var(--accent-one);
 }
 
 .copyright {
-    color: var(--primary);
-    font-size: 0.875rem;
-    font-weight: 500;
-    line-height: 150%;
-    text-align: center;
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 150%;
+  text-align: center;
 }
 
 .section-wrapper {
-    background-color: var(--secondary);
-    padding: 0 1.5rem;
-    display: flex;
-    justify-content: center;
+  background-color: var(--secondary);
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: center;
 }
 
 .section-container {
-    max-width: 72rem;
-    width: 100%;
-    padding: 6rem 0 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  max-width: 72rem;
+  width: 100%;
+  padding: 6rem 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .section-container-top {
-    max-width: 72rem;
-    width: 100%;
-    padding: 3rem 0 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  max-width: 72rem;
+  width: 100%;
+  padding: 3rem 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .section-container-narrow {
-    max-width: 30rem;
-    width: 100%;
-    padding: 3rem 0;
-    display: flex;
-    flex-direction: column;
-    row-gap: 3rem;
+  max-width: 30rem;
+  width: 100%;
+  padding: 3rem 0;
+  display: flex;
+  flex-direction: column;
+  row-gap: 3rem;
 }
 
 .section-container-narrow h2 {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 .footer-container {
-    border-top: var(--tertiary-two) 0.0625rem solid;
-    max-width: 72rem;
-    width: 100%;
-    margin-top: 6rem;
-    padding: 3rem 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 1.5rem;
+  border-top: var(--tertiary-two) 0.0625rem solid;
+  max-width: 72rem;
+  width: 100%;
+  margin-top: 6rem;
+  padding: 3rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 1.5rem;
 }
 
 .CTA-button-one {
-    background-color: var(--accent-two);
-    border-radius: 2rem;
-    color: var(--secondary);
-    padding: 0.75rem 1.125rem;
-    transition: background-color 0.1s ease-in-out;
+  background-color: var(--accent-two);
+  border-radius: 2rem;
+  color: var(--secondary);
+  padding: 0.75rem 1.125rem;
+  transition: background-color 0.1s ease-in-out;
 }
 
 .CTA-button-one:hover {
-    background-color: var(--accent-one);
+  background-color: var(--accent-one);
 }
 
 .CTA-button-two {
-    background-color: var(--tertiary-two);
-    border-radius: 2rem;
-    color: var(--primary);
-    padding: 0.75rem 1.125rem;
-    transition: background-color 0.1s ease-in-out;
+  background-color: var(--tertiary-two);
+  border-radius: 2rem;
+  color: var(--primary);
+  padding: 0.75rem 1.125rem;
+  transition: background-color 0.1s ease-in-out;
 }
 
 .CTA-button-two:hover {
-    background-color: var(--tertiary-one);
+  background-color: var(--tertiary-one);
 }
 
 .non-CTA-button {
-    background-color: transparent;
-    color: var(--primary);
-    padding: 0.75rem;
-    transition: color 0.1s ease-in-out;
+  background-color: transparent;
+  color: var(--primary);
+  padding: 0.75rem;
+  transition: color 0.1s ease-in-out;
 }
 
 .non-CTA-button:hover {
-    color: var(--accent-two);
+  color: var(--accent-two);
 }
 
 .disabled-button {
-    background-color: var(--tertiary-two);
-    color: var(--accent-three);
-    cursor: not-allowed;
+  background-color: var(--tertiary-two);
+  color: var(--accent-three);
+  cursor: not-allowed;
 }
 
 .disabled-button:hover {
-    background-color: var(--tertiary-two);
+  background-color: var(--tertiary-two);
 }
 
 .user-info-form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .user-info-form a {
-    width: fit-content;
-    align-self: end;
+  width: fit-content;
+  align-self: end;
 }
 
 .user-info {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .user-infos {
-    display: flex;
-    justify-content: space-between;
-    column-gap: 3rem;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 3rem;
 }
 
 .user-info-label {
-    color: var(--primary);
-    font-size: 1rem;
-    font-weight: 500;
-    margin-bottom: 1rem;
+  color: var(--primary);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
 }
 
 .user-info-input {
-    background-color: var(--accent-four);
-    border: none;
-    border-radius: 2rem;
-    outline: transparent 0.125rem solid;
-    color: var(--primary);
-    font-size: 1rem;
-    font-weight: 400;
-    width: 100%;
-    padding: 1rem 1.125rem;
-    transition: outline 0.2s ease-in-out;
+  background-color: var(--accent-four);
+  border: none;
+  border-radius: 2rem;
+  outline: transparent 0.125rem solid;
+  color: var(--primary);
+  font-size: 1rem;
+  font-weight: 400;
+  width: 100%;
+  padding: 1rem 1.125rem;
+  transition: outline 0.2s ease-in-out;
 }
 
 .user-info-input:focus {
-    outline: var(--accent-two) 0.125rem solid;
+  outline: var(--accent-two) 0.125rem solid;
 }
 
 .enhanced-input {
-    background-color: transparent;
-    border: none;
-    color: var(--primary);
-    outline: none;
-    font-size: 1rem;
-    font-weight: 400;
-    width: 100%;
-    padding: 1rem 0 1rem 1.125rem;
+  background-color: transparent;
+  border: none;
+  color: var(--primary);
+  outline-color: transparent;
+  font-size: 1rem;
+  font-weight: 400;
+  width: 100%;
+  padding: 1rem 0 1rem 1.125rem;
 }
 
 .input-error {
-    color: var(--error);
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-top: 1rem;
-    display: none;
-    align-self: end;
+  color: var(--error);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 1rem;
+  display: none;
+  align-self: end;
 }
 
 .input-error.visible {
-    display: flex;
+  display: flex;
 }
 
 .user-options {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .user-checkbox-option {
-    display: flex;
-    align-items: center;
-    color: var(--primary);
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 1.5rem;
 }
-  
+
 .user-checkbox-option input {
-    margin-right: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .user-info-option {
-    background-color: transparent;
-    color: var(--accent-three);
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-top: 1.5rem;
-    transition: color 0.1s ease-in-out;
+  background-color: transparent;
+  color: var(--accent-three);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 1.5rem;
+  transition: color 0.1s ease-in-out;
 }
 
 .user-info-option:hover {
-    color: var(--primary);
+  color: var(--primary);
 }
 
 .disabled-user-option {
-    display: none;
+  display: none;
 }
 
 .user-info-CTA-button {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    row-gap: 2rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
 }
 
 .status-message {
-    color: var(--error);
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-top: 1.5rem;
-    text-align: end;
+  color: var(--error);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 1.5rem;
+  text-align: end;
 }
 
 @media only screen and (min-width: 40rem) {
-    .section-container-narrow {
-        max-width: 32rem;
-    }
+  .section-container-narrow {
+    max-width: 32rem;
+  }
 }
 
 @media only screen and (min-width: 48rem) {
-    .section-container, .section-container-top {
-        padding: 6rem 0 2rem;
-    }
+  .section-container,
+  .section-container-top {
+    padding: 6rem 0 2rem;
+  }
 
-    .section-container-narrow {
-        padding: 6rem 0;
-    }
+  .section-container-narrow {
+    padding: 6rem 0;
+  }
 }
 
 @media only screen and (min-width: 64rem) {
-    .logo {
-        font-size: 1.75rem;
-    }
+  .logo {
+    font-size: 1.75rem;
+  }
 
-    .section-container, .section-container-top {
-        padding: 6rem 0;
-    }
+  .section-container,
+  .section-container-top {
+    padding: 6rem 0;
+  }
 }
