@@ -15,7 +15,7 @@ class CustomUser(AbstractUser):
     username = models.CharField(default='nothing', unique=True, max_length=255)
     phone_number = models.IntegerField(db_column='phone_number')
     state_id = models.IntegerField(db_column='state_id', default='')
-    verification_code = models.IntegerField(db_column='verification_code', default='')
+    verification_code = models.IntegerField(db_column='verification_code', default=0)
     promotions = models.IntegerField(db_column='promotions', default=0)
 
 class Encryption_Keys(models.Model):

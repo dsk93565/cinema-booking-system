@@ -115,7 +115,6 @@ class MovieList(APIView):
         queryset = Movies.objects.all()
         print("queryset:", queryset)
         serializer_class = MovieSerializer(queryset, many=True)
-        print(serializer_class.data)
         movieList = {"movies":serializer_class.data}
         return Response(movieList)
     
@@ -127,7 +126,6 @@ class Movie(APIView):
             return Response({"error: could not decode json object": -5})
         queryset = Movies.objects.filter(mid=data.get('mid'))
         serializer_class = MovieSerializer(queryset, many=True)
-        print(serializer_class.data)
         movieList = {"movies":serializer_class.data}
         return Response(movieList)
 
