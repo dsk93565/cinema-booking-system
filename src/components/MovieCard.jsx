@@ -4,7 +4,7 @@ import axios from 'axios';
 
 
 const MovieCard = ({movie}) => {
-    const moviePosterImage = 'https://image.tmdb.org/t/p/w500' + movie.poster_path;
+    const moviePosterImage = movie.poster_path;
 
     // Poster Flip
     const [isFlipped, setIsFlipped] = useState(false);

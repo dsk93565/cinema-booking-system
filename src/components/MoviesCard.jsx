@@ -4,9 +4,6 @@ import axios from 'axios';
 import MovieCard from './MovieCard';
 
 
-
-
-
 const MoviesCard = (props) => {
     const [movies, setMovies] = useState([]);
 
@@ -55,8 +52,8 @@ const MoviesCard = (props) => {
             <h2>{props.sectionTitle}</h2>
             <div className='movies'>
                 {movies.map(movie => (
-                    <div key={movie.id}>
-                        <MovieCard key={movie.id} movie={movie} poster={movie.poster_path} />
+                    <div key={movie.mid}>
+                        <MovieCard key={movie.mid} movie={movie} poster={movie.poster_path} />
                     </div>
                 ))}
             </div>
