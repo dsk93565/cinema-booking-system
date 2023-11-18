@@ -4,6 +4,20 @@
     padding: 1rem 1.25rem;
 }
 
+.scroll-button {
+    background-color: var(--tertiary-two);
+    border-radius: 2rem;
+    color: var(--primary);
+    padding: 0.75rem 1.125rem;
+    transition: background-color 0.1s ease-in-out;
+    width: 50%;
+    
+}
+
+.scroll-button:hover {
+    background-color: var(--tertiary-one);
+}
+
 .hero-info {
     max-width: 36rem;
     width: 100%;
@@ -42,7 +56,7 @@
     align-self: end;
 }
 
-.movies {
+.movies-container {
     display: flex;
     column-gap: 2.25rem;
     overflow-x: scroll;

@@ -3,8 +3,15 @@ import ReactCardFlip from 'react-card-flip';
 import axios from 'axios';
 
 
-const MovieCard = ({movie}) => {
+const MovieCard = ({movie, origin}) => {
     const moviePosterImage = movie.poster_path;
+
+    // Card Styling
+    const cardStyle = {
+        height: `${origin === "MoviesCard" ? 20 : 10}rem`,
+        width: `${origin === "MoviesCard" ? 13 : 6.5}rem`,
+        rowGap: `${origin === "MoviesCard" ? 1 : 0.1}rem`
+    };
 
     // Poster Flip
     const [isFlipped, setIsFlipped] = useState(false);
@@ -32,10 +39,10 @@ const MovieCard = ({movie}) => {
 
     return (
         <div className='movie-card'>
-            <div className='movie-poster-container'>
+            <div className='movie-poster-container' style={cardStyle}>
                 <ReactCardFlip isFlipped={isFlipped} flipDirection='horizontal'>
                     <div>
-                        <img onClick={handlePosterFlip} src={moviePosterImage} alt={movie.title} className='movie-poster' />
+                        <img style={cardStyle} onClick={handlePosterFlip} src={moviePosterImage} alt={movie.title} className='movie-poster' />
                     </div>
 
                     <div className='movie-poster-back'>
@@ -46,8 +53,7 @@ const MovieCard = ({movie}) => {
                     </div>
                 </ReactCardFlip>
             </div>
-            <h3 onClick={handlePosterFlip} className='movie-title'>{movie.title}</h3>
-            <div className='movie-brief-info'>2 HR 7 MIN • PG13</div>
+            
 
             {/* Movie Trailer Modal */}
             {showTrailer && (
