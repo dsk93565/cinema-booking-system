@@ -48,7 +48,7 @@
     -webkit-flex: 2;
     -ms-flex: 2;
     flex: 2;
-    row-gap: 1rem;
+    row-gap: 0.5rem;
     flex-direction: column;
     display: flex;
 }

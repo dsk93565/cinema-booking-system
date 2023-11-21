@@ -47,10 +47,6 @@ const SearchResults = () => {
                   <p><strong>Producer:</strong> {movie.producer}</p>
                 </div> {/*search-result-info*/}
               </div> {/*search-result-row*/}
-              <div className='search-result-footer'>
-                <p><strong>Synopsis:</strong> {movie.synopsis}</p>
-              </div> {/*search-result-footer*/}
-              
             </li>
           ))}
         </ul>
