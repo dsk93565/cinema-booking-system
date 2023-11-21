@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { React, useState } from 'react';
+import { createPortal } from 'react-dom';
+import TrailerLoader from './TrailerLoader';
 import ReactCardFlip from 'react-card-flip';
-import axios from 'axios';
 
 
 const MovieCard = ({movie, origin}) => {
     const moviePosterImage = movie.poster_path;
-
+        
     // Card Styling
     const cardStyle = {
         height: `${origin === "MoviesCard" ? 20 : 10}rem`,
@@ -21,21 +22,26 @@ const MovieCard = ({movie, origin}) => {
 
     // Movie Trailer
     const [showTrailer, setShowTrailer] = useState(false);
-    const [youtubeKey, setYoutubeKey] = useState('');
+    /* const [youtubeKey, setYoutubeKey] = useState(''); */
     const handleTrailer = async (event) => {
-        event.stopPropagation();
+        /* event.stopPropagation(); */
+        setShowTrailer(true);
 
-        try {
-            const response = await axios.get(`http://localhost:8000/api/get-movies/${movie.id}/`);
-            const youtubeVideo = response.data.results.find(video => video.site === 'YouTube');
-            if (youtubeVideo) {
-                setYoutubeKey(youtubeVideo.key);
-                setShowTrailer(true);
-            } // if
+        /* try {
+            const response = await axios.get(`http://localhost:8000/api/get-movies/`);
+            const thisMovie = response.data.movies.filter( (m) => m.mid == this.movie.mid );
+            thisTrailerLoader.render();
         } catch (error) {
             console.error('Failed to fetch trailer: ', error);
-        } // try catch
+        } // try catch */
     };
+
+    /* // Modal Styling
+    const modalStyle = {
+        height: `${origin === "MoviesCard" ? 20 : 10}rem`,
+        width: `${origin === "MoviesCard" ? 13 : 6.5}rem`,
+        rowGap: `${origin === "MoviesCard" ? 1 : 0.1}rem`
+    }; */
 
     return (
         <div className='movie-card'>
@@ -45,8 +51,8 @@ const MovieCard = ({movie, origin}) => {
                         <img style={cardStyle} onClick={handlePosterFlip} src={moviePosterImage} alt={movie.title} className='movie-poster' />
                     </div>
 
-                    <div className='movie-poster-back'>
-                        <img onClick={handlePosterFlip} src={moviePosterImage} alt={movie.title} className='movie-poster' />
+                    <div className='movie-poster-back' style={cardStyle}>
+                        <img onClick={handlePosterFlip} style={cardStyle} src={moviePosterImage} alt={movie.title} className='movie-poster' />
                         <button onClick={handleTrailer} className='CTA-button-one'>Watch trailer</button>
                         <button className='CTA-button-one'>Movie info</button>
                         <button className='CTA-button-one'>Book tickets</button>
@@ -56,11 +62,12 @@ const MovieCard = ({movie, origin}) => {
             
 
             {/* Movie Trailer Modal */}
-            {showTrailer && (
-                <div onClick={(e) => e.stopPropagation()} className='movie-trailer-container'> {/* Prevents event propagation */}
-                    <div onClick={() => setShowTrailer(false)} className='close'>X</div>
-                    <iframe src={`https://www.youtube.com/embed/${youtubeKey}`} title='YouTube video player' height='315' width='560' allowFullScreen></iframe>
-                </div>
+            { showTrailer && createPortal(
+                <TrailerLoader movie={movie}
+                                onClose={() => setShowTrailer(false)}
+                                onClick={(e) => e.stopPropagation()}
+                                className='movie-trailer-container'
+                                id='trailer-root' />, document.body
             )}
         </div>
     )

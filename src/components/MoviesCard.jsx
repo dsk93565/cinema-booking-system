@@ -52,6 +52,7 @@ const MoviesCard = (props) => {
                 {movies.map(movie => (
                     <div key={movie.mid}>
                         <MovieCard movie={movie} origin="MoviesCard" />
+                        <h3 className='movie-title'>{movie.title}</h3>
                     </div>
                 ))}
             </div>
