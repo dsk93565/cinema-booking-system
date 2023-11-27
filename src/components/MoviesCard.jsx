@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import MovieCard from './MovieCard';
@@ -11,22 +11,20 @@ const MoviesCard = (props) => {
         fetchMovies(props.sectionTitle);
     }, []);
 
-    
-    //  const fetchMovies = async (sectionTitle) => {
-    //     if (sectionTitle === 'Trending') {
-    //         var {data} = await axios.get(`http://localhost:8000/api/get-movies`);
-    //     } else if (sectionTitle === 'Now Playing') {
-    //         var {data} = await axios.get(`http://localhost:8000/api/get-movies`);
-    //     } else {
-    //         var {data} = await axios.get(`http://localhost:8000/api/get-movies`);
-    //         console.log(JSON.stringify(data))
-    //     } // if else-if else-if
+    const sectionRef = useRef(null);
 
-    //     const search_results = data.movies.filter((data.movies) => data.movies.title.includes(searchQuery))
-
+    const scrollSection = (dir) => {
+        if (sectionRef.current) {
+            const currentScrollLeft = sectionRef.current.scrollLeft;
+            const sectionWidth = sectionRef.current.offsetWidth;
+            
+            sectionRef.current.scrollTo({
+                left: currentScrollLeft + (sectionWidth * dir),
+                behavior: 'smooth', // You can use 'auto' for instant scrolling
+            });
+        }
+    };
         
-    //     setMovies(JSON.parse(data));
-    // };
     const fetchMovies = async (sectionTitle, categoryFilter) => {
         let response;
     
@@ -50,12 +48,16 @@ const MoviesCard = (props) => {
     return (
         <div className='movies-card'>
             <h2>{props.sectionTitle}</h2>
-            <div className='movies'>
+            <div className='movies-container' ref={sectionRef}>
                 {movies.map(movie => (
                     <div key={movie.mid}>
-                        <MovieCard key={movie.mid} movie={movie} poster={movie.poster_path} />
+                        <MovieCard movie={movie} origin="MoviesCard" />
                     </div>
                 ))}
+            </div>
+            <div>
+                <button className='scroll-button' onClick={() => scrollSection(-1)}>❮</button>
+                <button className='scroll-button' onClick={() => scrollSection(1)}>❯</button>
             </div>
             <Link to='trending'><button className='CTA-button-one'>View all</button></Link>
         </div>
