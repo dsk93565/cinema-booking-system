@@ -95,7 +95,7 @@ class Create_User(APIView):
         new_user = CustomUser.objects.create(username=new_username, email=new_email, password=make_password(new_password), 
                                              first_name=new_first, last_name=new_last, phone_number=new_number, state_id=1)
         new_user.save()
-        if data.get('cardNumber') is not None:
+        if data.get('cardNumber') is not '':
             new_request = [new_user, data]
             card = Save_Card()
             key = card.saveCard(new_request)
