@@ -23,9 +23,9 @@ export default function TrailerLoader({ onClose, movie }) {
                         <div className='modal-title'><h1>{movie.title} Movie Trailer</h1></div>
                         <span className='close'><FontAwesomeIcon onClick={onClose} icon='fa fa-window-close'/></span>
                     </div>
-                    <div className='video-wrapper'>
-                        <iframe src={`https://www.youtube.com/embed/${getYouTubeVideoId(movie.trailer)}`} title='YouTube video player' height='315' width='560' allowFullScreen></iframe>
-                    </div>
+                        <div className='video-wrapper'>
+                            <iframe src={`https://www.youtube.com/embed/${getYouTubeVideoId(movie.trailer)}`} title='YouTube video player' height='315' width='560' allowFullScreen></iframe>
+                        </div>
                     <div className='modal-footer'>
                         <strong>Summary:</strong> {movie.synopsis}
                     </div>

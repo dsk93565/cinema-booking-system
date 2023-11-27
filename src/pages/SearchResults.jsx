@@ -14,7 +14,7 @@ const SearchResults = () => {
         
         const BACKEND_URL = 'http://localhost:8000/api/get-movies'; // Adjust the URL as needed
         const response = await axios.get(`${BACKEND_URL}`);
-        const results = response.data.movies.filter( (m) => m.title.search(data) !== -1);
+        const results = response.data.movies.filter( (m) => m.title.toLowerCase().includes(data.toLowerCase()));
         console.log(results);
         // Assuming your API returns an array of movies in the 'results' property
         setSearchResults(results);
