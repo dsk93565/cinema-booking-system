@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/account.css';
 import axios from 'axios'; // Import Axios for API requests
-import { Link } from 'react-router-dom';
 
 const Login = () => {
   // Form Data
