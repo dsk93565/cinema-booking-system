@@ -23,6 +23,18 @@
     outline: var(--accent-two) 0.125rem solid;
 }
 
+.forgot-password .user-info-form {
+    margin-bottom: 4rem;
+}
+
+.forgot-password h2 {
+    margin-bottom: 1.5rem;
+}
+
+.forgot-password p {
+    margin-bottom: 3rem;
+}
+
 .eye-icon-wrapper {
     background-color: transparent;
     border: none;
@@ -91,7 +103,7 @@
     margin-bottom: 3rem;
 }
 
-.verification .section-container-narrow, .confirmation .section-container-narrow {
+.forgot-password .section-container-narrow, .verification .section-container-narrow, .confirmation .section-container-narrow {
     row-gap: 0;
 }
 
@@ -122,7 +134,7 @@
     outline: var(--accent-two) 0.125rem solid;
 }
 
-.verification .user-info-option {
+.forgot-password .user-info-option, .verification .user-info-option {
     width: fit-content;
     margin: 0 0 3rem 0;
     align-self: end;
