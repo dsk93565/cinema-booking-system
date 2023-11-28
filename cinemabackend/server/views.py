@@ -103,7 +103,7 @@ class Create_User(APIView):
         return Response(token.key)
 
 class Login(APIView):
-    def get(self, request):
+    def post(self, request):
         user = authenticate(request.data.get['email'], request.data.get['password'])
         if user is not None:
             token, created = Token.objects.get_or_create(user=user)
