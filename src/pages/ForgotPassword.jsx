@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import '../stylings/account.css';
 import axios from 'axios';
 
@@ -54,6 +54,97 @@ const ForgotPassword = () => {
     }
   };
 
+  // Authorization Code
+  const [authorizationCodeInputs, setAuthorizationCodeInputs] = useState(['', '', '', '', '']);
+  const authorizationInputRefs = [
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+  ];
+  const handleAuthorizationCodeChange = (index, e) => {
+    const value = e.target.value;
+    const newInputs = [...authorizationCodeInputs];
+    newInputs[index] = value;
+    setAuthorizationCodeInputs(newInputs);
+
+    if (value && /^\d$/.test(value) && index < authorizationInputRefs.length - 1) {
+      authorizationInputRefs[index + 1].current.focus();
+    } // if
+  };
+  const handleAuthorizationCodeKeyUp = (index, e) => {
+    if (e.key === 'Backspace' && index > 0) {
+      authorizationInputRefs[index - 1].current.focus();
+    } // if
+  };
+  const [authorizationCode, setAuthorizationCode] = useState('');
+  const sendAuthorizationCode = () => {
+    fetch('http://localhost:8000/api/verify-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: email }),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          console.error('Sent user email to the server.');
+        } else {
+          setStatusMessage('Failed to send email');
+        } // if else
+      })
+      .catch((error) => {
+        console.error('Error occurred while sending email:', error);
+      });
+  };
+  const handleAuthorizationCodeSubmit = () => {
+    const enteredAuthorizationCode = authorizationCodeInputs.join('');
+
+    fetch('http://localhost:8000/api/email-is-verified', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, authorizationCode: enteredAuthorizationCode }),
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            setForgotPasswordStep(forgotPasswordStep + 1);
+          } else {
+            setStatusMessage('Failed to send new authorization code');
+          } // if else
+        })
+        .catch((error) => {
+          console.error('Error occurred while sending authorization code:', error);
+        });
+  };
+
+  // Resend Authorization Code
+  const [authorizationHeaderText, setAuthorizationHeaderText] = useState('Authorization code sent');
+  const resendAuthorizationCode = () => {
+    fetch('http://localhost:8000/api/verify-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: email }),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          setAuthorizationHeaderText('New authorization code sent');
+          const newInputs = Array(5).fill('');
+          setAuthorizationCodeInputs(newInputs);
+          setStatusMessage('');
+        } else {
+          setStatusMessage('Failed to send email');
+        } // if else
+      })
+      .catch((error) => {
+        console.error('Error occurred while sending email:', error);
+      });
+  };
+
   return (
     <>
       {/* Email Identification */}
@@ -91,27 +182,27 @@ const ForgotPassword = () => {
             <h2>Enter code</h2>
             <p>Please check your email and enter the code down below to confirm your password change.</p>
             <div className='verification-code'>
-              {verificationCodeInputs.map((value, index) => (
+              {authorizationCodeInputs.map((value, index) => (
                 <input
                   key={index}
                   type='text'
                   maxLength={1}
-                  ref={verificationInputRefs[index]}
+                  ref={authorizationInputRefs[index]}
                   value={value}
-                  onChange={(e) => handleVerificationCodeChange(index, e)}
-                  onKeyUp={(e) => handleVerificationCodeKeyUp(index, e)}
+                  onChange={(e) => handleAuthorizationCodeChange(index, e)}
+                  onKeyUp={(e) => handleAuthorizationCodeKeyUp(index, e)}
                   className='verification-number'
                 />
               ))}
             </div>
             <button
-              onClick={resendVerificationCode}
+              onClick={resendAuthorizationCode}
               className='user-info-option'
             >
               Resend email
             </button>
             <div>
-              <button onClick={handleVerificationCodeSubmit} className='CTA-button-one'>Confirm account</button>
+              <button onClick={handleAuthorizationCodeSubmit} className='CTA-button-one'>Confirm account</button>
               <div className='status-message'>{statusMessage}</div>
             </div>
           </div>
