@@ -72,7 +72,7 @@ const Navigation = () => {
           <Link to='/'><div className={`logo ${sideNav ? 'is-hidden' : ''}`}>Cinera</div></Link>
 
           {/* Search Bar */}
-          {location.pathname !== '/login' && location.pathname !== '/sign-up' ? (
+          {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
             <form className={`search-bar ${searchInput ? 'is-active' : ''}`}>
               <input
                 type='text' placeholder='Search' onFocus={handleInputFocus} onBlur={handleInputBlur}
@@ -90,12 +90,12 @@ const Navigation = () => {
           <nav className='navigation-menu'>
             <ol>
               {/* Log In */}
-              {location.pathname !== '/login' && location.pathname !== '/sign-up' ? (
+              {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
                 <Link to='/login'><button className='navigation-link non-CTA-button'>Log in</button></Link>
               ) : null}
 
               {/* Log In Page Nav Item */}
-              {location.pathname === '/login' ? (
+              {location.pathname === '/login' || location.pathname === '/login/forgot' ? (
                 <div className='login-page-nav-item'>
                   <p>Don't have a Cinera account?</p>
                   <Link to='/sign-up'><button className='fixed-navigation-link'>Sign up</button></Link>
@@ -103,7 +103,7 @@ const Navigation = () => {
               ) : null}
 
               {/* Sign Up */}
-              {location.pathname !== '/login' && location.pathname !== '/sign-up' ? (
+              {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
                 <Link to='/sign-up'><button className='navigation-link CTA-button-one'>Sign up</button></Link>
               ) : null}
 
@@ -116,14 +116,14 @@ const Navigation = () => {
               ) : null}
 
               {/* Search Icon */}
-              {location.pathname !== '/login' && location.pathname !== '/sign-up' ? (
+              {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
                 <button className={`mobile-search-wrapper ${sideNav ? 'is-hidden' : ''}`}>
                   <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='mobile-search-icon' />
                 </button>
               ) : null}
               
               {/* Hamburger Menu */}
-              {location.pathname !== '/login' && location.pathname !== '/sign-up' ? (
+              {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
                 <button onClick={handleSideNav} className={`hamburger-menu ${sideNav ? 'is-active' : ''}`}>
                   <div className='hamburger-line'></div>
                 </button>
