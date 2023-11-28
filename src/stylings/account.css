@@ -134,16 +134,24 @@
     outline: var(--accent-two) 0.125rem solid;
 }
 
-.forgot-password .user-info-option, .verification .user-info-option {
+.forgot-password , .verification .user-info-option {
     width: fit-content;
     margin: 0 0 3rem 0;
     align-self: end;
+}
+
+.user-info-option {
+    width: fit-content;
+    margin: 0 0 3rem 0;
+    align-self: end;
+    transition: color 0.3s ease-in-out;
 }
 
 .confirmation p {
     font-size: 1.25rem;
     margin-bottom: 4rem;
 }
+
 
 @media only screen and (min-width: 22rem) {
     .verification-code {
@@ -183,3 +191,14 @@
         width: 4.5rem;
     }
 }
+
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }

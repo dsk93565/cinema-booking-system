@@ -7,7 +7,7 @@ import Home from './Home';
 import Login from './Login';
 import ForgotPassword from './ForgotPassword';
 import SignUp from './SignUp';
-import TemporaryUserProfile from './TemporaryUserProfile';
+import UserProfile from './UserProfile';
 import SearchResults from './SearchResults';
 import TemporaryBookTicket from './TemporaryBookTicket';
 import TemporaryShowtimes from './TemporaryShowtimes';
@@ -34,7 +34,7 @@ function App() {
           <Route path='forgot' element={<ForgotPassword />} />
         </Route>
         <Route path='/sign-up' element={<SignUp />} />
-        <Route path='/profile' element={<TemporaryUserProfile />} />
+        <Route path='/profile' element={<UserProfile />} />
         <Route path='/search-results' element={<SearchResults />} />
         <Route path='/book'>
           <Route path='' element={<TemporaryBookTicket />} />

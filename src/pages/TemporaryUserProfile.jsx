@@ -1,7 +1,9 @@
-import '../stylings/temporary.css';
+import { useState } from 'react';
+import '../stylings/account.css';
+import AccountSubsection from '../components/AccountSubsection';
 
 const UserProfile = () => {
-  return (
+    return (
     <section className='temporary section-wrapper'>
         <div className='section-container-narrow'>
             <h2>Profile</h2>
@@ -24,8 +26,8 @@ const UserProfile = () => {
                     <label className='user-info-label'>Password</label>
                     <div className='user-info-input'>*******************</div>
                 </div>
-                <button className='user-info-option'>Add shipping address</button>
-                <button className='user-info-option'>Add payment method</button>
+                <AccountSubsection name="shipping-info" />
+                <AccountSubsection name="payment-info" />
             </form>
             <button className='CTA-button-one'>Save changes</button>
         </div>

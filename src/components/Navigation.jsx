@@ -101,7 +101,7 @@ const Navigation = () => {
                   <Link to='/sign-up'><button className='fixed-navigation-link'>Sign up</button></Link>
                 </div>
               ) : null}
-
+  
               {/* Sign Up */}
               {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
                 <Link to='/sign-up'><button className='navigation-link CTA-button-one'>Sign up</button></Link>
@@ -113,6 +113,11 @@ const Navigation = () => {
                   <p>Already have a Cinera account?</p>
                   <Link to='/login'><button className='fixed-navigation-link'>Log in</button></Link>
                 </div>
+              ) : null}
+
+              {/* Edit Profile */}
+              {location.pathname !== '/login' && location.pathname !== '/sign-up' ? (
+                <Link to='/profile'><button className='navigation-link CTA-button-one'>Edit Profile</button></Link>
               ) : null}
 
               {/* Search Icon */}

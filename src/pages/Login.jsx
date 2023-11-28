@@ -78,7 +78,9 @@ const Login = () => {
         password: password,
       });
 
-      if (response.token !== -1) {
+      console.log(response);
+
+      if (response.data.token !== -1) {
         setStatusMessage('Logged in (Test case)');
 
         if (rememberMe) {
