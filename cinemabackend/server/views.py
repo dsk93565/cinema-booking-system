@@ -104,7 +104,13 @@ class Create_User(APIView):
 
 class Login(APIView):
     def post(self, request):
-        user = authenticate(request.data.get['email'], request.data.get['password'])
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error: could not decode json object": -5})
+        user_email = data.get('email')
+        user_to_find = CustomUser.objects.filter(email=user_email)[0]
+        user = authenticate(request=request, username=user_to_find.username, password=request.data.get('password'))
         if user is not None:
             token, created = Token.objects.get_or_create(user=user)
             return Response(token.key)
