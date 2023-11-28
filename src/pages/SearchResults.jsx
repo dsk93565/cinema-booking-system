@@ -20,7 +20,7 @@ const SearchResults = () => {
         setSearchResults(results);
       } catch (error) {
         console.error('Error fetching search results:', error);
-      }          
+      }
       
     };
 
@@ -49,6 +49,8 @@ const SearchResults = () => {
               </div> {/*search-result-row*/}
             </li>
           ))}
+
+          {!searchResults[0] && (<div><h3>No results found.</h3></div>)}
         </ul>
       </div>
     </section>
