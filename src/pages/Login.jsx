@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/account.css';
 import axios from 'axios'; // Import Axios for API requests
-
-const BACKEND_URL = 'http://localhost:8000/api'; // Replace with your backend API URL
 
 const Login = () => {
   // Form Data
@@ -74,13 +73,13 @@ const Login = () => {
     } // if
 
     try {
-      const response = await axios.post(`${BACKEND_URL}/login`, {
-        email: 'user@example.com', // Replace with the user's email input
+      const response = await axios.post(`http://localhost:8000/api/login`, {
+        email: email,
         password: password,
       });
 
-      if (response.status === 200) {
-        setStatusMessage('');
+      if (response.token !== -1) {
+        setStatusMessage('Logged in (Test case)');
 
         if (rememberMe) {
           localStorage.setItem('rememberMe', 'true');
@@ -136,7 +135,7 @@ const Login = () => {
           </div>
           <div className='user-options'>
             <label className='user-checkbox-option'><input type='checkbox' />Remember me</label>
-            <a href='/forgot' className='user-info-option'>Forgot password</a>
+            <Link to='forgot'><button className='user-info-option'>Forgot password</button></Link>
           </div>
         </form>
         <div>
