@@ -16,8 +16,8 @@ class Save_Card():
         user = request[0]
         data = request[1]
         cardToEdit = Card.objects.filter()
-        #...
-        #possibly refactor the encryption 
+
+        #should prolly refactor the encryption 
     def saveCard(self, request):
         key = Fernet.generate_key()
         fern = Fernet(key)

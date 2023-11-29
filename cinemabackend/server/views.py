@@ -25,7 +25,7 @@ class Email_Is_Verified(APIView):
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
         verified_email = data.get('email')
-        user_to_verify = CustomUser.objects.filter(email=verified_email)[0]
+        user_to_verify = CustomUser.objects.get(email=verified_email)
         if user_to_verify is None:
             return Response({"error: user not found": -1})
         if data.get('verificationCode') == user_to_verify.verification_code:
@@ -45,7 +45,7 @@ class Send_Verification_Email(APIView):
         subject = 'Cinera Verifcation Code'
         verification_code = random.randint(10000, 99999)
         email = data.get('email')
-        user_to_verify = CustomUser.objects.filter(email=email)[0]
+        user_to_verify = CustomUser.objects.get(email=email)
         if user_to_verify is None:
             return Response({"error: user not found": -1})
         user_to_verify.verification_code = verification_code
@@ -63,7 +63,7 @@ class Edit_User(APIView):
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
         user_email = data.get('email')
-        user_to_modify = CustomUser.objects.filter(email=user_email)[0]
+        user_to_modify = CustomUser.objects.get(email=user_email)
         if user_to_modify is None:
             return Response({"error: user not found": -1})
         new_password = data.get('password')
@@ -117,6 +117,8 @@ class Login(APIView):
         user = authenticator_instance.authenticate(request, email=user_email, password=user_password)
         if user is None:
             return Response(-1)
+        if user.state_id != 2: 
+            return Response(-2)
         token, created = Token.objects.get_or_create(user=user)
         return Response(token.key)
         
