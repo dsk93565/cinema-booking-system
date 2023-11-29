@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/account.css';
 import axios from 'axios';
@@ -189,7 +189,7 @@ const ChangePassword = () => {
           <div className='section-container-narrow'>
             <h2>Password changed</h2>
             <p>Your password has been successfully reset! Jump right in to explore the new era of cinema.</p>
-            <button className='CTA-button-one'>Log in</button>
+            <Link to='/login'><button className='CTA-button-one'>Log in</button></Link>
           </div>
         </section>
       )}
