@@ -1,5 +1,14 @@
 from .models import CustomUser, Card
 from cryptography.fernet import Fernet
+from rest_framework.authtoken.models import Token
+
+#checks if token is associated with the user
+def checkToken(user, testToken):
+    try:
+        token = Token.objects.get(user=user)
+        return token.key == testToken
+    except Token.DoesNotExist:
+        return False
 
 #Saves card to database
 class Save_Card():

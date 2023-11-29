@@ -130,11 +130,23 @@ class ForgotPassword(APIView):
         if user_to_recover is None:
             return Response({"error: email not found": -1})
         token, created = Token.objects.get_or_create(user=user_to_recover)
-        recovery_link = 'localhost:3000/recover-password/' + str(user_to_recover.username) + '/' + str(token.key)
+        recovery_link = 'localhost:3000/change-password/' + str(user_to_recover.username) + '/' + str(token.key)
         email_body = render_to_string('recovery_email.html', {'custom_link': recovery_link})
         subject = 'Cinera Recover Password'
         send_mail(subject, email_body, "ebookingsystemcinera@gmail.com", [email])
         return Response({'email sent': 1})
+
+class RecoverCreatePassword(APIView):
+    def post(self, request, username, auth_str):
+        user_to_recover = CustomUser.objects.filter(username=username)[0]
+        if not checkToken(user_to_recover, auth_str):
+            return Response({"error: could not authenticate": -1})
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error: could not decode json object": -5})
+        user_to_recover.password = data.get('new_password')
+        user_to_recover.save()
 
 class MovieList(APIView):
     def get(self, request):
