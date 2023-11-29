@@ -5,11 +5,13 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from .models import Movies, CustomUser, Card
 from .serializer import MovieSerializer, UserSerializer
 from django.conf import settings
 from .utils import *
 import json, random
+
 
 
 #TODO: define error class and error codes and properly throw errors
@@ -111,11 +113,29 @@ class Login(APIView):
         user_email = data.get('email')
         user_to_find = CustomUser.objects.filter(email=user_email)[0]
         user = authenticate(request=request, username=user_to_find.username, password=request.data.get('password'))
-        if user is not None:
-            token, created = Token.objects.get_or_create(user=user)
-            return Response(token.key)
-        else: 
+        if user is None:
             return Response(-1)
+        token, created = Token.objects.get_or_create(user=user)
+        return Response(token.key)
+        
+class ForgotPassword(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error: could not decode json object": -5})
+       
+        email = data.get('email')
+        user_to_recover = CustomUser.objects.filter(email=email)[0]
+        if user_to_recover is None:
+            return Response({"error: email not found": -1})
+        token, created = Token.objects.get_or_create(user=user_to_recover)
+        recovery_link = 'localhost:3000/recover-password/' + str(user_to_recover.username) + '/' + str(token.key)
+        email_body = render_to_string('recovery_email.html', {'custom_link': recovery_link})
+        subject = 'Cinera Recover Password'
+        send_mail(subject, email_body, "ebookingsystemcinera@gmail.com", [email])
+        return Response({'email sent': 1})
+
 class MovieList(APIView):
     def get(self, request):
         queryset = Movies.objects.all()
