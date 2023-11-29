@@ -111,8 +111,8 @@ class Login(APIView):
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
         user_email = data.get('email')
-        user_to_find = CustomUser.objects.filter(email=user_email)[0]
-        user = authenticate(request=request, username=user_to_find.username, password=request.data.get('password'))
+        user_password = data.get('password')
+        user = authenticate(request=request, email=user_email, password=user_password)
         if user is None:
             return Response(-1)
         token, created = Token.objects.get_or_create(user=user)
@@ -148,7 +148,7 @@ class RecoverCreatePassword(APIView):
             data = json.loads(request.body.decode('utf-8'))
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
-        user_to_recover.password = data.get('new_password')
+        user_to_recover.password = make_password(data.get('new_password'))
         user_to_recover.save()
         return Response({'password changed': 200})
 
