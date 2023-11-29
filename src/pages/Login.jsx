@@ -50,6 +50,9 @@ const Login = () => {
     setRememberMe(!rememberMe);
   };
 
+  // Show/Hide Verify Email Button
+  const [showVerifyEmailButton, setShowVerifyEmailButton] = useState(false);
+
   // Login Status Message
   const [statusMessage, setStatusMessage] = useState('');
 
@@ -80,7 +83,7 @@ const Login = () => {
 
       console.log(response);
 
-      if (response.data.token !== -1) {
+      if (response.data !== -1 && response.data !== -2) {
         setStatusMessage('Logged in (Test case)');
 
         if (rememberMe) {
@@ -88,6 +91,9 @@ const Login = () => {
         } else {
           localStorage.removeItem('rememberMe');
         } // if else
+      } else if (response.data === -2) {
+        setStatusMessage('Account is not verified');
+        setShowVerifyEmailButton(true);
       } else {
         setStatusMessage('Invalid email and/or password');
       } // if else
@@ -147,7 +153,16 @@ const Login = () => {
           >
             Log in
           </button>
-          <div className='status-message'>{statusMessage}</div>
+          <div className='user-options'>
+            <Link to={{ pathname: '/sign-up', state: { signUpStep: 4 } }}>
+              <button
+                className={`user-info-option no-show ${showVerifyEmailButton ? 'show' : ''}`}
+              >
+                Verify email
+              </button>
+            </Link>
+            <div className='status-message'>{statusMessage}</div>
+          </div>
         </div>
       </div>
     </section>

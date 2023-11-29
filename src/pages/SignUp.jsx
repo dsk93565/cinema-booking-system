@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Select from 'react-select';
 import '../stylings/account.css';
 
-const SignUp = () => {
+const SignUp = (props) => {
   // Form Data
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -25,6 +25,9 @@ const SignUp = () => {
 
   // Sign Up Process
   const [signUpStep, setSignUpStep] = useState(1);
+  if (props.location?.state === 4) {
+    setSignUpStep(4);
+  } // if
   const handleSkipButtonClick = () => {
     if (signUpStep === 2) {
       setShippingStreetAddress('');

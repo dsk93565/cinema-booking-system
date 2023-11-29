@@ -301,6 +301,14 @@ button {
     color: var(--primary);
 }
 
+.no-show {
+    display: none;
+}
+
+.show {
+    display: flex;
+}
+
 .disabled-user-option {
     display: none;
 }
