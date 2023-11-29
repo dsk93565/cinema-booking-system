@@ -6,6 +6,7 @@ import Navigation from '../components/Navigation';
 import Home from './Home';
 import Login from './Login';
 import ForgotPassword from './ForgotPassword';
+import ChangePassword from './ChangePassword';
 import SignUp from './SignUp';
 import UserProfile from './UserProfile';
 import SearchResults from './SearchResults';
@@ -33,6 +34,7 @@ function App() {
           <Route path='' element={<Login />} />
           <Route path='forgot' element={<ForgotPassword />} />
         </Route>
+        <Route path='/change-password/:identifier/:token' element={<ChangePassword />} />
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/profile' element={<UserProfile />} />
         <Route path='/search-results' element={<SearchResults />} />

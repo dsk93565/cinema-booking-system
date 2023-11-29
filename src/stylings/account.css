@@ -35,6 +35,12 @@
     margin-bottom: 3rem;
 }
 
+.change-password .user-info:first-child {
+    margin-top: 0;
+}
+
+.change-password
+
 .eye-icon-wrapper {
     background-color: transparent;
     border: none;
@@ -134,18 +140,18 @@
     outline: var(--accent-two) 0.125rem solid;
 }
 
-.forgot-password , .verification .user-info-option {
+.verification .user-info-option {
     width: fit-content;
     margin: 0 0 3rem 0;
     align-self: end;
 }
 
-.user-info-option {
+/** .user-info-option {
     width: fit-content;
     margin: 0 0 3rem 0;
     align-self: end;
     transition: color 0.3s ease-in-out;
-}
+} **/
 
 .confirmation p {
     font-size: 1.25rem;
