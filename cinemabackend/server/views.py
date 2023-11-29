@@ -150,6 +150,7 @@ class RecoverCreatePassword(APIView):
             return Response({"error: could not decode json object": -5})
         user_to_recover.password = data.get('new_password')
         user_to_recover.save()
+        return Response({'password changed': 200})
 
 class MovieList(APIView):
     def get(self, request):
