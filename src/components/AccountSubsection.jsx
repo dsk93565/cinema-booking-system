@@ -8,7 +8,7 @@ const AccountSubsection = ({name}) => {
         setVis(!Vis);
     };
       
-    if (name == 'shipping-info') {
+    if (name === 'shipping-info') {
         return (
             <div className='section-holder'>
             <button className="user-info-option" onClick={handleToggleSection}>
@@ -40,7 +40,7 @@ const AccountSubsection = ({name}) => {
             )}
             </div>
         );
-    } else if (name == 'payment-info') {
+    } else if (name === 'payment-info') {
         return (
             <div className='section-holder'>
             <button className="user-info-option" onClick={handleToggleSection}>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/account.css';
@@ -6,10 +6,7 @@ import axios from 'axios';
 
 const ChangePassword = () => {
   const { identifier, token } = useParams();
-  const navigate = useNavigate();
-  useEffect(() => {
-    navigate(`/change-password/${identifier}/${token}`);
-  }, []);
+  useNavigate(`/change-password/${identifier}/${token}`);
 
   // Form Data
   const [password, setPassword] = useState('');
@@ -120,7 +117,7 @@ const ChangePassword = () => {
   return (
     <>
       {/* Password Change */}
-      {changePasswordStep == 1 && (
+      {changePasswordStep === 1 && (
         <section className='change-password account section-wrapper'>
           <div className='section-container-narrow'>
             <h2>Reset password</h2>
@@ -187,7 +184,7 @@ const ChangePassword = () => {
       )}
 
       {/* Password Change Confirmation */}
-      {changePasswordStep == 2 && (
+      {changePasswordStep === 2 && (
         <section className='change-password account section-wrapper'>
           <div className='section-container-narrow'>
             <h2>Password reset</h2>

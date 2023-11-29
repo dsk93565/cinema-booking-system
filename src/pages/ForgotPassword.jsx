@@ -79,7 +79,7 @@ const ForgotPassword = () => {
   return (
     <>
       {/* Email Identification */}
-      {forgotPasswordStep == 1 && (
+      {forgotPasswordStep === 1 && (
         <section className='forgot-password account section-wrapper'>
           <div className='section-container-narrow'>
             <h2>Forgot password</h2>
@@ -107,7 +107,7 @@ const ForgotPassword = () => {
       )}
 
       {/* Email Authorization Code */}
-      {forgotPasswordStep == 2 && (
+      {forgotPasswordStep === 2 && (
         <section className='forgot-password account section-wrapper'>
           <div className='section-container-narrow'>
             <h2>{authorizationHeaderText}</h2>
