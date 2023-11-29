@@ -108,11 +108,11 @@ const ChangePassword = () => {
         setChangePasswordStep(changePasswordStep + 1);
       } else {
         // Handle other response statuses or errors here
-        setStatusMessage('Failed reset password.');
+        setStatusMessage('Failed to reset password.');
       } // if else
     } catch (error) {
       // Handle network or other errors
-      console.error('Error changing password:', error);
+      console.error('Error resetting password:', error);
       setStatusMessage('An error occurred while sending the request.');
     }
   }
