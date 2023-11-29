@@ -47,7 +47,6 @@ const ForgotPassword = () => {
       } // if else
     } catch (error) {
       // Handle network or other errors
-      console.error('Error sending forgot password request:', error);
       setStatusMessage('An error occurred while sending the request.');
     }
   };

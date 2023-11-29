@@ -8,7 +8,7 @@ const ChangePassword = () => {
   const { identifier, token } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    navigate(`/change-password/none/${token}`);
+    navigate(`/change-password/${identifier}/${token}`);
   }, []);
 
   // Form Data
@@ -99,8 +99,9 @@ const ChangePassword = () => {
     } // if
 
     try {
+      const url = `http://localhost:8000/api/change-password/${identifier}/${token}`;
       // Send a POST request to your server to initiate the forgot password process
-      const response = await axios.post('http://localhost:8000/api/change-password/${identifier}/${token}', {
+      const response = await axios.post(url, {
         password: password,
       });
 
@@ -112,7 +113,6 @@ const ChangePassword = () => {
       } // if else
     } catch (error) {
       // Handle network or other errors
-      console.error('Error resetting password:', error);
       setStatusMessage('An error occurred while sending the request.');
     }
   }
@@ -126,7 +126,7 @@ const ChangePassword = () => {
             <h2>Reset password</h2>
             <form className='user-info-form'>
               <div className='user-info'>
-                <label className='user-info-label'>Password</label>
+                <label className='user-info-label'>New password</label>
                 <div className={`password-info ${passwordInput ? 'is-active' : ''}`}>
                   <input
                     type={passwordVisible ? 'text' : 'password'}
@@ -151,7 +151,7 @@ const ChangePassword = () => {
                 </div>
               </div>
               <div className='user-info'>
-                <label className='user-info-label'>Confirm Password</label>
+                <label className='user-info-label'>Confirm new password</label>
                 <div className={`password-info ${confirmPasswordInput ? 'is-active' : ''}`}>
                   <input
                     type={confirmPasswordVisible ? 'text' : 'password'}
@@ -176,10 +176,12 @@ const ChangePassword = () => {
                 </div>
               </div>
             </form>
-            <div className='user-info-CTA-button'>
-              <button onClick={handleChangePasswordClick} className='CTA-button-one'>Change password</button>
+            <div>
+              <div className='user-info-CTA-button'>
+                <button onClick={handleChangePasswordClick} className='CTA-button-one'>Change password</button>
+              </div>
+              <div className='status-message'>{statusMessage}</div>
             </div>
-            <div className='status-message'>{statusMessage}</div>
           </div>
         </section>
       )}

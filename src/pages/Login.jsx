@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/account.css';
-import axios from 'axios'; // Import Axios for API requests
+import axios from 'axios';
 
 const Login = () => {
   // Form Data
