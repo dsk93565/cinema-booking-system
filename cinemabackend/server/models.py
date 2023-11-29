@@ -49,5 +49,62 @@ class Movies(models.Model):
     poster_path = models.CharField(db_column='image',max_length=255, default='')
     class Meta: 
         db_table: 'movies'
+class Periods(models.Model):
+    class Meta:
+        db_table: 'periods'
+    pid = models.IntegerField(db_column='pid',primary_key=True)
+    start_time = models.TimeField(db_column='start_time')
+    end_time = models.TimeField(db_column='end_time')
 
-    
+class Rooms(models.Model):
+    class Meta:
+        db_table: 'rooms'
+    rid = models.IntegerField(db_column='rid', primary_key=True)
+    seatsInRoom = models.IntegerField(db_column='seats', default='')
+class Seats(models.Model):
+    class Meta: 
+        db_table: 'seats'
+    sid = models.IntegerField(db_column='sid',primary_key=True)
+    seat_number = models.IntegerField(db_column='seat_number', default='')
+    room_id = models.ForeignKey(Rooms, on_delete=models.DO_NOTHING, db_column='room_id')
+    available = models.IntegerField(db_column='available', default='')
+
+class Showings(models.Model):
+    class Meta:
+        db_table: 'showings'
+    shid = models.IntegerField(db_column='shid',primary_key=True)
+    movie_id = models.ForeignKey(Movies, on_delete=models.DO_NOTHING, db_column='movie_id')
+    period_id = models.ForeignKey(Periods, on_delete=models.DO_NOTHING, db_column='period_id')
+
+class Promotions(models.Model):
+    class Meta:
+        db_table: 'promotions'
+    pmid = models.IntegerField(db_column='pmid',primary_key=True)
+    promotion_code = models.CharField(db_column='promotion_code', max_length=255, default='')
+    percent = models.FloatField(db_column='percent', default='')
+    start_date = models.DateField(db_column='start_date')
+    end_date = models.DateField(db_column='end_date')
+class Bookings(models.Model):
+    class Meta:
+        db_table: 'bookings'
+    bid = models.IntegerField(db_column='bid',primary_key=True)
+    user_id = models.ForeignKey(CustomUser,on_delete=models.DO_NOTHING, db_column='uid')
+    showing_id = models.ForeignKey(Showings, on_delete=models.DO_NOTHING, db_column='showing_id')
+    card_id = models.ForeignKey(Card, on_delete=models.DO_NOTHING, db_column='card_id')
+    promotion_id = models.ForeignKey(Promotions, on_delete=models.DO_NOTHING, db_column='promotion_id')
+    total = models.FloatField(db_column='total', default='')
+
+class TicketType(models.Model):
+    class Meta:
+        db_table: 'ticket_types'
+    ttid = models.IntegerField(db_column='ttid',primary_key=True)
+    ticket_type = models.CharField(db_column='ticket_type', max_length=255, default='')
+    price = models.IntegerField(db_column='price', default='')
+
+class Tickets(models.Model):
+    class Meta: 
+        db_table: 'tickets'
+    tid = models.IntegerField(db_column='tid',primary_key=True)
+    booking_id = models.ForeignKey(Bookings, on_delete=models.DO_NOTHING, db_column='booking_id')
+    ticket_type_id = models.ForeignKey(TicketType, on_delete=models.DO_NOTHING, db_column='ticket_type_id')
+    seat_id = models.ForeignKey(Seats, on_delete=models.DO_NOTHING, db_column='seat_id')
