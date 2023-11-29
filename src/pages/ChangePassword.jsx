@@ -99,7 +99,7 @@ const ChangePassword = () => {
       const url = `http://localhost:8000/api/change-password/${identifier}/${token}`;
       // Send a POST request to your server to initiate the forgot password process
       const response = await axios.post(url, {
-        password: password,
+        new_password: password,
       });
 
       if (response.status === 200) {
@@ -185,9 +185,11 @@ const ChangePassword = () => {
 
       {/* Password Change Confirmation */}
       {changePasswordStep === 2 && (
-        <section className='change-password account section-wrapper'>
+        <section className='forgot-password account section-wrapper'>
           <div className='section-container-narrow'>
-            <h2>Password reset</h2>
+            <h2>Password changed</h2>
+            <p>Your password has been successfully reset! Jump right in to explore the new era of cinema.</p>
+            <button className='CTA-button-one'>Log in</button>
           </div>
         </section>
       )}

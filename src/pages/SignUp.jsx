@@ -862,7 +862,7 @@ const SignUp = () => {
 
       {/* Account Confirmation */}
       {signUpStep === 5 && (
-        <section className='confirmation account section-wrapper'>
+        <section className='forgot-password account section-wrapper'>
           <div className='section-container-narrow'>
             <h2>Account confirmed</h2>
             <p>Congratulations! Your account has been successfully created. Jump right in to explore the new era of cinema.</p>
