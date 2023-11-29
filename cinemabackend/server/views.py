@@ -126,19 +126,22 @@ class ForgotPassword(APIView):
             return Response({"error: could not decode json object": -5})
        
         email = data.get('email')
-        user_to_recover = CustomUser.objects.filter(email=email)[0]
-        if user_to_recover is None:
-            return Response({"error: email not found": -1})
+        try: 
+            user_to_recover = CustomUser.objects.get(email=email)
+        except: 
+            print("could not find user")
+            raise Response({'could not find user': -1})
         token, created = Token.objects.get_or_create(user=user_to_recover)
-        recovery_link = 'localhost:3000/change-password/' + str(user_to_recover.username) + '/' + str(token.key)
+        recovery_link = 'localhost:3000/change-password/' + str(user_to_recover.uid) + '/' + str(token.key)
         email_body = render_to_string('recovery_email.html', {'custom_link': recovery_link})
         subject = 'Cinera Recover Password'
         send_mail(subject, email_body, "ebookingsystemcinera@gmail.com", [email])
         return Response({'email sent': 1})
 
+
 class RecoverCreatePassword(APIView):
-    def post(self, request, username, auth_str):
-        user_to_recover = CustomUser.objects.filter(username=username)[0]
+    def post(self, request, uid, auth_str):
+        user_to_recover = CustomUser.objects.get(uid=uid)
         if not checkToken(user_to_recover, auth_str):
             return Response({"error: could not authenticate": -1})
         try: 

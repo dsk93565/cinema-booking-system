@@ -27,5 +27,5 @@ urlpatterns = [
     path('api/verify-email', views.Send_Verification_Email.as_view()),
     path('api/email-is-verified', views.Email_Is_Verified.as_view()),
     path('api/forgot-password', views.ForgotPassword.as_view()),
-    path('api/change-password/<str:username>/<str:auth_str>', views.RecoverCreatePassword.as_view())
+    path('api/change-password/<str:uid>/<str:auth_str>', views.RecoverCreatePassword.as_view())
 ]
