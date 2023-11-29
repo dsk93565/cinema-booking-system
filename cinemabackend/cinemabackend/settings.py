@@ -43,6 +43,13 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 AUTH_USER_MODEL = "server.CustomUser"
 
+AUTHENTICATION_BACKENDS = [
+    'server.backends.auth_by_email.EmailAuthBackend',  # Replace with your custom backend
+    'django.contrib.auth.backends.ModelBackend',  # Default Django ModelBackend
+    # Other backends...
+]
+
+
 
 # Application definition
 # may want to add 'django.contrib.contenttypes', to have permissions be associated with the models

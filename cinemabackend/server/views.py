@@ -8,6 +8,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from .models import Movies, CustomUser, Card
 from .serializer import MovieSerializer, UserSerializer
+from .backends.auth_by_email import EmailAuthBackend
 from django.conf import settings
 from .utils import *
 import json, random
@@ -97,7 +98,7 @@ class Create_User(APIView):
         new_user = CustomUser.objects.create(username=new_username, email=new_email, password=make_password(new_password), 
                                              first_name=new_first, last_name=new_last, phone_number=new_number, state_id=1)
         new_user.save()
-        if data.get('cardNumber') is not '':
+        if data.get('cardNumber') is not None:
             new_request = [new_user, data]
             card = Save_Card()
             key = card.saveCard(new_request)
@@ -112,7 +113,8 @@ class Login(APIView):
             return Response({"error: could not decode json object": -5})
         user_email = data.get('email')
         user_password = data.get('password')
-        user = authenticate(request=request, email=user_email, password=user_password)
+        authenticator_instance = EmailAuthBackend()
+        user = authenticator_instance.authenticate(request, email=user_email, password=user_password)
         if user is None:
             return Response(-1)
         token, created = Token.objects.get_or_create(user=user)
