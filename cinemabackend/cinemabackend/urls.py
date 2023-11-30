@@ -23,6 +23,8 @@ urlpatterns = [
     path('api/get-movies', views.MovieList.as_view()),
     path('api/get-movie', views.Movie.as_view()),
     path('api/create-user', views.Create_User.as_view()),
+    path('api/get-user', views.GetUser.as_view()),
+    path('api/edit-user', views.EditUser.as_view()),
     path('api/login', views.Login.as_view()),
     path('api/verify-email', views.Send_Verification_Email.as_view()),
     path('api/email-is-verified', views.Email_Is_Verified.as_view()),

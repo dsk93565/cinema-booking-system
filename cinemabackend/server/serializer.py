@@ -1,13 +1,11 @@
 from rest_framework import serializers
-from .models import Movies
-from .models import CustomUser
-
-#
+from .models import Movies, CustomUser
 
 class UserSerializer(serializers.ModelSerializer):
         class Meta: 
                model = CustomUser
-               fields = ['username', 'email', 'phone_number', 'first_name', 'last_name']
+               fields = ['username', 'email', 'phone_number', 'first_name', 
+                         'last_name', 'type_id', 'state_id', 'promotions']
 
 class MovieSerializer(serializers.ModelSerializer):
         class Meta:

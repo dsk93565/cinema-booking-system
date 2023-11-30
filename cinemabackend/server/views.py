@@ -56,7 +56,7 @@ class Send_Verification_Email(APIView):
 
 #How this is currently implemented besides Email, pass only the fields that you want to modify
 #Need a way to distinguish which card is being edited!
-class Edit_User(APIView):
+class EditUser(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
@@ -66,10 +66,13 @@ class Edit_User(APIView):
         user_to_modify = CustomUser.objects.get(email=user_email)
         if user_to_modify is None:
             return Response({"error: user not found": -1})
+        
+        #CAN BE REFACTORED WITH SERIALIZER
         new_password = data.get('password')
         new_number = data.get('mobileNumber')
         new_first = data.get('firstName')
         new_last = data.get('lastName')
+        new_promo = data.get('promotions')
         if new_password is not None:
             user_to_modify.password = new_password
         if new_number is not None:
@@ -78,7 +81,26 @@ class Edit_User(APIView):
             user_to_modify.first_name = new_first
         if new_last is not None: 
             user_to_modify.last_name = new_last
+        if new_promo is not None:
+            user_to_modify.promotions = new_promo
         user_to_modify.save()
+        return Response({"Success": 1})
+
+class GetUser(APIView):
+    def get(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error: could not decode json object": -5})
+        token_str = data.get('user_token')
+        try: 
+            token = Token.objects.get(key=token_str)
+            user = token.user
+            serializer_class = UserSerializer(user, many=False)
+            user_json = {"user":serializer_class.data}
+            return Response(user_json)
+        except:
+            return Response({"error cold not find token": -1})
 
 class Create_User(APIView):
     def post(self, request):
@@ -103,7 +125,7 @@ class Create_User(APIView):
             card = Save_Card()
             key = card.saveCard(new_request)
         token, created = Token.objects.get_or_create(user=new_user)
-        return Response(token.key)
+        return Response({'user_token': token.key})
 
 class Login(APIView):
     def post(self, request):
@@ -120,7 +142,7 @@ class Login(APIView):
         if user.state_id != 2: 
             return Response(-2)
         token, created = Token.objects.get_or_create(user=user)
-        return Response(token.key)
+        return Response({'user_token': token.key})
         
 class ForgotPassword(APIView):
     def post(self, request):
