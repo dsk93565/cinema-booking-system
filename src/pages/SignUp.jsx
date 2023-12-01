@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Select from 'react-select';
 import '../stylings/account.css';
@@ -11,6 +12,7 @@ const SignUp = (props) => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState(''); // Not needed in database due to implemented password match checker
+  const [optInEmail, setOptInEmail] = useState(0);
   const [shippingStreetAddress, setShippingStreetAddress] = useState('');
   const [shippingCityAddress, setShippingCityAddress] = useState('');
   const [shippingStateAddress, setShippingStateAddress] = useState('');
@@ -24,10 +26,11 @@ const SignUp = (props) => {
   const [billingZipCodeAddress, setBillingZipCodeAddress] = useState('');
 
   // Sign Up Process
-  const [signUpStep, setSignUpStep] = useState(1);
-  if (props.location?.state === 4) {
-    setSignUpStep(4);
-  } // if
+  const location = useLocation();
+  const initialSignUpStep = location.state?.signUpStep || 1;
+  const [signUpStep, setSignUpStep] = useState(initialSignUpStep);
+  console.log(props);
+  console.log('-----');
   const handleSkipButtonClick = () => {
     if (signUpStep === 2) {
       setShippingStreetAddress('');
@@ -49,6 +52,7 @@ const SignUp = (props) => {
         email,
         mobileNumber,
         password,
+        optInEmail,
         shippingStreetAddress,
         shippingCityAddress,
         shippingStateAddress,
@@ -86,7 +90,10 @@ const SignUp = (props) => {
   const handleNextButtonClick = () => {
     if (signUpStep === 1) {
       const mobileNumberIntFormat = parseInt(mobileNumber.replace(/\D/g, ''), 10);
-      setMobileNumber(mobileNumberIntFormat)
+      setMobileNumber(mobileNumberIntFormat);
+
+      const isOptedIn = document.querySelector('input[type="checkbox"]').checked;
+      setOptInEmail(isOptedIn ? 1 : 0);
     }
     if (signUpStep === 3) { // Send account information to database and verification code to account email
       const basicUserData = {
@@ -95,6 +102,7 @@ const SignUp = (props) => {
         email,
         mobileNumber,
         password,
+        optInEmail,
         shippingStreetAddress,
         shippingCityAddress,
         shippingStateAddress,

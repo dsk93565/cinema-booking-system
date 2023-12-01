@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/account.css';
 import axios from 'axios';
@@ -8,6 +8,8 @@ const Login = () => {
   // Form Data
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigate = useNavigate();
 
   // Password Input Outline
   const [passwordInput, setPasswordInput] = useState(false);
@@ -81,22 +83,23 @@ const Login = () => {
         password: password,
       });
 
-      console.log(response);
-
-      if (response.data !== -1 && response.data !== -2) {
-        setStatusMessage('Logged in (Test case)');
-
+      if (response.data === -1) {
+        localStorage.removeItem('userToken');
+        setStatusMessage('Invalid email and/or password');
+      } else if (response.data === -2) {
+        localStorage.removeItem('userToken');
+        setStatusMessage('Account is not verified');
+        setShowVerifyEmailButton(true);
+      } else {
+        console.log(response.data.user_token);
+        localStorage.setItem('userToken', response.data.user_token);
         if (rememberMe) {
           localStorage.setItem('rememberMe', 'true');
         } else {
           localStorage.removeItem('rememberMe');
         } // if else
-      } else if (response.data === -2) {
-        setStatusMessage('Account is not verified');
-        setShowVerifyEmailButton(true);
-      } else {
-        setStatusMessage('Invalid email and/or password');
-      } // if else
+        navigate('/');
+      } // if else-if else
     } catch (error) {
       setStatusMessage('Invalid email and/or password');
     } // try catch

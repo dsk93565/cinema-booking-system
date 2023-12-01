@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDataContext } from '../DataContext';
 import '../stylings/navigation.css';
 
 const Navigation = () => {
+  const rememberMe = localStorage.getItem('rememberMe');
+  const userToken = localStorage.getItem('userToken');
+  const navigate = useNavigate();
+  
   const [navBar, setNavBar] = useState(true);
   const [sideNav, setSideNav] = useState(false);
   const handleSideNav = () => {
@@ -63,6 +67,12 @@ const Navigation = () => {
     } // if else
   }, [sideNav]);
 
+  // Sign Out
+  const handleSignOut = () => {
+    localStorage.removeItem('userToken');
+    navigate('/');
+  };
+
   return (
     <>
       {/* Navigation Bar */}
@@ -88,52 +98,60 @@ const Navigation = () => {
 
           {/* Navigation Menu */}
           <nav className='navigation-menu'>
-            <ol>
-              {/* Log In */}
-              {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
-                <Link to='/login'><button className='navigation-link non-CTA-button'>Log in</button></Link>
-              ) : null}
+            {(userToken || rememberMe === 'true') ? (
+              <ol>
+                {/* Profile */}
+                <Link to='/profile'><button className='navigation-link non-CTA-button'>Profile</button></Link>
 
-              {/* Log In Page Nav Item */}
-              {location.pathname === '/login' || location.pathname === '/login/forgot' ? (
-                <div className='login-page-nav-item'>
-                  <p>Don't have a Cinera account?</p>
-                  <Link to='/sign-up'><button className='fixed-navigation-link'>Sign up</button></Link>
-                </div>
-              ) : null}
-  
-              {/* Sign Up */}
-              {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
-                <Link to='/sign-up'><button className='navigation-link CTA-button-one'>Sign up</button></Link>
-              ) : null}
+                {/* Cart */}
+                <Link to='/order/confirmation'><button className='navigation-link non-CTA-button'>Cart</button></Link>
 
-              {/* Sign Up Page Nav Item */}
-              {location.pathname === '/sign-up' ? (
-                <div className='login-page-nav-item'>
-                  <p>Already have a Cinera account?</p>
-                  <Link to='/login'><button className='fixed-navigation-link'>Log in</button></Link>
-                </div>
-              ) : null}
+                {/* Sign Out */}
+                <button onClick={handleSignOut} className='navigation-link non-CTA-button'>Sign out</button>
+              </ol>
+            ) : (
+              <ol>
+                {/* Log In */}
+                {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
+                  <Link to='/login'><button className='navigation-link non-CTA-button'>Log in</button></Link>
+                ) : null}
 
-              {/* Edit Profile */}
-              {location.pathname !== '/login' && location.pathname !== '/sign-up' ? (
-                <Link to='/profile'><button className='navigation-link CTA-button-one'>Edit Profile</button></Link>
-              ) : null}
+                {/* Log In Page Nav Item */}
+                {location.pathname === '/login' || location.pathname === '/login/forgot' ? (
+                  <div className='login-page-nav-item'>
+                    <p>Don't have a Cinera account?</p>
+                    <Link to='/sign-up'><button className='fixed-navigation-link'>Sign up</button></Link>
+                  </div>
+                ) : null}
+    
+                {/* Sign Up */}
+                {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
+                  <Link to='/sign-up'><button className='navigation-link CTA-button-one'>Sign up</button></Link>
+                ) : null}
 
-              {/* Search Icon */}
-              {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
-                <button className={`mobile-search-wrapper ${sideNav ? 'is-hidden' : ''}`}>
-                  <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='mobile-search-icon' />
-                </button>
-              ) : null}
-              
-              {/* Hamburger Menu */}
-              {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
-                <button onClick={handleSideNav} className={`hamburger-menu ${sideNav ? 'is-active' : ''}`}>
-                  <div className='hamburger-line'></div>
-                </button>
-              ) : null}
-            </ol>
+                {/* Sign Up Page Nav Item */}
+                {location.pathname === '/sign-up' ? (
+                  <div className='login-page-nav-item'>
+                    <p>Already have a Cinera account?</p>
+                    <Link to='/login'><button className='fixed-navigation-link'>Log in</button></Link>
+                  </div>
+                ) : null}
+
+                {/* Search Icon */}
+                {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
+                  <button className={`mobile-search-wrapper ${sideNav ? 'is-hidden' : ''}`}>
+                    <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='mobile-search-icon' />
+                  </button>
+                ) : null}
+                
+                {/* Hamburger Menu */}
+                {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
+                  <button onClick={handleSideNav} className={`hamburger-menu ${sideNav ? 'is-active' : ''}`}>
+                    <div className='hamburger-line'></div>
+                  </button>
+                ) : null}
+              </ol>
+            )}
           </nav>
         </div>
       </header>
