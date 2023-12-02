@@ -1,91 +1,112 @@
-import { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../stylings/account.css';
-import AccountSubsection from '../components/AccountSubsection';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// Import FontAwesomeIcon if you're using icons
 
 const UserProfile = () => {
+    // State for user data and editing mode
+    const [userData, setUserData] = useState({
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        address: '', // Added address field
+    });
+    const [isEditing, setIsEditing] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Password Input Outline
-    const [password, setPassword] = useState('');
-    const [passwordInput, setPasswordInput] = useState(false);
-    const handleInputFocus = () => {
-        setPasswordInput(true);
-    };
-    const handleInputBlur = () => {
-        setPasswordInput(false);
-    };
+    // Fetch user data from the server on component mount
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                setIsLoading(true);
+                const response = await fetch('http://localhost:8000/api/get-user');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setUserData({
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    phoneNumber: data.phoneNumber,
+                    address: data.address, // Assuming the API returns this
+                });
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                setError(error.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
 
-    // Password Visibility
-    const [passwordVisible, setPasswordVisible] = useState(false);
-    const passwordInputRef = useRef(null);
-    const handleTogglePasswordVisibility = (e) => {
-    e.preventDefault();
+        fetchUserData();
+    }, []);
 
-    if (passwordInputRef.current) {
-      const caretPosition = passwordInputRef.current.selectionStart;
-
-      setPasswordVisible(!passwordVisible);
-
-      setTimeout(() => {
-        if (passwordInputRef.current) {
-          passwordInputRef.current.focus();
-          passwordInputRef.current.setSelectionRange(caretPosition, caretPosition);
+    // Function to handle saving changes
+    const handleSaveChanges = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/api/edit-user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log('Success:', data);
+            setIsEditing(false); // Turn off editing mode
+        } catch (error) {
+            console.error('Error:', error);
+            setError(error.message);
         }
-      });
+    };
+
+    if (isLoading) {
+        return <div>Loading...</div>;
     }
-  };
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
     return (
-    <section className='temporary section-wrapper'>
-        <div className='section-container-narrow'>
-            <h2>Profile</h2>
-            <form className='user-info-form'>
-                <div className='user-infos'>
-                    <div className='user-info'>
-                        <label className='user-info-label'>First name</label>
-                        <input type='text' placeholder='Jane' className='user-info-input' />
-                    </div>
-                    <div className='user-info'>
-                        <label className='user-info-label'>Last name</label>
-                        <input type='text' placeholder='Doe' className='user-info-input' />
-                    </div>
+        <section className='temporary section-wrapper'>
+            <div className='section-container-narrow'>
+                <div className='profile-header'>
+                    <h2>Profile</h2>
                 </div>
-                <div className='user-info'>
-                    <label className='user-info-label'>Mobile number</label>
-                    <input type='text' placeholder='404-123-4567' className='user-info-input' />
+                <div className='user-info-form'>
+                    <div className='user-infos'>
+                        {isEditing ? (
+                            <>
+                                <input type="text" value={userData.firstName} onChange={(e) => setUserData({...userData, firstName: e.target.value})} />
+                                <input type="text" value={userData.lastName} onChange={(e) => setUserData({...userData, lastName: e.target.value})} />
+                                <input type="text" value={userData.phoneNumber} onChange={(e) => setUserData({...userData, phoneNumber: e.target.value})} />
+                                <input type="text" value={userData.address} onChange={(e) => setUserData({...userData, address: e.target.value})} />
+                            </>
+                        ) : (
+                            <>
+                                <div className='user-info-text'>{userData.firstName}</div>
+                                <div className='user-info-text'>{userData.lastName}</div>
+                                <div className='user-info-text'>{userData.phoneNumber}</div>
+                                <div className='user-info-text'>{userData.address}</div>
+                            </>
+                        )}
+                    </div>
+                    {isEditing ? (
+                        <>
+                            <button onClick={handleSaveChanges}>Save Changes</button>
+                            <button onClick={() => setIsEditing(false)}>Cancel</button>
+                        </>
+                    ) : (
+                        <button onClick={() => setIsEditing(true)}>Edit Profile</button>
+                    )}
                 </div>
-                <div className='user-info'>
-            <label className='user-info-label'>Password</label>
-            <div className={`password-info ${passwordInput ? 'is-active' : ''}`}>
-              <input
-                type={passwordVisible ? 'text' : 'password'}
-                value={password}
-                ref={passwordInputRef}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                onChange={(e) => setPassword(e.target.value)}
-                className='enhanced-input'
-              />
-              <button
-                onClick={handleTogglePasswordVisibility}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                className='eye-icon-wrapper'
-              >
-                <FontAwesomeIcon
-                  icon={passwordVisible ? 'fa-solid fa-eye-slash fa-1x' : 'fa-solid fa-eye fa-1x'}
-                  className='eye-icon'
-                />
-              </button>
             </div>
-          </div>
-                <AccountSubsection name="shipping-info" />
-                <AccountSubsection name="payment-info" />
-            </form>
-            <button className='CTA-button-one'>Save changes</button>
-        </div>
-    </section>
-  )
-}
+        </section>
+    );
+};
 
-export default UserProfile;
+export default UserProfile; 

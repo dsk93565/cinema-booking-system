@@ -1,208 +1,74 @@
-.account .CTA-button-one, .account .CTA-button-two {
-    font-size: 1rem;
-    font-weight: 500;
-    width: 100%;
-    padding: 1rem 1.25rem;
+.section-wrapper {
+    font-family: 'Arial', sans-serif; /* Adjust the font-family as per your design */
 }
 
-.login .user-info:first-child {
-    margin-top: 0;
+.profile-header h2 {
+    font-size: 2rem; /* Adjust the font-size as per your design */
+    text-align: center; /* Center the title */
+    margin-bottom: 2rem; /* Space below the title */
 }
 
-.password-info {
-    background-color: var(--accent-four);
-    border-radius: 2rem;
-    outline: transparent 0.125rem solid;
-    width: 100%;
+.user-info-form {
     display: flex;
-    align-items: center;
-    transition: outline 0.2s ease-in-out;
-}
-
-.password-info.is-active {
-    outline: var(--accent-two) 0.125rem solid;
-}
-
-.forgot-password .user-info-form {
-    margin-bottom: 4rem;
-}
-
-.forgot-password h2 {
-    margin-bottom: 1.5rem;
-}
-
-.forgot-password p {
-    margin-bottom: 3rem;
-}
-
-.change-password .user-info:first-child {
-    margin-top: 0;
-}
-
-.eye-icon-wrapper {
-    background-color: transparent;
-    border: none;
-    height: 100%;
-    padding: 0 1.125rem 0 0.5625rem;
-}
-
-.eye-icon-wrapper:hover .eye-icon {
-    color: var(--primary);
-}
-
-.eye-icon {
-    color: var(--accent-three);
-    height: 1.125rem;
-    transition: color 0.1s ease-in-out;
-}
-
-.sign-up .user-infos {
     flex-direction: column;
-    row-gap: 2rem;
+    align-items: center; /* Center the user information fields */
+    gap: 1rem; /* Space between each field */
 }
 
-.sign-up .user-infos .user-info {
-    margin-top: 0;
+.user-infos {
+    width: 100%; /* Full width of the container */
 }
 
-.shipping-address .user-infos {
-    flex-direction: column;
+.user-info-text,
+input[type="text"] {
+    background-color: #EDE7F6; /* Light purple background as seen in the image */
+    border: none; /* No border */
+    border-radius: 20px; /* Rounded corners */
+    padding: 1rem; /* Padding inside the fields */
+    font-size: 1rem; /* Font size */
+    color: #333; /* Text color */
+    width: 100%; /* Full width of the container */
 }
 
-.user-info.state, .user-info.zip, .user-info.card-num, .user-info.exp-date {
-    width: 100%;
+input[type="text"] {
+    outline: none; /* No outline on focus */
 }
 
-.shipping-address .user-info:nth-last-child(3) {
-    margin-top: 0;
+/* Placeholder style if needed */
+input::placeholder {
+    color: #666; /* Lighter text color for placeholder */
 }
 
-.payment-info .user-info:first-child {
-    margin-top: 0;
+button {
+    background-color: #7E57C2; /* Dark purple background for the button */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 20px; /* Rounded corners */
+    padding: 1rem 2rem; /* Padding inside the button */
+    font-size: 1rem; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    outline: none; /* No outline on focus */
+    transition: background-color 0.3s; /* Smooth transition for background color */
 }
 
-.payment-info .user-infos {
-    flex-direction: column;
+button:hover {
+    background-color: #5E35B1; /* Slightly darker purple on hover */
 }
 
-.payment-info .user-infos .user-info {
-    margin-top: 2rem;
+/* If you have an edit and cancel button, you might want to distinguish them */
+.save-button {
+    /* Additional styles for save button if needed */
 }
 
-.payment-info .user-info-option {
-    width: fit-content;
-    align-self: end;
+.cancel-button {
+    /* Additional styles for cancel button if needed */
 }
 
-.payment-info .user-info-CTA-button {
-    margin-top: 0;
-}
-
-.verification h2, .confirmation h2 {
-    margin-bottom: 2rem;
-}
-
-.verification p {
-    font-size: 1.125rem;
-    margin-bottom: 3rem;
-}
-
-.forgot-password .section-container-narrow, .verification .section-container-narrow, .confirmation .section-container-narrow {
-    row-gap: 0;
-}
-
-.verification-code {
-    margin-bottom: 1.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    column-gap: 1.25rem;
-    row-gap: 1.25rem;
-}
-
-.verification-number {
-    color: var(--primary);
-    background-color: var(--accent-four);
-    border: none;
-    border-radius: 1rem;
-    outline: transparent 0.125rem solid;
-    font-size: 1.25rem;
-    font-weight: 400;
-    height: 4rem;
-    width: 4rem;
-    transition: outline 0.2s ease-in-out;
-    text-align: center;
-}
-
-.verification-number:focus {
-    outline: var(--accent-two) 0.125rem solid;
-}
-
-.verification .user-info-option {
-    width: fit-content;
-    margin: 0 0 3rem 0;
-    align-self: end;
-}
-
-/** .user-info-option {
-    width: fit-content;
-    margin: 0 0 3rem 0;
-    align-self: end;
-    transition: color 0.3s ease-in-out;
-} **/
-
-.confirmation p {
-    font-size: 1.25rem;
-    margin-bottom: 4rem;
-}
-
-
-@media only screen and (min-width: 22rem) {
-    .verification-code {
-        justify-content: space-between;
-        column-gap: 0;
-        row-gap: 0;
-    }
-
-    .verification-number {
-        height: 4.25rem;
-        width: 4.25rem;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .user-infos {
+        width: 90%; /* Adjust width for smaller screens */
     }
 }
 
-@media only screen and (min-width: 24rem) {
-    .sign-up .user-infos, .payment-info .user-infos {
-        flex-direction: row;
-        row-gap: 0;
-    }
-
-    .shipping-address .user-infos {
-        flex-direction: row;
-    }
-
-    .user-info.state, .user-info.card-num {
-        width: 65%;
-    }
-
-    .user-info.zip, .user-info.exp-date {
-        width: 35%;
-    }
-}
-
-@media only screen and (min-width: 40rem) {
-    .verification-number {
-        height: 4.5rem;
-        width: 4.5rem;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+/* Add any additional styles you might need */

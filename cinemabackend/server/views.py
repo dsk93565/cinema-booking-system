@@ -70,7 +70,7 @@ class EditUser(APIView):
         
         #CAN BE REFACTORED WITH SERIALIZER
         new_password = data.get('password')
-        new_number = data.get('phoneumber')
+        new_number = data.get('phonenumber')
         new_first = data.get('first_name')
         new_last = data.get('last_name')
         new_promo = data.get('promotions')
