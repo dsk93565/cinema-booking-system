@@ -877,7 +877,7 @@ const SignUp = (props) => {
           <div className='section-container-narrow'>
             <h2>Account confirmed</h2>
             <p>Congratulations! Your account has been successfully created. Jump right in to explore the new era of cinema.</p>
-            <button className='CTA-button-one'>Browse Cinera</button>
+            <Link to="/"><button className='CTA-button-one'>Browse Cinera</button></Link>
           </div>
         </section>
       )}
