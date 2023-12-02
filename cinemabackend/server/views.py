@@ -88,7 +88,7 @@ class EditUser(APIView):
         return Response({"Success": 1})
 
 class GetUser(APIView):
-    def get(self, request):
+    def post(self, request):
         try: 
             print(request.data)
             data = json.loads(request.body.decode('utf-8'))
