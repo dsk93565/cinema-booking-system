@@ -69,9 +69,9 @@ class EditUser(APIView):
         
         #CAN BE REFACTORED WITH SERIALIZER
         new_password = data.get('password')
-        new_number = data.get('mobileNumber')
-        new_first = data.get('firstName')
-        new_last = data.get('lastName')
+        new_number = data.get('phoneumber')
+        new_first = data.get('first_name')
+        new_last = data.get('last_name')
         new_promo = data.get('promotions')
         if new_password is not None:
             user_to_modify.password = new_password
@@ -112,7 +112,7 @@ class Create_User(APIView):
         new_email = data.get('email')
         exsisting_users = CustomUser.objects.filter(email=new_email)
         if exsisting_users.exists():
-            return Response({"error: email is already registered to an exsisting user": -1})
+            return Response({"email_is_already_registered": -1})
         new_password = data.get('password')
         new_number = data.get('mobileNumber')
         new_first = data.get('firstName')
@@ -143,9 +143,9 @@ class Login(APIView):
         if user is None:
             return Response({"user_token":-1})
         print(user.state_id)
-        # if user.state_id != 2: 
-        #     print('herer')
-        #     return Response({"user_token":-2})
+        if user.state_id != 2: 
+            print('herer')
+            return Response({"user_token":-2})
         token, created = Token.objects.get_or_create(user=user)
         data = {   
             'user_token': token.key,
