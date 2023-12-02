@@ -90,7 +90,9 @@ class EditUser(APIView):
 class GetUser(APIView):
     def get(self, request):
         try: 
+            print(request.data)
             data = json.loads(request.body.decode('utf-8'))
+            print('gets here') 
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
         token_str = data.get('user_token')
@@ -99,8 +101,10 @@ class GetUser(APIView):
             user = token.user
             serializer_class = UserSerializer(user, many=False)
             user_json = {"user":serializer_class.data}
+            print(user_json + 'user pinrt')
             return Response(user_json)
         except:
+            print('get user error')
             return Response({"error cold not find token": -1})
 
 class Create_User(APIView):

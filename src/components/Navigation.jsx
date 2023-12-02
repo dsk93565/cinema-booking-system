@@ -107,7 +107,7 @@ const Navigation = () => {
                 <Link to='/order/confirmation'><button className='navigation-link non-CTA-button'>Cart</button></Link>
 
                 {/* Sign Out */}
-                <button onClick={handleSignOut} className='navigation-link non-CTA-button'>Sign out</button>
+                <button onClick={handleSignOut} className='navigation-link CTA-button-one'>Sign out</button>
               </ol>
             ) : (
               <ol>
