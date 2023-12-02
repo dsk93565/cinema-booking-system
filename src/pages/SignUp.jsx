@@ -533,7 +533,7 @@ const SignUp = (props) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: email, verficationCode: enteredVerificationCode }),
+        body: JSON.stringify({ email: email, verificationCode: enteredVerificationCode }),
       })
         .then((response) => {
           if (response.status === 200) {

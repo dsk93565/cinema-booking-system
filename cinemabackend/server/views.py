@@ -28,9 +28,13 @@ class Email_Is_Verified(APIView):
         user_to_verify = CustomUser.objects.get(email=verified_email)
         if user_to_verify is None:
             return Response({"error: user not found": -1})
+        print(user_to_verify.verification_code)
+        print(data.get('verificationCode') + ' passed field')
+        print(int(data.get('verificationCode')) == user_to_verify.verification_code)
         if data.get('verificationCode') == user_to_verify.verification_code:
             user_to_verify.state_id = 2
             user_to_verify.save()
+            print('USER SHOULD BE VERIFIED')
             return Response({'email verified': 200})
         else:
             return Response({'wrong code': -1})
@@ -119,14 +123,17 @@ class Create_User(APIView):
         new_last = data.get('lastName')
         new_promo = data.get('promotions')
 
-        new_user = CustomUser.objects.create(username=new_username, email=new_email, password=new_password, 
+        new_user = CustomUser.objects.create(username=new_username, email=new_email, password=make_password(new_password), 
                                              first_name=new_first, last_name=new_last, phone_number=new_number, state_id=1, promotions=new_promo)
         
         new_user.save()
-        if data.get('cardNumber') is not None:
-            new_request = [new_user, data]
-            card = Save_Card()
-            key = card.saveCard(new_request)
+        try: 
+            if data.get('cardNumber') is not None:
+                new_request = [new_user, data]
+                card = Save_Card()
+                key = card.saveCard(new_request)
+        except:
+            print('could not save card')
         token, created = Token.objects.get_or_create(user=new_user)
         return Response({'user_token': token.key})
 
@@ -144,7 +151,7 @@ class Login(APIView):
             return Response({"user_token":-1})
         print(user.state_id)
         if user.state_id != 2: 
-            print('herer')
+            print('here')
             return Response({"user_token":-2})
         token, created = Token.objects.get_or_create(user=user)
         data = {   
