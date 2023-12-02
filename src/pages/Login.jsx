@@ -83,10 +83,10 @@ const Login = () => {
         password: password,
       });
 
-      if (response.data === -1) {
+      if (response.data.user_token === -1) {
         localStorage.removeItem('userToken');
         setStatusMessage('Invalid email and/or password');
-      } else if (response.data === -2) {
+      } else if (response.data.user_token === -2) {
         localStorage.removeItem('userToken');
         setStatusMessage('Account is not verified');
         setShowVerifyEmailButton(true);

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import Select from 'react-select';
@@ -30,8 +30,6 @@ const SignUp = (props) => {
   const location = useLocation();
   const initialSignUpStep = location.state?.signUpStep || 1;
   const [signUpStep, setSignUpStep] = useState(initialSignUpStep);
-  console.log(props);
-  console.log('-----');
   const handleSkipButtonClick = () => {
     if (signUpStep === 2) {
       setShippingStreetAddress('');
@@ -876,7 +874,7 @@ const SignUp = (props) => {
           <div className='section-container-narrow'>
             <h2>Account confirmed</h2>
             <p>Congratulations! Your account has been successfully created. Jump right in to explore the new era of cinema.</p>
-            <button className='CTA-button-one'>Browse Cinera</button>
+            <Link to='/'><button className='CTA-button-one'>Browse Cinera</button></Link>
           </div>
         </section>
       )}
