@@ -117,8 +117,11 @@ class Create_User(APIView):
         new_number = data.get('mobileNumber')
         new_first = data.get('firstName')
         new_last = data.get('lastName')
-        new_user = CustomUser.objects.create(username=new_username, email=new_email, password=make_password(new_password), 
-                                             first_name=new_first, last_name=new_last, phone_number=new_number, state_id=1)
+        new_promo = data.get('promotions')
+
+        new_user = CustomUser.objects.create(username=new_username, email=new_email, password=new_password, 
+                                             first_name=new_first, last_name=new_last, phone_number=new_number, state_id=1, promotions=new_promo)
+        
         new_user.save()
         if data.get('cardNumber') is not None:
             new_request = [new_user, data]
@@ -138,11 +141,17 @@ class Login(APIView):
         authenticator_instance = EmailAuthBackend()
         user = authenticator_instance.authenticate(request, email=user_email, password=user_password)
         if user is None:
-            return Response(-1)
-        if user.state_id != 2: 
-            return Response(-2)
+            return Response({"user_token":-1})
+        print(user.state_id)
+        # if user.state_id != 2: 
+        #     print('herer')
+        #     return Response({"user_token":-2})
         token, created = Token.objects.get_or_create(user=user)
-        return Response({'user_token': token.key})
+        data = {   
+            'user_token': token.key,
+            'user_type': user.type_id
+        }
+        return Response(data)
         
 class ForgotPassword(APIView):
     def post(self, request):

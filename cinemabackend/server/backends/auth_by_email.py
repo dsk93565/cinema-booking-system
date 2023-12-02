@@ -1,11 +1,17 @@
-from django.contrib.auth import get_user_model
+from server.models import CustomUser
+from django.contrib.auth.hashers import check_password
 class EmailAuthBackend:
     def authenticate(self, request, email, password):
-        User = get_user_model()
         try:
-            user = User.objects.get(email=email)
-            if user.check_password(password):
+            user = CustomUser.objects.get(email=email)
+            if user.password == password: 
+                print ('user returned')
+            # this is not working... if it turns out the password weren't being hashed then come back to this
+            # if user.check_password(password):
+            #     print("PlEASEEEEE")
                 return user
-        except User.DoesNotExist:
+            else:
+                print("no error but no correct password")
+        except:
             return None
 
