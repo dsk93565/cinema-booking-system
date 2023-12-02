@@ -515,7 +515,7 @@ const SignUp = (props) => {
       body: JSON.stringify({ email: email }),
     })
       .then((response) => {
-        if (response.status === 200) {
+        if (response.email_sent === 1) {
           console.error('Sent user email to the server.');
         } else {
           setStatusMessage('Failed to send email');
@@ -536,10 +536,10 @@ const SignUp = (props) => {
         body: JSON.stringify({ email: email, verificationCode: enteredVerificationCode }),
       })
         .then((response) => {
-          if (response.status === 200) {
+          if (response.email_verified === 1) {
             setSignUpStep(signUpStep + 1);
           } else {
-            setStatusMessage('Failed to send new verification code');
+            setStatusMessage('incorrect verification code');
           } // if else
         })
         .catch((error) => {

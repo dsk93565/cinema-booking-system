@@ -27,14 +27,14 @@ class Email_Is_Verified(APIView):
         verified_email = data.get('email')
         user_to_verify = CustomUser.objects.get(email=verified_email)
         if user_to_verify is None:
-            return Response({"error: user not found": -1})
+            return Response({"email_verified": -1})
         if int(data.get('verificationCode')) == user_to_verify.verification_code:
             user_to_verify.state_id = 2
             user_to_verify.save()
             print('USER SHOULD BE VERIFIED')
-            return Response({'email verified': 200})
+            return Response({'email_verified': 1})
         else:
-            return Response({'wrong code': -1})
+            return Response({'email_verified': -1})
 
 
 class Send_Verification_Email(APIView):
@@ -42,17 +42,17 @@ class Send_Verification_Email(APIView):
         try: 
             data = json.loads(request.body.decode('utf-8'))
         except json.JSONDecodeError:
-            return Response({"error: could not decode json object": -5})
+            return Response({"email_sent": -2})
         subject = 'Cinera Verifcation Code'
         verification_code = random.randint(10000, 99999)
         email = data.get('email')
         user_to_verify = CustomUser.objects.get(email=email)
         if user_to_verify is None:
-            return Response({"error: user not found": -1})
+            return Response({"email_sent": -1})
         user_to_verify.verification_code = verification_code
         user_to_verify.save()
         send_mail(subject, str(verification_code), "cineraecinemabooking@gmail.com", [email])
-        return Response({'email sent': 1})
+        return Response({'email_sent': 1})
 
 
 #How this is currently implemented besides Email, pass only the fields that you want to modify
