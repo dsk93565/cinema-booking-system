@@ -28,10 +28,7 @@ class Email_Is_Verified(APIView):
         user_to_verify = CustomUser.objects.get(email=verified_email)
         if user_to_verify is None:
             return Response({"error: user not found": -1})
-        print(user_to_verify.verification_code)
-        print(data.get('verificationCode') + ' passed field')
-        print(int(data.get('verificationCode')) == user_to_verify.verification_code)
-        if data.get('verificationCode') == user_to_verify.verification_code:
+        if int(data.get('verificationCode')) == user_to_verify.verification_code:
             user_to_verify.state_id = 2
             user_to_verify.save()
             print('USER SHOULD BE VERIFIED')
