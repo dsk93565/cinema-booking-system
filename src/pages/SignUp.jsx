@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
 import Select from 'react-select';
 import '../stylings/account.css';
 
@@ -505,7 +506,6 @@ const SignUp = (props) => {
       verificationInputRefs[index - 1].current.focus();
     } // if
   };
-  const [verificationCode, setVerificationCode] = useState('');
   const sendVerificationCode = () => {
     fetch('http://localhost:8000/api/verify-email', {
       method: 'POST',
@@ -515,7 +515,7 @@ const SignUp = (props) => {
       body: JSON.stringify({ email: email }),
     })
       .then((response) => {
-        if (response.email_sent === 1) {
+        if (response.data.email_sent === 1) {
           console.error('Sent user email to the server.');
         } else {
           setStatusMessage('Failed to send email');
@@ -525,26 +525,25 @@ const SignUp = (props) => {
         console.error('Error occurred while sending email:', error);
       });
   };
-  const handleVerificationCodeSubmit = () => {
+  const handleVerificationCodeSubmit = async (e) => {
+    e.preventDefault();
+
     const enteredVerificationCode = verificationCodeInputs.join('');
 
-    fetch('http://localhost:8000/api/email-is-verified', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email, verificationCode: enteredVerificationCode }),
-      })
-        .then((response) => {
-          if (response.email_verified === 1) {
-            setSignUpStep(signUpStep + 1);
-          } else {
-            setStatusMessage('incorrect verification code');
-          } // if else
-        })
-        .catch((error) => {
-          console.error('Error occurred while sending verification code:', error);
-        });
+    try {
+      const response = await axios.post(`http://localhost:8000/api/email-is-verified`, {
+        email: email,
+        verificationCode: enteredVerificationCode
+      });
+
+      if (response.data.email_verified === 1) {
+        setSignUpStep(signUpStep + 1);
+      } else {
+        setStatusMessage('Incorrect verification code');
+      } // if else
+    } catch (error) {
+      console.error('Error occurred while sending verification code:', error);
+    } // try catch
   };
 
   // Resend Verification Code

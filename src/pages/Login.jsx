@@ -91,7 +91,6 @@ const Login = () => {
         setStatusMessage('Account is not verified');
         setShowVerifyEmailButton(true);
       } else {
-        console.log(response.data.user_token);
         localStorage.setItem('userToken', response.data.user_token);
         if (rememberMe) {
           localStorage.setItem('rememberMe', 'true');
