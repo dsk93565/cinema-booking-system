@@ -148,7 +148,6 @@ class Login(APIView):
             return Response({"user_token":-1})
         print(user.state_id)
         if user.state_id != 2: 
-            print('here')
             return Response({"user_token":-2})
         token, created = Token.objects.get_or_create(user=user)
         data = {   

@@ -4,7 +4,7 @@ class EmailAuthBackend:
     def authenticate(self, request, email, password):
         try:
             user = CustomUser.objects.get(email=email)
-            if user.password == password: 
+            if user.check_password(password): 
             # this is not working... if it turns out the password weren't being hashed then come back to this
             # if user.check_password(password):
             #     print("PlEASEEEEE")
