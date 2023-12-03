@@ -528,10 +528,6 @@ const SignUp = (props) => {
 
     const enteredVerificationCode = verificationCodeInputs.join('');
 
-    if (enteredVerificationCode.length !== 5) {
-      setStatusMessage('Please enter all 5 digits');
-    } // if
-
     try {
       const response = await axios.post(`http://localhost:8000/api/email-is-verified`, {
         email: email,

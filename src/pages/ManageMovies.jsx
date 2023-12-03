@@ -1,10 +1,13 @@
 import '../stylings/admin.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import AddMovie from '../components/AddMovie';
 
 const ManageMovies = () => {
 
   const [movies, setMovies] = useState([]);
+  const [addMovieModal, setAddMovieModal] = useState(false);
+  const [scheduleMovieModal, setScheduleMovieModal] = useState(false);
 
   useEffect( () => {
     fetchMovies();
@@ -27,8 +30,7 @@ const ManageMovies = () => {
     <section className='admin-section-wrapper'>
         <div className='admin-container-narrow'>
             <h2>Manage movies</h2>
-            <button className='CTA-button-one'>Add movie</button>
-            <button className='CTA-button-one'>Hide movie</button>
+            <button className='CTA-button-one' onClick={() => setAddMovieModal(true)}>Add movie</button>            
             <button className='CTA-button-one'>Schedule movie</button>
         </div>
         <div className='admin-body'>
@@ -44,10 +46,17 @@ const ManageMovies = () => {
                     <p><strong>Director:</strong> {movie.director}</p>
                     <p><strong>Producer:</strong> {movie.producer}</p>
                 </div>
+                <div className='admin-button-container'>
+                  <button className='admin-movie-button'>Hide Movie</button>
+                  <button className='admin-movie-button'>Edit Movie</button>
+                </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/** Add Movie Modal */}
+        {addMovieModal && (<AddMovie onClose={() => setAddMovieModal(false)}></AddMovie>)}
     </section>
   )
 }
