@@ -4,12 +4,9 @@ from .models import Movies, CustomUser, Card
 class UserSerializer(serializers.ModelSerializer):
         class Meta: 
                model = CustomUser
-               fields = ['cid', 'card_type', 'card_number']
+               fields = ['username', 'email', 'phone_number', 'first_name', 
+                         'last_name', 'type_id', 'state_id', 'promotions']
 
-class CardSerializer(serializers.ModelSerializer):
-       class Meta:
-              model = Card
-              fields = ['car']
 class MovieSerializer(serializers.ModelSerializer):
         class Meta:
             model = Movies
