@@ -35,7 +35,10 @@ function App() {
           <Route path='forgot' element={<ForgotPassword />} />
         </Route>
         <Route path='/change-password/:identifier/:token' element={<ChangePassword />} />
-        <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/sign-up'>
+          <Route path='' element={<SignUp />} />
+          <Route path=':verifyStep' element={<SignUp />} />
+        </Route>
         <Route path='/profile' element={<UserProfile />} />
         <Route path='/search-results' element={<SearchResults />} />
         <Route path='/book'>

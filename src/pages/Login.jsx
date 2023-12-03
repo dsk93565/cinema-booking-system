@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/account.css';
@@ -10,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
+  const signUpStep = 4;
 
   // Password Input Outline
   const [passwordInput, setPasswordInput] = useState(false);
@@ -155,12 +156,13 @@ const Login = () => {
             Log in
           </button>
           <div className='user-options'>
-            <Link to={{ pathname: '/sign-up', state: { signUpStep: 4 } }}>
-              <button
-                className={`user-info-option no-show ${showVerifyEmailButton ? 'show' : ''}`}
-              >
-                Verify email
-              </button>
+            <Link to={`/sign-up/${signUpStep}`}>
+            <button
+              className={`user-info-option no-show ${showVerifyEmailButton ? 'show' : ''}`}
+              onClick={() => localStorage.setItem('userEmail', email)}
+            >
+              Verify email
+            </button>
             </Link>
             <div className='status-message'>{statusMessage}</div>
           </div>
