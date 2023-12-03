@@ -18,7 +18,7 @@ import TemporaryOrderSummary from './TemporaryOrderSummary';
 import TemporaryCheckout from './TemporaryCheckout';
 import TemporaryCheckoutConfirmation from './TemporaryCheckoutConfirmation';
 import TemporaryAdminView from './TemporaryAdminView';
-import TemporaryManageMovies from './TemporaryManageMovies';
+import ManageMovies from './ManageMovies';
 import TemporaryManagePromotions from './TemporaryManagePromotions';
 import TemporaryManageUsers from './TemporaryManageUsers';
 
@@ -51,7 +51,7 @@ function App() {
         </Route>
         <Route path='/admin'>
           <Route path='' element={<TemporaryAdminView />} />
-          <Route path='manage-movies' element={<TemporaryManageMovies />} />
+          <Route path='manage-movies' element={<ManageMovies />} />
           <Route path='manage-promotions' element={<TemporaryManagePromotions />} />
           <Route path='manage-users' element={<TemporaryManageUsers />} />
         </Route>
