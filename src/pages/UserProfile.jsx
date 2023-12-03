@@ -90,10 +90,18 @@ const UserProfile = () => {
                                     value={userData.firstName} 
                                     onChange={(e) => setUserData({...userData, firstName: e.target.value})} 
                                 />
-
-                                {/* ... other input fields ... */}
-
-                                {/* Display email, but make it read-only */}
+                                <label>Last Name</label>
+                                <input 
+                                    type="text" 
+                                    value={userData.lastName} 
+                                    onChange={(e) => setUserData({...userData, lastName: e.target.value})} 
+                                />
+                                <label>Phone Number</label>
+                                <input 
+                                    type="text" 
+                                    value={userData.phoneNumber} 
+                                    onChange={(e) => setUserData({...userData, phoneNumber: e.target.value})} 
+                                />
                                 <label>Email</label>
                                 <input 
                                     type="email" 
