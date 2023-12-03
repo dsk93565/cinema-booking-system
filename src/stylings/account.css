@@ -127,44 +127,81 @@
     font-size: 1.25rem;
     margin-bottom: 4rem;
 }
+
 .user-info-form {
     display: flex;
     flex-direction: column;
     align-items: stretch;
 }
 
+/* Grid layout for user information sections */
 .user-infos {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust the column width as needed */
-    gap: 1rem; /* Add spacing between columns */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
+/* Label styles */
 .user-infos label {
     margin-bottom: 0.5rem;
 }
 
-/* Separate styles for the first and last name */
-.user-infos input[type="text"].name-input {
+.user-infos input[type="text"],
+.user-infos input[type="email"],
+.user-infos input[type="password"] {
     padding: 0.5rem;
     margin-bottom: 1rem;
     border: 1px solid #ddd;
     border-radius: 4px;
 }
 
-/* Styles for phone number, address, and email */
-.user-infos input[type="text"].contact-info {
+/* Input field styles */
+.user-infos input[type="text"],
+.user-infos input[type="email"],
+.user-infos input[type="tel"] { /* Added type="tel" for phone number */
     padding: 0.5rem;
     margin-bottom: 1rem;
     border: 1px solid #ddd;
     border-radius: 4px;
 }
 
+/* Styles for displaying user information */
 .user-info-display {
     background-color: #f4f4f4;
     padding: 0.5rem;
     margin-bottom: 0.5rem;
     border-radius: 4px;
 }
+
+/* Edit, Save, and Cancel button styles */
+.edit-button {
+    background-color: rgb(167, 87, 167);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+.save-changes-button, .cancel-button {
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.save-changes-button {
+    background-color: purple;
+    color: white;
+    border: none;
+}
+
+.cancel-button {
+    background-color: white;
+    color: black;
+    border: 1px solid #ddd;
+}
+
 
 @media only screen and (min-width: 22rem) {
     .verification-code {
@@ -208,3 +245,17 @@
       transform: translateY(0);
     }
   }
+  @media only screen and (min-width: 24rem) {
+    .sign-up .user-infos,
+    .payment-info .user-infos,
+    .shipping-address .user-infos {
+        /* Remove flex-direction: row; to keep the default column direction */
+    }
+
+    .user-info.state, .user-info.zip, .user-info.card-num, .user-info.exp-date {
+        width: 100%; /* Ensure full width for individual fields */
+    }
+}
+
+@media (min-width: 24rem) {
+}
