@@ -60,7 +60,6 @@ const MoviesCard = (props) => {
                 <button className='scroll-button' onClick={() => scrollSection(-1)}>❮</button>
                 <button className='scroll-button' onClick={() => scrollSection(1)}>❯</button>
             </div>
-            <Link to='trending'><button className='CTA-button-one'>View all</button></Link>
         </div>
     )
 }

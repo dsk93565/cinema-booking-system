@@ -1,65 +1,59 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../stylings/account.css';
-// Import FontAwesomeIcon if you're using icons
 
 const UserProfile = () => {
-    // State for user data and editing mode
     const [userData, setUserData] = useState({
         firstName: '',
         lastName: '',
         phoneNumber: '',
-        address: '', // Added address field
+        address: '',
     });
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState('');
 
-    // Fetch user data from the server on component mount
+    const userToken = localStorage.getItem('userToken');
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                setIsLoading(true);
-                const response = await fetch('http://localhost:8000/api/get-user');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setUserData({
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    phoneNumber: data.phoneNumber,
-                    address: data.address, // Assuming the API returns this
+                const response = await axios.post('http://localhost:8000/api/get-user', {
+                    user_token: userToken
                 });
+                setUserData({
+                    firstName: response.data.user.first_name,
+                    lastName: response.data.user.last_name,
+                    phoneNumber: response.data.user.phone_number,
+                    address: response.data.user.address,
+                });
+                setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                setError(error.message);
-            } finally {
+                setError(error.message || 'Error fetching user data');
                 setIsLoading(false);
             }
         };
 
         fetchUserData();
-    }, []);
+    }, [userToken]);
 
-    // Function to handle saving changes
     const handleSaveChanges = async () => {
         try {
-            const response = await fetch('http://localhost:8000/api/edit-user', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData),
+            const response = await axios.post('http://localhost:8000/api/edit-user', {
+                email: userData.email, // You need to include the email in the userData state
+                password: userData.password, // Include only if you want to update the password
+                phonenumber: userData.phoneNumber,
+                first_name: userData.firstName,
+                last_name: userData.lastName,
+                promotions: userData.promotions, // Include only if you're updating promotions
+                // Include any additional fields you want to update
             });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            console.log('Success:', data);
-            setIsEditing(false); // Turn off editing mode
+            console.log('Success:', response.data);
+            setIsEditing(false);
         } catch (error) {
             console.error('Error:', error);
-            setError(error.message);
+            setError(error.message || 'Error saving changes');
         }
     };
 
