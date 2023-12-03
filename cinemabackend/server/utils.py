@@ -2,6 +2,14 @@ from .models import CustomUser, Card
 from cryptography.fernet import Fernet
 from rest_framework.authtoken.models import Token
 
+def getUserFromToken(token_str):
+    try: 
+        token = Token.objects.get(key=token_str)
+        return token.user
+    except:
+        return None
+
+
 #checks if token is associated with the user
 def checkToken(user, testToken):
     try:
