@@ -75,10 +75,15 @@ const UserProfile = () => {
     }
 
     return (
-        <section className='temporary section-wrapper'>
-            <div className='section-container-narrow'>
+        <section className='user-profile section-wrapper'>
+            <div className='section-container-top'>
                 <div className='profile-header'>
-                    <h2>Profile</h2>
+                    <div className='profile-categories'>
+                        <h2>Basic information</h2>
+                        <h2>Shipping address</h2>
+                        <h2>Payment information</h2>
+                    </div>
+                    <hr className='section-separator' />
                 </div>
                 <div className='user-info-form'>
                     <div className='user-infos'>

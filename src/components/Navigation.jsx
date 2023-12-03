@@ -110,7 +110,9 @@ const Navigation = () => {
                 ) : null}
 
                 {/* Profile */}
-                <Link to='/profile'><button className='navigation-link non-CTA-button'>Profile</button></Link>
+                {location.pathname !== '/profile' ? (
+                  <Link to='/profile'><button className='navigation-link non-CTA-button'>Profile</button></Link>
+                ) : null}
 
                 {/* Cart */}
                 <Link to='/order/confirmation'><button className='navigation-link non-CTA-button'>Cart</button></Link>
