@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import Select from 'react-select';
@@ -25,11 +25,22 @@ const SignUp = (props) => {
   const [billingCityAddress, setBillingCityAddress] = useState('');
   const [billingStateAddress, setBillingStateAddress] = useState('');
   const [billingZipCodeAddress, setBillingZipCodeAddress] = useState('');
+  const verifyEmail = localStorage.getItem('userEmail'); // Used for verification process for non-verified accounts
 
   // Sign Up Process
-  const location = useLocation();
-  const initialSignUpStep = location.state?.signUpStep || 1;
-  const [signUpStep, setSignUpStep] = useState(initialSignUpStep);
+  const { verifyStep } = useParams();
+  const [signUpStep, setSignUpStep] = useState(1);
+
+  useEffect(() => {
+    setSignUpStep(parseInt(verifyStep, 10) === 4 ? 4 : 1);
+
+    if (parseInt(verifyStep, 10) === 4) {
+      setEmail(verifyEmail);
+      sendVerificationCode();
+      localStorage.removeItem('userEmail');
+    } // if
+  }, [verifyEmail, verifyStep]);
+
   const handleSkipButtonClick = () => {
     if (signUpStep === 2) {
       setShippingStreetAddress('');
@@ -504,25 +515,22 @@ const SignUp = (props) => {
       verificationInputRefs[index - 1].current.focus();
     } // if
   };
-  const sendVerificationCode = () => {
-    fetch('http://localhost:8000/api/verify-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: email }),
-    })
-      .then((response) => {
-        if (response.data.email_sent === 1) {
-          console.error('Sent user email to the server.');
-        } else {
-          setStatusMessage('Failed to send email');
-        } // if else
-      })
-      .catch((error) => {
-        console.error('Error occurred while sending email:', error);
+  const sendVerificationCode = async () => {
+    try {
+      const response = await axios.post(`http://localhost:8000/api/verify-email`, {
+        email: email,
       });
+
+      if (response.data.email_sent === 1) {
+        console.log('Sent user email to the server.');
+      } else {
+        setStatusMessage('Failed to send email');
+      } // if else
+    } catch (error) {
+      console.error('Error occurred while sending email:', error);
+    } // try catch
   };
+
   const handleVerificationCodeSubmit = async (e) => {
     e.preventDefault();
 
