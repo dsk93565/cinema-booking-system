@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/admin.css'
+import axios from 'axios';
 
 export default function AddMovie({ onClose }) {
     
@@ -14,11 +15,18 @@ export default function AddMovie({ onClose }) {
     const [trailer, setTrailer] = useState('');
     const [rating, setRating] = useState('');
     const [poster_path, setPosterPath] = useState('');
+
+
+
+    // Filled Form Checker For Basic Information Section
+    const isAddMovieFormFilled = (title && category && cast && director && producer && synopsis && reviews && trailer && rating && poster_path);
+
+    const userToken = localStorage.getItem('userToken');
     
     const handleSubmit = async() => {
 
-        /* const movieInfoExport = {
-            title,
+        const movieInfoExport = {
+            userToken,
             category,
             cast,
             director,
@@ -27,15 +35,25 @@ export default function AddMovie({ onClose }) {
             reviews,
             trailer,
             rating,
+            title,
             poster_path,
-        } */
+        }
 
-        const {data} = await axios.post('http://localhost:8000/api/add-movie', document.querySelector('#addMovieForm'), {
+        console.log(JSON.stringify(movieInfoExport));
+
+        await axios.post('http://localhost:8000/api/admin/add-movie', {
             headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-    
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(movieInfoExport),
+        }).then(function (response) {
+            if (response.status === 403)
+                console.log("Not Authorized");
+            console.log(response);
+        }).catch(function(error) {
+            console.log("Error adding movie: ", error.message);
+        });
+          
         onClose();
     }
 
@@ -54,7 +72,7 @@ export default function AddMovie({ onClose }) {
                                     <input type='text' className='add-movie-input' onChange={(e) => setTitle(e.target.value)}></input>
                                 </div>
                                 <div className='movie-info'>
-                                    <label className='movie-info-label'>Category</label>
+                                    <label className='movie-info-label'>Genre</label>
                                     <input type='text' className='add-movie-input' onChange={(e) => setCategory(e.target.value)}></input>
                                 </div>
                                 <div className='movie-info'>
@@ -96,7 +114,7 @@ export default function AddMovie({ onClose }) {
                         </form>
                     </div>
                     <div className='modal-footer'>
-                        <button className='admin-movie-button' type='submit' onClick={handleSubmit}>Add Movie</button>
+                        <button disabled={!isAddMovieFormFilled} className='admin-movie-button' type='submit' onClick={handleSubmit}>Add Movie</button>
                     </div>
                 </div>
         </div>

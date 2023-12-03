@@ -7,7 +7,6 @@ const Hero = () => {
 
   const userToken = localStorage.getItem('userToken');
   const [username, setUsername] = useState("");
-
   const getUsername = async(token) => {
     try {
       const response = await axios.post(`http://localhost:8000/api/get-user`, {

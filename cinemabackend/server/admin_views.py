@@ -10,11 +10,14 @@ import json, random
 #  synopsis, reviews, trailer, rating, title, poster_path}
 class AddMovie(APIView):
     def post(self, request):
+        print("checking of here")
         try: 
             data = json.loads(request.body.decode('utf-8'))
+            print(data)
             user = getUserFromToken(data.get('user_token'))
             if user is None or user.type_id != 2:
-                return({"error:"-1})
+                print("am i here")
+                return Response({"error": -1})
             new_movie = Movies.objects.create(category=data.get('category'), 
                                               cast=data.get('cast'),
                                               director=data.get('director'), 
@@ -25,7 +28,7 @@ class AddMovie(APIView):
                                               rating=data.get('rating'), 
                                               title=data.get('title'), 
                                               poster_path=data.get('poster_path'))
-            new_movie.save()    
+            new_movie.save()
         except json.JSONDecodeError:
             return Response({"error": -1})
 
