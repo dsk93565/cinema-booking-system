@@ -16,7 +16,7 @@ const Hero = () => {
       setUsername(response.data.user.first_name);
     } catch (error) {
         console.log('Error occurred while retrieving user, code:', error.code);
-      return("ErrorUserNotFound")
+      return('ErrorUserNotFound');
     }
   }
 
