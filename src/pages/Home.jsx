@@ -3,6 +3,7 @@ import MoviesCard from '../components/MoviesCard';
 import Footer from '../components/Footer';
 import '../stylings/home.css';
 
+
 const Home = () => {
   return (
     <div className='home'>

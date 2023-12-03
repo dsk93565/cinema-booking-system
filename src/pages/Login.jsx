@@ -42,15 +42,6 @@ const Login = () => {
 
   // Remember Me Functionality
   const [rememberMe, setRememberMe] = useState(false);
-  useEffect(() => {
-    const rememberMePreference = localStorage.getItem('rememberMe');
-    if (rememberMePreference === 'true') {
-      setRememberMe(true);
-    } // if
-  }, []);
-  const handleRememberMeChange = () => {
-    setRememberMe(!rememberMe);
-  };
 
   // Show/Hide Verify Email Button
   const [showVerifyEmailButton, setShowVerifyEmailButton] = useState(false);
@@ -97,6 +88,7 @@ const Login = () => {
         } else {
           localStorage.removeItem('rememberMe');
         } // if else
+        localStorage.setItem('userType', response.data.user_type);
         navigate('/');
       } // if else-if else
     } catch (error) {
@@ -144,7 +136,14 @@ const Login = () => {
             </div>
           </div>
           <div className='user-options'>
-            <label className='user-checkbox-option'><input type='checkbox' />Remember me</label>
+            <label className='user-checkbox-option'>
+              <input
+                type='checkbox'
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+              />
+              Remember me
+            </label>
             <Link to='forgot'><button className='user-info-option'>Forgot password</button></Link>
           </div>
         </form>
