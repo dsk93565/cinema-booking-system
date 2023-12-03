@@ -6,6 +6,7 @@ import '../stylings/navigation.css';
 
 const Navigation = () => {
   const rememberMe = localStorage.getItem('rememberMe');
+  const userType = localStorage.getItem('userType');
   const userToken = localStorage.getItem('userToken');
   const navigate = useNavigate();
   
@@ -69,6 +70,8 @@ const Navigation = () => {
 
   // Sign Out
   const handleSignOut = () => {
+    localStorage.removeItem('rememberMe');
+    localStorage.removeItem('userType');
     localStorage.removeItem('userToken');
     navigate('/');
   };
@@ -100,6 +103,11 @@ const Navigation = () => {
           <nav className='navigation-menu'>
             {(userToken || rememberMe === 'true') ? (
               <ol>
+                {(userType === '2') ? (
+                  // Admin Portal
+                  <Link to='/admin'><button className='navigation-link non-CTA-button'>Portal</button></Link>
+                ) : null}
+
                 {/* Profile */}
                 <Link to='/profile'><button className='navigation-link non-CTA-button'>Profile</button></Link>
 
