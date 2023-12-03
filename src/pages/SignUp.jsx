@@ -25,21 +25,12 @@ const SignUp = (props) => {
   const [billingCityAddress, setBillingCityAddress] = useState('');
   const [billingStateAddress, setBillingStateAddress] = useState('');
   const [billingZipCodeAddress, setBillingZipCodeAddress] = useState('');
-  const verifyEmail = localStorage.getItem('userEmail'); // Used for verification process for non-verified accounts
+  const verifyEmail = localStorage.getItem('userEmail');
 
   // Sign Up Process
   const { verifyStep } = useParams();
+  const verifyStepAsInt = parseInt(verifyStep, 10);
   const [signUpStep, setSignUpStep] = useState(1);
-
-  useEffect(() => {
-    setSignUpStep(parseInt(verifyStep, 10) === 4 ? 4 : 1);
-
-    if (parseInt(verifyStep, 10) === 4) {
-      setEmail(verifyEmail);
-      sendVerificationCode();
-      localStorage.removeItem('userEmail');
-    } // if
-  }, [verifyEmail, verifyStep]);
 
   const handleSkipButtonClick = () => {
     if (signUpStep === 2) {
@@ -580,6 +571,21 @@ const SignUp = (props) => {
         console.error('Error occurred while sending email:', error);
       });
   };
+
+  // Skip Step To Verify For "Verify"
+  useEffect(() => {
+    console.log('Before Verify email type:', typeof(verifyEmail));
+    console.log('Before Verify email:', verifyEmail);
+
+    if (verifyStepAsInt === 4) {
+      setSignUpStep(verifyStepAsInt === 4 ? 4 : 1);
+      setEmail(verifyEmail);
+      console.log('After Verify email:', verifyEmail);
+      console.log('Email:', email);
+      sendVerificationCode();
+      localStorage.removeItem('userEmail');
+    } // if
+  }, []);
 
   return (
     <>
