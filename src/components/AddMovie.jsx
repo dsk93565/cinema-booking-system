@@ -15,21 +15,29 @@ export default function AddMovie({ onClose }) {
     const [rating, setRating] = useState('');
     const [poster_path, setPosterPath] = useState('');
     
-    
-    const movieInfoExport = {
-        title,
-        category,
-        cast,
-        director,
-        producer,
-        synopsis,
-        reviews,
-        trailer,
-        rating,
-        poster_path,
-    }
+    const handleSubmit = async() => {
 
-    console.log(title);
+        /* const movieInfoExport = {
+            title,
+            category,
+            cast,
+            director,
+            producer,
+            synopsis,
+            reviews,
+            trailer,
+            rating,
+            poster_path,
+        } */
+
+        const {data} = await axios.post('http://localhost:8000/api/add-movie', document.querySelector('#addMovieForm'), {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+    
+        onClose();
+    }
 
     return (
         <div className='modal-wrapper'>
@@ -38,50 +46,57 @@ export default function AddMovie({ onClose }) {
                         <div className='modal-title'><h1>Add Movie</h1></div>
                         <span className='close'><FontAwesomeIcon onClick={onClose} icon='fa fa-window-close'/></span>
                     </div>
-                    <div className='modal-body'>
-                        <form className='add-movie-form'>
-                            <div className='movie-info'>
-                                <label className='movie-info-label'>Title</label>
-                                <input type='text' className='add-movie-input' onChange={(e) => setTitle(e.target.value)}></input>
+                    <div className='admin-modal-body'>
+                        <form className='add-movie-form' id="addMovieForm">
+                            <div className='admin-movie-form-col'>
+                                <div className='movie-info'>
+                                    <label className='movie-info-label'>Title</label>
+                                    <input type='text' className='add-movie-input' onChange={(e) => setTitle(e.target.value)}></input>
+                                </div>
+                                <div className='movie-info'>
+                                    <label className='movie-info-label'>Category</label>
+                                    <input type='text' className='add-movie-input' onChange={(e) => setCategory(e.target.value)}></input>
+                                </div>
+                                <div className='movie-info'>
+                                    <label className='movie-info-label'>Cast</label>
+                                    <input type='text' className='add-movie-input' onChange={(e) => setCast(e.target.value)}></input>
+                                </div>
+                                <div className='movie-info'>
+                                    <label className='movie-info-label'>Director</label>
+                                    <input type='text' className='add-movie-input' onChange={(e) => setDirector(e.target.value)}></input>
+                                </div>
+                                <div className='movie-info'>
+                                    <label className='movie-info-label'>Producer</label>
+                                    <input type='text' className='add-movie-input' onChange={(e) => setProducer(e.target.value)}></input>
+                                </div>
                             </div>
-                            <div className='movie-info'>
-                                <label className='movie-info-label'>Category</label>
-                                <input type='text' className='add-movie-input' onChange={(e) => setCategory(e.target.value)}></input>
+                            <div className='admin-movie-form-col'>
+                                <div className='movie-info'>
+                                    <label className='movie-info-label'>Synopsis</label>
+                                    <input type='text' className='add-movie-input' onChange={(e) => setSynopsis(e.target.value)}></input>
+                                </div>
+                                <div className='movie-info'>
+                                    <label className='movie-info-label'>Reviews</label>
+                                    <input type='text' className='add-movie-input' onChange={(e) => setReviews(e.target.value)}></input>
+                                </div>
+                                <div className='movie-info'>
+                                    <label className='movie-info-label'>Trailer</label>
+                                    <input type='text' className='add-movie-input' onChange={(e) => setTrailer(e.target.value)}></input>
+                                </div>
+                                <div className='movie-info'>
+                                    <label className='movie-info-label'>Rating</label>
+                                    <input type='text' className='add-movie-input' onChange={(e) => setRating(e.target.value)}></input>
+                                </div>
+                                <div className='movie-info'>
+                                    <label className='movie-info-label'>Poster Image Path</label>
+                                    <input type='text' className='add-movie-input' onChange={(e) => setPosterPath(e.target.value)}></input>
+                                </div>
                             </div>
-                            <div className='movie-info'>
-                                <label className='movie-info-label'>Cast</label>
-                                <input type='text' className='add-movie-input' onChange={(e) => setCast(e.target.value)}></input>
-                            </div>
-                            <div className='movie-info'>
-                                <label className='movie-info-label'>Director</label>
-                                <input type='text' className='add-movie-input' onChange={(e) => setDirector(e.target.value)}></input>
-                            </div>
-                            <div className='movie-info'>
-                                <label className='movie-info-label'>Producer</label>
-                                <input type='text' className='add-movie-input' onChange={(e) => setProducer(e.target.value)}></input>
-                            </div>
-                            <div className='movie-info'>
-                                <label className='movie-info-label'>Synopsis</label>
-                                <input type='text' className='add-movie-input' onChange={(e) => setSynopsis(e.target.value)}></input>
-                            </div>
-                            <div className='movie-info'>
-                                <label className='movie-info-label'>Reviews</label>
-                                <input type='text' className='add-movie-input' onChange={(e) => setReviews(e.target.value)}></input>
-                            </div>
-                            <div className='movie-info'>
-                                <label className='movie-info-label'>Trailer</label>
-                                <input type='text' className='add-movie-input' onChange={(e) => setTrailer(e.target.value)}></input>
-                            </div>
-                            <div className='movie-info'>
-                                <label className='movie-info-label'>Rating</label>
-                                <input type='text' className='add-movie-input' onChange={(e) => setRating(e.target.value)}></input>
-                            </div>
-                            <div className='movie-info'>
-                                <label className='movie-info-label'>Poster Image Path</label>
-                                <input type='text' className='add-movie-input' onChange={(e) => setPosterPath(e.target.value)}></input>
-                            </div>
-                            <button className='CTA-button-one' type='submit'>Add Movie</button>
+                            
                         </form>
+                    </div>
+                    <div className='modal-footer'>
+                        <button className='admin-movie-button' type='submit' onClick={handleSubmit}>Add Movie</button>
                     </div>
                 </div>
         </div>

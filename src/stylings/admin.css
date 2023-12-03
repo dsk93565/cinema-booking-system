@@ -32,6 +32,11 @@
     row-gap: 2.25rem;
 }
 
+.admin-result:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);;
+    background-color: var(--accent-five);
+}
+
 .admin-result-row {
     display: -webkit-flex;
     display: flex;
@@ -94,8 +99,13 @@
 
 .add-movie-form {
     display: flex;
+    flex-direction: row;
+}
+
+.admin-movie-form-col {
+    width: 50%;
+    display: flex;
     flex-direction: column;
-    overflow-y: scroll;
 }
 
 .movie-info {
@@ -106,9 +116,16 @@
 
 .movie-info-label {
     color: var(--primary);
-    font-size: 1rem;
+    font-size: 1.125rem;
     font-weight: 500;
-    margin-bottom: 1rem;
+    margin: 1rem;
+}
+
+.admin-modal-body {
+    display: flex;
+    display: -webkit-flex;
+    margin-bottom: 2rem;
+    overflow-y: scroll;
 }
 
 .add-movie-input {
@@ -121,6 +138,11 @@
     font-weight: 400;
     width: 100%;
     padding: 1rem 1.125rem;
+    margin: 1rem;
     transition: outline 0.2s ease-in-out;
     width: 30rem;
+}
+
+.add-movie-input:focus {
+    outline: var(--accent-two) 0.125rem solid;
 }

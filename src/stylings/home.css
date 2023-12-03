@@ -196,7 +196,6 @@
     display: flex;
     display: -webkit-flex;
     margin-bottom: 2rem;
-    overflow-y: scroll;
 }
 
 .modal-body-image {
