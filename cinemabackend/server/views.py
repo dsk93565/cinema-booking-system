@@ -115,10 +115,17 @@ class Create_User(APIView):
         new_first = data.get('firstName')
         new_last = data.get('lastName')
         new_promo = data.get('promotions')
+        new_shipping_street = data.get('shippingStreetAddress')
+        new_shipping_city = data.get('shippingCityAddress')
+        new_shipping_state = data.get('shippingState')
+        new_shipping_zip = data.get('shippingZipCodeAddress')
         new_user = CustomUser.objects.create(username=new_username, email=new_email, 
                                              password=make_password(new_password), 
                                              first_name=new_first, last_name=new_last, 
-                                             phone_number=new_number, state_id=1, promotions=new_promo)
+                                             phone_number=new_number, state_id=1, 
+                                             promotions=new_promo, shipping_street=new_shipping_street,
+                                             shipping_city=new_shipping_city, shipping_state=new_shipping_state,
+                                             shipping_zip=new_shipping_zip)
         
         new_user.save()
         try: 

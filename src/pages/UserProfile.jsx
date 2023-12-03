@@ -141,11 +141,11 @@ const UserProfile = () => {
                     </div>
                     {isEditing ? (
                         <>
-                            <button onClick={handleSaveChanges}>Save Changes</button>
-                            <button onClick={() => setIsEditing(false)}>Cancel</button>
+                            <button className="save-changes-button" onClick={handleSaveChanges}>Save Changes</button>
+                            <button className="cancel-button" onClick={() => setIsEditing(false)}>Cancel</button>
                         </>
                     ) : (
-                        <button onClick={() => setIsEditing(true)}>Edit Profile</button>
+                        <button className="edit-button" onClick={() => setIsEditing(true)}>Edit Profile</button>
                     )}
                 </div>
             </div>

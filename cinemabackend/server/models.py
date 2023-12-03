@@ -17,6 +17,10 @@ class CustomUser(AbstractUser):
     state_id = models.IntegerField(db_column='state_id', default='')
     verification_code = models.IntegerField(db_column='verification_code', default=0)
     promotions = models.IntegerField(db_column='promotions', default=0)
+    shipping_street = models.CharField(db_column='shipping_street', max_length=255, default='')
+    shipping_cit = models.CharField(db_column='shipping_city', max_length=255, default='')
+    shipping_state = models.CharField(db_column='shipping_state', max_length=255, default='')
+    shipping_zip = models.CharField(db_column='shipping_zip', max_length=255, default='')
 
 class Encryption_Keys(models.Model):
     encryption_key = models.CharField(db_column='encryption_key', max_length=255)
