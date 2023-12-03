@@ -127,6 +127,45 @@
     font-size: 1.25rem;
     margin-bottom: 4rem;
 }
+.user-info-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.user-infos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust the column width as needed */
+    gap: 1rem; /* Add spacing between columns */
+}
+
+.user-infos label {
+    margin-bottom: 0.5rem;
+}
+
+/* Separate styles for the first and last name */
+.user-infos input[type="text"].name-input {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Styles for phone number, address, and email */
+.user-infos input[type="text"].contact-info {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.user-info-display {
+    background-color: #f4f4f4;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+}
+
 @media only screen and (min-width: 22rem) {
     .verification-code {
         justify-content: space-between;
