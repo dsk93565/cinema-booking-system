@@ -4,9 +4,11 @@
     width: 100%;
     padding: 1rem 1.25rem;
 }
+
 .login .user-info:first-child {
     margin-top: 0;
 }
+
 .password-info {
     background-color: var(--accent-four);
     border-radius: 2rem;
@@ -19,15 +21,19 @@
 .password-info.is-active {
     outline: var(--accent-two) 0.125rem solid;
 }
+
 .forgot-password .user-info-form {
     margin-bottom: 4rem;
 }
+
 .forgot-password h2 {
     margin-bottom: 1.5rem;
 }
+
 .forgot-password p {
     margin-bottom: 3rem;
 }
+
 .change-password .user-info:first-child {
     margin-top: 0;
 }
@@ -257,5 +263,38 @@
     }
 }
 
-@media (min-width: 24rem) {
+/** ----- Profile Page ----- **/
+
+.user-profile .section-container-top {
+    align-items: normal;
+    flex-direction: column;
+    row-gap: 3rem;
+}
+
+.user-profile h2 {
+    cursor: pointer;
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+}
+
+.profile-categories {
+    display: flex;
+    column-gap: 3.25rem;
+    overflow-x: scroll;
+    white-space: nowrap;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.profile-categories::-webkit-scrollbar {
+    display: none;
+}
+
+.section-separator {
+    border: var(--tertiary-two) 0.0625rem solid;
+    width: 100%;
 }
