@@ -100,12 +100,15 @@
 .add-movie-form {
     display: flex;
     flex-direction: row;
+    width: 100%;
+    margin: 2rem;
 }
 
 .admin-movie-form-col {
-    width: 50%;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    padding: 1rem;
 }
 
 .movie-info {
@@ -125,6 +128,8 @@
     display: flex;
     display: -webkit-flex;
     margin-bottom: 2rem;
+    width: 100%;
+    justify-content: center;
     overflow-y: scroll;
 }
 
@@ -138,9 +143,7 @@
     font-weight: 400;
     width: 100%;
     padding: 1rem 1.125rem;
-    margin: 1rem;
     transition: outline 0.2s ease-in-out;
-    width: 30rem;
 }
 
 .add-movie-input:focus {
