@@ -4,29 +4,20 @@ import TrailerLoader from './TrailerLoader';
 import ReactCardFlip from 'react-card-flip';
 import MovieInfo from './MovieInfo';
 
-
-const MovieCard = ({movie, origin}) => {
+const MovieCard = ({ movie, origin, isFlipped, onFlip }) => {
     const moviePosterImage = movie.poster_path;
-        
-    // Card Styling
     const cardStyle = {
         height: `${origin === "MoviesCard" ? 20 : 10}rem`,
         width: `${origin === "MoviesCard" ? 13 : 6.5}rem`,
         rowGap: `${origin === "MoviesCard" ? 1 : 0.1}rem`
     };
 
-    // Poster Flip
-    const [isFlipped, setIsFlipped] = useState(false);
     const handlePosterFlip = () => {
-        setIsFlipped(!isFlipped);
+        onFlip(movie.mid); // Use the passed function to handle flip
     };
 
-    // Movie Trailer
     const [showTrailer, setShowTrailer] = useState(false);
-    
-    // Movie Info Modal
     const [showInfo, setShowInfo] = useState(false);
-    
 
     return (
         <div className='movie-card'>
@@ -44,25 +35,16 @@ const MovieCard = ({movie, origin}) => {
                     </div>
                 </ReactCardFlip>
             </div>
-            
 
-            {/* Movie Trailer Modal */}
-            { showTrailer && createPortal(
-                <TrailerLoader movie={movie}
-                                onClose={() => setShowTrailer(false)}
-                                onClick={(e) => e.stopPropagation()}
-                                />, document.body
+            {showTrailer && createPortal(
+                <TrailerLoader movie={movie} onClose={() => setShowTrailer(false)} onClick={(e) => e.stopPropagation()} />, document.body
             )}
 
-            {/* Info Modal */}
-            { showInfo && createPortal(
-                <MovieInfo movie={movie}
-                                onClose={() => setShowInfo(false)}
-                                onClick={(e) => e.stopPropagation()}
-                                />, document.body
+            {showInfo && createPortal(
+                <MovieInfo movie={movie} onClose={() => setShowInfo(false)} onClick={(e) => e.stopPropagation()} />, document.body
             )}
         </div>
-    )
+    );
 }
 
 export default MovieCard;
