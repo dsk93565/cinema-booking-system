@@ -73,7 +73,8 @@ const Navigation = () => {
     localStorage.removeItem('rememberMe');
     localStorage.removeItem('userType');
     localStorage.removeItem('userToken');
-    window.location.reload();
+    window.dispatchEvent(new Event("storage"));
+    navigate('/');
   };
 
   return (

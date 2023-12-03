@@ -64,10 +64,10 @@ class EditUser(APIView):
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
         user_email = data.get('email')
-        user_to_modify = CustomUser.objects.get(email=user_email)
-        if user_to_modify is None:
-            return Response({"error: user not found": -1})
-        
+        try:
+            user_to_modify = CustomUser.objects.get(email=user_email)
+        except: 
+            return Response({"error":-1})
         #CAN BE REFACTORED WITH SERIALIZER
         new_password = data.get('password')
         new_number = data.get('phonenumber')
@@ -94,15 +94,12 @@ class GetUser(APIView):
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
         token_str = data.get('user_token')
-        try: 
-            token = Token.objects.get(key=token_str)
-            user = token.user
-            serializer_class = UserSerializer(user, many=False)
-            user_json = {"user":serializer_class.data}
-            return Response(user_json)
-        except:
-            return Response({"error cold not find token": -1})
-
+        user = getUserFromToken(data.get('user_token'))
+        if user is None:
+            return Response({'error':-1})
+        serializer_class = UserSerializer(user, many=False)
+        user_json = {"user":serializer_class.data}
+        return Response(user_json)
 class Create_User(APIView):
     def post(self, request):
         try: 

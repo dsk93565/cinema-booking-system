@@ -4,12 +4,15 @@ import '../stylings/account.css';
 
 const UserProfile = () => {
     const [userData, setUserData] = useState({
+        email: '', // Will be fetched but not editable
         firstName: '',
         lastName: '',
         phoneNumber: '',
         address: '',
+        password: '', // For password updates
     });
     const [isEditing, setIsEditing] = useState(false);
+    const [isChangingPassword, setIsChangingPassword] = useState(false); // Define this state
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -21,7 +24,9 @@ const UserProfile = () => {
                 const response = await axios.post('http://localhost:8000/api/get-user', {
                     user_token: userToken
                 });
+                // Update the state with the email as well
                 setUserData({
+                    email: response.data.user.email, // Add this line to set the email
                     firstName: response.data.user.first_name,
                     lastName: response.data.user.last_name,
                     phoneNumber: response.data.user.phone_number,
@@ -41,20 +46,24 @@ const UserProfile = () => {
     const handleSaveChanges = async () => {
         try {
             const response = await axios.post('http://localhost:8000/api/edit-user', {
-                email: userData.email, // You need to include the email in the userData state
-                password: userData.password, // Include only if you want to update the password
+                email: localStorage.getItem('userEmail'),
+                ...(isChangingPassword && { password: userData.password }),
                 phonenumber: userData.phoneNumber,
                 first_name: userData.firstName,
                 last_name: userData.lastName,
-                promotions: userData.promotions, // Include only if you're updating promotions
-                // Include any additional fields you want to update
             });
             console.log('Success:', response.data);
             setIsEditing(false);
+            setIsChangingPassword(false); // Reset the password change prompt
         } catch (error) {
             console.error('Error:', error);
             setError(error.message || 'Error saving changes');
         }
+    };
+
+    const handlePasswordChange = (e) => {
+        setIsChangingPassword(true); // Prompt for current password before allowing a change
+        setUserData({...userData, password: e.target.value});
     };
 
     if (isLoading) {
@@ -75,17 +84,50 @@ const UserProfile = () => {
                     <div className='user-infos'>
                         {isEditing ? (
                             <>
-                                <input type="text" value={userData.firstName} onChange={(e) => setUserData({...userData, firstName: e.target.value})} />
-                                <input type="text" value={userData.lastName} onChange={(e) => setUserData({...userData, lastName: e.target.value})} />
-                                <input type="text" value={userData.phoneNumber} onChange={(e) => setUserData({...userData, phoneNumber: e.target.value})} />
-                                <input type="text" value={userData.address} onChange={(e) => setUserData({...userData, address: e.target.value})} />
+                                <label>First Name</label>
+                                <input 
+                                    type="text" 
+                                    value={userData.firstName} 
+                                    onChange={(e) => setUserData({...userData, firstName: e.target.value})} 
+                                />
+
+                                {/* ... other input fields ... */}
+
+                                {/* Display email, but make it read-only */}
+                                <label>Email</label>
+                                <input 
+                                    type="email" 
+                                    value={userData.email} 
+                                    disabled 
+                                />
+
+                                {/* Conditionally render input for address if it's empty */}
+                                <label>Address</label>
+                                {userData.address ? (
+                                    <input 
+                                        type="text" 
+                                        value={userData.address} 
+                                        onChange={(e) => setUserData({...userData, address: e.target.value})} 
+                                    />
+                                ) : (
+                                    <input 
+                                        type="text" 
+                                        placeholder="Enter address" 
+                                        onChange={(e) => setUserData({...userData, address: e.target.value})} 
+                                    />
+                                )}
+
+                                {/* ... rest of your component ... */}
                             </>
                         ) : (
                             <>
-                                <div className='user-info-text'>{userData.firstName}</div>
-                                <div className='user-info-text'>{userData.lastName}</div>
-                                <div className='user-info-text'>{userData.phoneNumber}</div>
-                                <div className='user-info-text'>{userData.address}</div>
+                                <div className='user-info-display'>First Name: {userData.firstName}</div>
+                                <div className='user-info-display'>Last Name: {userData.lastName}</div>
+                                <div className='user-info-display'>Phone Number: {userData.phoneNumber || "Add Phone Number"}</div>
+                                <div className='user-info-display'>Address: {userData.address || "Add Address"}</div>
+                                <div className='user-info-display'>Email: {userData.email}</div>
+                                
+                                {/* ... rest of your component ... */}
                             </>
                         )}
                     </div>
@@ -103,4 +145,4 @@ const UserProfile = () => {
     );
 };
 
-export default UserProfile; 
+export default UserProfile;

@@ -21,8 +21,15 @@ const Hero = () => {
   }
 
   useEffect(() => {
-    getUsername(userToken);
-  })
+    window.addEventListener('storage', () => {
+      setUsername("");
+    });
+  }, []); // Empty dependency array means this effect runs once, similar to componentDidMount
+  
+  useEffect(() => {
+    if (userToken)
+      getUsername(userToken);
+  }, []);
 
   return (
     <section className='section-wrapper'>
