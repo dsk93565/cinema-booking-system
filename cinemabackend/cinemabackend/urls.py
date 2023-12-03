@@ -23,6 +23,7 @@ urlpatterns = [
     path('api/admin/add-movie', admin_views.AddMovie.as_view()),
     path('api/admin/edit-movie', admin_views.EditMovie.as_view()),
     path('api/admin/add-showing', admin_views.AddShow.as_view()),
+    path('api/admin/add-promo', admin_views.AddPromo.as_view()),
     path('api/get-movies', views.MovieList.as_view()),
     path('api/get-movie', views.Movie.as_view()),
     path('api/create-user', views.Create_User.as_view()),

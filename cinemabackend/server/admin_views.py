@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Movies, CustomUser, Card, Periods, Showings, Rooms
+from .models import Movies, CustomUser, Card, Periods, Showings, Rooms, Promotions
 from .serializer import MovieSerializer, UserSerializer
 from .utils import *
 import json, random
@@ -70,3 +70,14 @@ class AddShow(APIView):
         except json.JSONDecodeError:
             return Response({"error": -1})
 
+# EXPECTED REQUEST
+# {promotion_code, percent}
+class AddPromo(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+            promo = Promotions.objects.create(promotion_code=data.get('promotion_code'), percent=data.get('percent'))
+            promo.save()
+        except:
+            return Response({"error": -1})
+        
