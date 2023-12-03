@@ -1,4 +1,4 @@
-from .models import CustomUser, Card
+from .models import CustomUser, Card, Encryption_Keys
 from cryptography.fernet import Fernet
 from rest_framework.authtoken.models import Token
 
@@ -8,7 +8,6 @@ def getUserFromToken(token_str):
         return token.user
     except:
         return None
-
 
 #checks if token is associated with the user
 def checkToken(user, testToken):
@@ -42,4 +41,5 @@ class Save_Card():
                                        card_expiration=cardInfo[2], card_street=cardInfo[3], card_city=cardInfo[4], 
                                        card_state=cardInfo[5], card_zip=cardInfo[6])
         new_card.save()
-        return key
+        key_storage = Encryption_Keys.objects.create(encryption_key=key, user_id=user)
+        key_storage.save() 

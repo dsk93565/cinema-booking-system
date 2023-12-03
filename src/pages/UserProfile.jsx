@@ -46,7 +46,7 @@ const UserProfile = () => {
     const handleSaveChanges = async () => {
         try {
             const response = await axios.post('http://localhost:8000/api/edit-user', {
-                email: localStorage.getItem('userEmail'),
+                user_token: localStorage.getItem('userToken'),
                 ...(isChangingPassword && { password: userData.password }),
                 phonenumber: userData.phoneNumber,
                 first_name: userData.firstName,

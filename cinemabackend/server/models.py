@@ -75,6 +75,7 @@ class Showings(models.Model):
     shid = models.IntegerField(db_column='shid',primary_key=True)
     movie_id = models.ForeignKey(Movies, on_delete=models.DO_NOTHING, db_column='movie_id')
     period_id = models.ForeignKey(Periods, on_delete=models.DO_NOTHING, db_column='period_id')
+    room_id = models.ForeignKey(Rooms, on_delete=models.DO_NOTHING, db_column='room_id')
 
 class Promotions(models.Model):
     class Meta:

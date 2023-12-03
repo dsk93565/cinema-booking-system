@@ -63,29 +63,28 @@ class EditUser(APIView):
             data = json.loads(request.body.decode('utf-8'))
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
-        user_email = data.get('email')
         try:
-            user_to_modify = CustomUser.objects.get(email=user_email)
+            user_to_modify = getUserFromToken(data.get('user_token'))
+            #CAN BE REFACTORED WITH SERIALIZER
+            new_password = data.get('password')
+            new_number = data.get('phonenumber')
+            new_first = data.get('first_name')
+            new_last = data.get('last_name')
+            new_promo = data.get('promotions')
+            if new_password is not None:
+                user_to_modify.password = new_password
+            if new_number is not None:
+                user_to_modify.phone_number = new_number
+            if new_first is not None: 
+                user_to_modify.first_name = new_first
+            if new_last is not None: 
+                user_to_modify.last_name = new_last
+            if new_promo is not None:
+                user_to_modify.promotions = new_promo
+            user_to_modify.save()
+            return Response({"Success": 1})
         except: 
             return Response({"error":-1})
-        #CAN BE REFACTORED WITH SERIALIZER
-        new_password = data.get('password')
-        new_number = data.get('phonenumber')
-        new_first = data.get('first_name')
-        new_last = data.get('last_name')
-        new_promo = data.get('promotions')
-        if new_password is not None:
-            user_to_modify.password = new_password
-        if new_number is not None:
-            user_to_modify.phone_number = new_number
-        if new_first is not None: 
-            user_to_modify.first_name = new_first
-        if new_last is not None: 
-            user_to_modify.last_name = new_last
-        if new_promo is not None:
-            user_to_modify.promotions = new_promo
-        user_to_modify.save()
-        return Response({"Success": 1})
 
 class GetUser(APIView):
     def post(self, request):
@@ -116,16 +115,17 @@ class Create_User(APIView):
         new_first = data.get('firstName')
         new_last = data.get('lastName')
         new_promo = data.get('promotions')
-
-        new_user = CustomUser.objects.create(username=new_username, email=new_email, password=make_password(new_password), 
-                                             first_name=new_first, last_name=new_last, phone_number=new_number, state_id=1, promotions=new_promo)
+        new_user = CustomUser.objects.create(username=new_username, email=new_email, 
+                                             password=make_password(new_password), 
+                                             first_name=new_first, last_name=new_last, 
+                                             phone_number=new_number, state_id=1, promotions=new_promo)
         
         new_user.save()
         try: 
             if data.get('cardNumber') is not None:
                 new_request = [new_user, data]
                 card = Save_Card()
-                key = card.saveCard(new_request)
+                card.saveCard(new_request)
         except:
             print('could not save card')
         token, created = Token.objects.get_or_create(user=new_user)
@@ -167,6 +167,7 @@ class ForgotPassword(APIView):
             print("could not find user")
             raise Response({'could not find user': -1})
         token, created = Token.objects.get_or_create(user=user_to_recover)
+        #refactor for env
         recovery_link = 'localhost:3000/change-password/' + str(user_to_recover.uid) + '/' + str(token.key)
         email_body = render_to_string('recovery_email.html', {'custom_link': recovery_link})
         subject = 'Cinera Recover Password'

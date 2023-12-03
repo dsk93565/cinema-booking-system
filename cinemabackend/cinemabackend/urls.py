@@ -16,10 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from server import views
+from server import views, admin_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/admin/add-movie', admin_views.AddMovie.as_view()),
+    path('api/admin/edit-movie', admin_views.EditMovie.as_view()),
+    path('api/admin/add-showing', admin_views.AddShow.as_view()),
     path('api/get-movies', views.MovieList.as_view()),
     path('api/get-movie', views.Movie.as_view()),
     path('api/create-user', views.Create_User.as_view()),

@@ -1,10 +1,13 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Movies, CustomUser, Card
+from .models import Movies, CustomUser, Card, Periods, Showings, Rooms
 from .serializer import MovieSerializer, UserSerializer
 from .utils import *
 import json, random
 
+# EXPECTED REQUEST
+# {user_token, category, cast, director, producer, 
+#  synopsis, reviews, trailer, rating, title, poster_path}
 class AddMovie(APIView):
     def post(self, request):
         try: 
@@ -26,7 +29,9 @@ class AddMovie(APIView):
         except json.JSONDecodeError:
             return Response({"error": -1})
 
-
+# EXPECTED REQUEST
+# {user_token, mid, category, cast, director, producer, 
+#  synopsis, reviews, trailer, rating, title, poster_path}
 class EditMovie(APIView):
     def post(self, request):
         try: 
@@ -49,4 +54,19 @@ class EditMovie(APIView):
         except json.JSONDecodeError:
             return Response({"error": -1})
 
+# EXPECTED REQUEST
+# {mid, pid, rid}
+class AddShow(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+            user = getUserFromToken(data.get('user_token'))
+            if user is None or user.type_id != 2:
+                return({"error:"-1})
+            period = Periods.objects.get(pid=data.get('pid'))
+            movie = Movies.objects.get(mid=data.get('mid'))
+            room = Rooms.objects.get(rid=data.get('rid'))
+            showing = Showings.objects.create(movie_id=movie,period_id=showing,room_id=room)
+        except json.JSONDecodeError:
+            return Response({"error": -1})
 
