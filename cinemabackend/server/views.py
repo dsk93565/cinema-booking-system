@@ -64,10 +64,11 @@ class EditUser(APIView):
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
         user_email = data.get('email')
-        user_to_modify = CustomUser.objects.get(email=user_email)
-        if user_to_modify is None:
-            return Response({"error: user not found": -1})
-        
+        print(data)
+        try:
+            user_to_modify = CustomUser.objects.get(email=user_email)
+        except: 
+            return Response({"error":-1})
         #CAN BE REFACTORED WITH SERIALIZER
         new_password = data.get('password')
         new_number = data.get('phonenumber')
