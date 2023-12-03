@@ -124,7 +124,7 @@ class Create_User(APIView):
         try: 
             if data.get('cardNumber') is not None:
                 new_request = [new_user, data]
-                card = Save_Card()
+                card = CardActions()
                 card.saveCard(new_request)
         except:
             print('could not save card')
@@ -188,6 +188,14 @@ class RecoverCreatePassword(APIView):
         user_to_recover.save()
         return Response({'password changed': 200})
 
+class GetCards(APIView):
+    def get(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            cardHandler = CardActions()
+            cards = cardHandler.getCards(data.get('user_token'))
+            return Response(cards)
 class MovieList(APIView):
     def get(self, request):
         queryset = Movies.objects.all()

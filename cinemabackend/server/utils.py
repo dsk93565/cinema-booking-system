@@ -17,12 +17,23 @@ def checkToken(user, testToken):
     except Token.DoesNotExist:
         return False
 
-#Saves card to database
-class Save_Card():
-    def editCard(self, request):
-        user = request[0]
-        data = request[1]
-        cardToEdit = Card.objects.filter()
+class CardActions():
+    def getCards(self, request):
+        user = getUserFromToken(request[0])
+        cards = Card.objects.filter(user_id=user)
+        if cards is None:
+            raise Exception("No cards")
+        key = Encryption_Keys.objects.get(user_id=user)
+        fern = Fernet(key)
+        data = {
+            'cards': {}
+        }
+        for i in cards:
+            cid = cards[i].cid
+            data['cards'][cid] = {}
+            data['cards'][cid]['card_type'] = fern.decrypt(cards[i].card_type)
+            data['cards'][cid]['last_four'] = fern.decrypt(cards[i].card_number)[-4:]
+        return data
 
         #should prolly refactor the encryption 
     def saveCard(self, request):
@@ -41,5 +52,5 @@ class Save_Card():
                                        card_expiration=cardInfo[2], card_street=cardInfo[3], card_city=cardInfo[4], 
                                        card_state=cardInfo[5], card_zip=cardInfo[6])
         new_card.save()
-        key_storage = Encryption_Keys.objects.create(encryption_key=key, user_id=user)
+        key_storage = Encryption_Keys.objects.get_or_create(encryption_key=key, user_id=user)
         key_storage.save() 
