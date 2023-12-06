@@ -12,7 +12,7 @@ class ShowingSerializer(serializers.ModelSerializer):
               model = Showings
               fields = ['shid', 'movie_id', 'period_id', 'room_id', 'room_id', 'show_date'] 
 class MovieSerializer(serializers.ModelSerializer):
-        state_id = serializers.CharField(source='state_id.movie_state', read_only=True)
+        state_id = serializers.CharField(source='state_id.msid', read_only=True)
         class Meta:
             model = Movies
             # this passes all the fields
