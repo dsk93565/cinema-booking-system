@@ -173,6 +173,11 @@
     row-gap: 3rem;
 }
 
+.user-profile .user-info-form {
+    max-width: 30rem;
+    width: 100%;
+}
+
 .user-profile .user-infos {
     column-gap: 3rem;
 }
@@ -180,7 +185,7 @@
 .user-profile .CTA-button-one, .user-profile .CTA-button-two {
     font-size: 1rem;
     font-weight: 500;
-    max-width: 36rem;
+    max-width: 32rem;
     width: 100%;
     padding: 1rem 1.25rem;
 }
@@ -238,9 +243,9 @@
 }
 
 .user-payments-info {
-    display: flex;
     flex-direction: column;
-    row-gap: 4rem;
+    align-items: center;
+    row-gap: 6rem;
 }
 
 .user-profile-payment {
@@ -305,16 +310,28 @@
         column-gap: 3rem;
         row-gap: 0;
     }
+
+    .user-profile .user-info-form {
+        max-width: 32rem;
+    }
 }
 
 @media only screen and (min-width: 48rem) {
     .user-profile .user-infos {
         column-gap: 6rem;
     }
+
+    .user-profile .user-info-form {
+        max-width: 40rem;
+    }
 }
 
 @media only screen and (min-width: 80rem) {
     .user-profile .user-infos {
         column-gap: 9rem;
+    }
+
+    .user-profile .user-info-form {
+        max-width: 48rem;
     }
 }
