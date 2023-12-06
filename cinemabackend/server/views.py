@@ -79,7 +79,7 @@ class SubsribeToPromo(APIView):
             user.save()
             return Response({'success': 1})
         except json.JSONDecodeError:
-            return Response({"email_sent": -2})
+            return Response({"error": -1})
 #How this is currently implemented besides Email, pass only the fields that you want to modify
 #Need a way to distinguish which card is being edited!
 class EditUser(APIView):
