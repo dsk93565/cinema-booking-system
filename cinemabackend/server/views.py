@@ -138,7 +138,7 @@ class Create_User(APIView):
         new_number = data.get('mobileNumber')
         new_first = data.get('firstName')
         new_last = data.get('lastName')
-        new_promo = data.get('promotions')
+        new_promo = data.get('optInEmail')
         new_shipping_street = data.get('shippingStreetAddress')
         new_shipping_city = data.get('shippingCityAddress')
         new_shipping_state = data.get('shippingStateAddress')
