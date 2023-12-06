@@ -14,7 +14,7 @@ const MoviesCard = (props) => {
 
     const fetchMovies = async (sectionTitle, categoryFilter) => {
         let response;
-
+        
         try {
             response = await axios.get(`http://localhost:8000/api/get-movies`);
             const { data } = response;

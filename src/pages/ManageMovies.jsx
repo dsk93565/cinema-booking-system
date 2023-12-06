@@ -2,6 +2,7 @@ import '../stylings/admin.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import AddMovie from '../components/AddMovie';
+import AddShowing from '../components/AddShowing';
 
 const ManageMovies = () => {
 
@@ -31,7 +32,7 @@ const ManageMovies = () => {
         <div className='admin-container-narrow'>
             <h2>Manage movies</h2>
             <button className='CTA-button-one' onClick={() => setAddMovieModal(true)}>Add movie</button>            
-            <button className='CTA-button-one'>Schedule movie</button>
+            <button className='CTA-button-one' onClick={() => setScheduleMovieModal(true)}>Schedule movie</button>
         </div>
         <div className='admin-body'>
           {movies.map(movie => (
@@ -57,6 +58,9 @@ const ManageMovies = () => {
 
         {/** Add Movie Modal */}
         {addMovieModal && (<AddMovie onClose={() => setAddMovieModal(false)}></AddMovie>)}
+
+        {/** Add Showing Modal */}
+        {scheduleMovieModal && (<AddShowing onClose={() => setScheduleMovieModal(false)}></AddShowing>)}
     </section>
   )
 }
