@@ -44,11 +44,15 @@ const UserProfile = () => {
   const [error, setError] = useState('');
   const handlePageChange = (page) => {
     setEditMode(false);
+    setEditMode2(false);
+    setEditMode3(false);
     setProfilePage(page);
   };
 
   // Edit Functionalties
   const [editMode, setEditMode] = useState(false);
+  const [editMode2, setEditMode2] = useState(false);
+  const [editMode3, setEditMode3] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
 
   useEffect(() => {
@@ -356,7 +360,7 @@ const UserProfile = () => {
 
           {/* Shipping Information */}
           {profilePage === 'shipping' && (
-            <div>
+            <div className='user-profile-page'>
               {editMode ? (
                 <div className='user-info-form user-shipping-info'>
                   <div className='user-info'>
@@ -458,172 +462,260 @@ const UserProfile = () => {
 
           {/* Payment Information */}
           {profilePage === 'payment' && (
-            <div>
+            <div className='user-profile-page user-payments-info'>
               {editMode ? (
                 <div className='user-info-form'>
                 </div>
               ) : (
-                <div className='user-payments-info'>
-                  <div className='user-info-form'>
-                    <h3 className='user-profile-payment'>Payment method 1</h3>
-                    <div className='user-info'>
-                      <label className='user-info-label'>Card type</label>
-                      <Select
-                        options={cardTypeOptions}
-                        placeholder={billingStreetAddress1}
-                        isDisabled={!editMode}
-                        styles={selectStyling}
-                      />
-                    </div>
-                    <div className='user-infos'>
-                      <div className='user-info card-num'>
-                        <label className='user-info-label'>Card number</label>
-                        <input
-                          type='text'
-                          placeholder={cardNumber1}
-                          disabled={!editMode}
-                          className='user-info-input disabled-input'
-                        />
-                      </div>
-                      <div className='user-info exp-date'>
-                        <label className='user-info-label'>Exp. date</label>
-                        <input
-                          type='text'
-                          placeholder={expirationDate1}
-                          disabled={!editMode}
-                          className='user-info-input disabled-input'
-                        />
-                      </div>
-                    </div>
-                    <h3 className='user-profile-billing'>Billing address</h3>
-                    <div className='user-info'>
-                      <label className='user-info-label'>Street</label>
-                      <input
-                        type='text'
-                        placeholder={billingStreetAddress1}
-                        disabled={!editMode}
-                        className='user-info-input disabled-input'
-                      />
-                    </div>
-                    <div className='user-info'>
-                      <label className='user-info-label'>City</label>
-                      <input
-                        type='text'
-                        placeholder={billingCityAddress1}
-                        disabled={!editMode}
-                        className='user-info-input disabled-input'
-                      />
-                    </div>
-                    <div className='user-infos state'>
-                      <div className='user-info'>
-                        <label className='user-info-label'>State</label>
-                        <Select
-                          options={usStates}
-                          placeholder={billingStateAddress1}
-                          isDisabled={!editMode}
-                          styles={selectStyling}
-                        />
-                      </div>
-                      <div className='user-info zip'>
-                        <label className='user-info-label'>Zip code</label>
-                        <input
-                          type='text'
-                          placeholder={billingZipCodeAddress1}
-                          disabled={!editMode}
-                          className='user-info-input disabled-input'
-                        />
-                      </div>
-                    </div>
-                    {(billingStreetAddress1 === '') ? (
-                      <div className='user-profile-buttons'>
-                        <button className='CTA-button-one' onClick={() => setEditMode(true)}>Add</button>
-                      </div>
-                    ) : (
-                      <div className='user-profile-buttons'>
-                        <button className='CTA-button-one' onClick={() => setEditMode(true)}>Edit</button>
-                      </div>
-                    )}
+                <div className='user-info-form'>
+                  <h3 className='user-profile-payment'>Payment method 1</h3>
+                  <div className='user-info'>
+                    <label className='user-info-label'>Card type</label>
+                    <Select
+                      options={cardTypeOptions}
+                      placeholder={billingStreetAddress1}
+                      isDisabled={!editMode}
+                      styles={selectStyling}
+                    />
                   </div>
-                  <div className='user-info-form'>
-                    <h3 className='user-profile-payment'>Payment method 2</h3>
+                  <div className='user-infos'>
+                    <div className='user-info card-num'>
+                      <label className='user-info-label'>Card number</label>
+                      <input
+                        type='text'
+                        placeholder={cardNumber1}
+                        disabled={!editMode}
+                        className='user-info-input disabled-input'
+                      />
+                    </div>
+                    <div className='user-info exp-date'>
+                      <label className='user-info-label'>Exp. date</label>
+                      <input
+                        type='text'
+                        placeholder={expirationDate1}
+                        disabled={!editMode}
+                        className='user-info-input disabled-input'
+                      />
+                    </div>
+                  </div>
+                  <h3 className='user-profile-billing'>Billing address</h3>
+                  <div className='user-info'>
+                    <label className='user-info-label'>Street</label>
+                    <input
+                      type='text'
+                      placeholder={billingStreetAddress1}
+                      disabled={!editMode}
+                      className='user-info-input disabled-input'
+                    />
+                  </div>
+                  <div className='user-info'>
+                    <label className='user-info-label'>City</label>
+                    <input
+                      type='text'
+                      placeholder={billingCityAddress1}
+                      disabled={!editMode}
+                      className='user-info-input disabled-input'
+                    />
+                  </div>
+                  <div className='user-infos state'>
                     <div className='user-info'>
-                      <label className='user-info-label'>Card type</label>
+                      <label className='user-info-label'>State</label>
                       <Select
-                        options={cardTypeOptions}
-                        placeholder={billingStreetAddress2}
+                        options={usStates}
+                        placeholder={billingStateAddress1}
                         isDisabled={!editMode}
                         styles={selectStyling}
                       />
                     </div>
-                    <div className='user-infos'>
-                      <div className='user-info card-num'>
-                        <label className='user-info-label'>Card number</label>
-                        <input
+                    <div className='user-info zip'>
+                      <label className='user-info-label'>Zip code</label>
+                      <input
+                        type='text'
+                        placeholder={billingZipCodeAddress1}
+                        disabled={!editMode}
+                        className='user-info-input disabled-input'
+                      />
+                    </div>
+                  </div>
+                  {(billingStreetAddress1 === '') ? (
+                    <div className='user-profile-buttons'>
+                      <button className='CTA-button-one' onClick={() => setEditMode(true)}>Add</button>
+                    </div>
+                  ) : (
+                    <div className='user-profile-buttons'>
+                      <button className='CTA-button-one' onClick={() => setEditMode(true)}>Edit</button>
+                    </div>
+                  )}
+                </div>
+              )}
+              {editMode2 ? (
+                <div className='user-info-form'>
+                </div>
+              ) : (
+                <div className='user-info-form'>
+                  <h3 className='user-profile-payment'>Payment method 2</h3>
+                  <div className='user-info'>
+                    <label className='user-info-label'>Card type</label>
+                    <Select
+                    options={cardTypeOptions}
+                    placeholder={billingStreetAddress2}
+                    isDisabled={!editMode2}
+                    styles={selectStyling}
+                    />
+                  </div>
+                  <div className='user-infos'>
+                    <div className='user-info card-num'>
+                      <label className='user-info-label'>Card number</label>
+                      <input
                           type='text'
                           placeholder={cardNumber2}
-                          disabled={!editMode}
+                          disabled={!editMode2}
                           className='user-info-input disabled-input'
-                        />
-                      </div>
-                      <div className='user-info exp-date'>
-                        <label className='user-info-label'>Exp. date</label>
-                        <input
-                          type='text'
-                          placeholder={expirationDate2}
-                          disabled={!editMode}
-                          className='user-info-input disabled-input'
-                        />
-                      </div>
+                      />
                     </div>
-                    <h3 className='user-profile-billing'>Billing address</h3>
-                    <div className='user-info'>
-                      <label className='user-info-label'>Street</label>
+                    <div className='user-info exp-date'>
+                      <label className='user-info-label'>Exp. date</label>
                       <input
                         type='text'
-                        placeholder={billingStreetAddress2}
-                        disabled={!editMode}
+                        placeholder={expirationDate2}
+                        disabled={!editMode2}
                         className='user-info-input disabled-input'
                       />
                     </div>
+                  </div>
+                  <h3 className='user-profile-billing'>Billing address</h3>
+                  <div className='user-info'>
+                    <label className='user-info-label'>Street</label>
+                    <input
+                      type='text'
+                      placeholder={billingStreetAddress2}
+                      disabled={!editMode2}
+                      className='user-info-input disabled-input'
+                    />
+                  </div>
+                  <div className='user-info'>
+                    <label className='user-info-label'>City</label>
+                    <input
+                      type='text'
+                      placeholder={billingCityAddress2}
+                      disabled={!editMode2}
+                      className='user-info-input disabled-input'
+                    />
+                  </div>
+                  <div className='user-infos state'>
                     <div className='user-info'>
-                      <label className='user-info-label'>City</label>
-                      <input
-                        type='text'
-                        placeholder={billingCityAddress2}
-                        disabled={!editMode}
-                        className='user-info-input disabled-input'
-                      />
-                    </div>
-                    <div className='user-infos state'>
-                      <div className='user-info'>
-                        <label className='user-info-label'>State</label>
-                        <Select
+                      <label className='user-info-label'>State</label>
+                      <Select
                           options={usStates}
                           placeholder={billingStateAddress2}
-                          isDisabled={!editMode}
+                          isDisabled={!editMode2}
                           styles={selectStyling}
-                        />
-                      </div>
-                      <div className='user-info zip'>
-                        <label className='user-info-label'>Zip code</label>
-                        <input
-                          type='text'
-                          placeholder={billingZipCodeAddress2}
-                          disabled={!editMode}
-                          className='user-info-input disabled-input'
-                        />
-                      </div>
+                      />
                     </div>
-                    {(billingStreetAddress2 === '') ? (
-                      <div className='user-profile-buttons'>
-                        <button className='CTA-button-one' onClick={() => setEditMode(true)}>Add</button>
-                      </div>
-                    ) : (
-                      <div className='user-profile-buttons'>
-                        <button className='CTA-button-one' onClick={() => setEditMode(true)}>Edit</button>
-                      </div>
-                    )}
+                    <div className='user-info zip'>
+                      <label className='user-info-label'>Zip code</label>
+                      <input
+                        type='text'
+                        placeholder={billingZipCodeAddress2}
+                        disabled={!editMode2}
+                        className='user-info-input disabled-input'
+                      />
+                    </div>
                   </div>
+                  {(billingStreetAddress2 === '') ? (
+                    <div className='user-profile-buttons'>
+                      <button className='CTA-button-one' onClick={() => setEditMode2(true)}>Add</button>
+                    </div>
+                  ) : (
+                    <div className='user-profile-buttons'>
+                      <button className='CTA-button-one' onClick={() => setEditMode2(true)}>Edit</button>
+                    </div>
+                  )}
+                </div>
+              )}
+              {editMode3 ? (
+                <div className='user-info-form'>
+                </div>
+              ) : (
+                <div className='user-info-form'>
+                  <h3 className='user-profile-payment'>Payment method 3</h3>
+                  <div className='user-info'>
+                    <label className='user-info-label'>Card type</label>
+                    <Select
+                    options={cardTypeOptions}
+                    placeholder={billingStreetAddress3}
+                    isDisabled={!editMode3}
+                    styles={selectStyling}
+                    />
+                  </div>
+                  <div className='user-infos'>
+                    <div className='user-info card-num'>
+                      <label className='user-info-label'>Card number</label>
+                      <input
+                          type='text'
+                          placeholder={cardNumber3}
+                          disabled={!editMode3}
+                          className='user-info-input disabled-input'
+                      />
+                    </div>
+                    <div className='user-info exp-date'>
+                      <label className='user-info-label'>Exp. date</label>
+                      <input
+                        type='text'
+                        placeholder={expirationDate3}
+                        disabled={!editMode3}
+                        className='user-info-input disabled-input'
+                      />
+                    </div>
+                  </div>
+                  <h3 className='user-profile-billing'>Billing address</h3>
+                  <div className='user-info'>
+                    <label className='user-info-label'>Street</label>
+                    <input
+                      type='text'
+                      placeholder={billingStreetAddress3}
+                      disabled={!editMode3}
+                      className='user-info-input disabled-input'
+                    />
+                  </div>
+                  <div className='user-info'>
+                    <label className='user-info-label'>City</label>
+                    <input
+                      type='text'
+                      placeholder={billingCityAddress3}
+                      disabled={!editMode3}
+                      className='user-info-input disabled-input'
+                    />
+                  </div>
+                  <div className='user-infos state'>
+                    <div className='user-info'>
+                      <label className='user-info-label'>State</label>
+                      <Select
+                          options={usStates}
+                          placeholder={billingStateAddress3}
+                          isDisabled={!editMode3}
+                          styles={selectStyling}
+                      />
+                    </div>
+                    <div className='user-info zip'>
+                      <label className='user-info-label'>Zip code</label>
+                      <input
+                        type='text'
+                        placeholder={billingZipCodeAddress3}
+                        disabled={!editMode3}
+                        className='user-info-input disabled-input'
+                      />
+                    </div>
+                  </div>
+                  {(billingStreetAddress3 === '') ? (
+                    <div className='user-profile-buttons'>
+                      <button className='CTA-button-one' onClick={() => setEditMode3(true)}>Add</button>
+                    </div>
+                  ) : (
+                    <div className='user-profile-buttons'>
+                      <button className='CTA-button-one' onClick={() => setEditMode3(true)}>Edit</button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
