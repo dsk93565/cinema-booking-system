@@ -12,9 +12,13 @@ class AddMovie(APIView):
     def post(self, request):
         print("checking of here")
         try: 
-            data = json.loads(request.body.decode('utf-8'))
-            print(data)
-            user = getUserFromToken(data.get('user_token'))
+            response = json.loads(request.body.decode('utf-8'))
+            print(response)
+            # Load the JSON string from the 'body' field
+            data = json.loads(response['body'])
+            # Extract the userToken
+            user_token = data['userToken']
+            user = getUserFromToken(user_token)
             if user is None or user.type_id != 2:
                 print("am i here")
                 return Response({"error": -1})
