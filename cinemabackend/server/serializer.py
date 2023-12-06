@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movies, CustomUser, Card
+from .models import Movies, CustomUser, Card, Showings
 
 class UserSerializer(serializers.ModelSerializer):
         class Meta: 
@@ -7,6 +7,10 @@ class UserSerializer(serializers.ModelSerializer):
                fields = ['username', 'email', 'phone_number', 'first_name', 
                          'last_name', 'type_id', 'state_id', 'promotions']
 
+class ShowingSerializer(serializers.ModelSerializer):
+       class Meta: 
+              model = Showings
+              fields = ['shid', 'movie_id', 'period_id', 'room_id', 'room_id', 'show_date'] 
 class MovieSerializer(serializers.ModelSerializer):
         class Meta:
             model = Movies

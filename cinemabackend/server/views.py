@@ -6,14 +6,28 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from .models import Movies, CustomUser, Card
-from .serializer import MovieSerializer, UserSerializer
+from .models import Movies, CustomUser, Card, Periods, Rooms, Showings
+from .serializer import MovieSerializer, UserSerializer, ShowingSerializer
 from .backends.auth_by_email import EmailAuthBackend
 from django.conf import settings
 from .utils import *
 import json, random
 
 
+# expects mid
+# returns
+ # showings: ['shid', 'movie_id', 'period_id', 'room_id', 'room_id', 'show_date']
+class GetShows(APIView):
+    def get(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+            movie = Movies.objects.get(mid=data.get('mid'))
+            query = Showings.objects.filter(movie_id=movie)
+            serializer = ShowingSerializer(query, many=True)
+            showings = {'showings': serializer}
+            return Response(showings)
+        except json.JSONDecodeError:
+            return Response({"error": -1})
 
 #TODO: define error class and error codes and properly throw errors
 
