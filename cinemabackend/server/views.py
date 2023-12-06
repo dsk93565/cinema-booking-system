@@ -77,6 +77,7 @@ class SubsribeToPromo(APIView):
             user = CustomUser.objects.get(email=email)
             user.promotions = 1
             user.save()
+            return Response({'success': 1})
         except json.JSONDecodeError:
             return Response({"email_sent": -2})
 #How this is currently implemented besides Email, pass only the fields that you want to modify
