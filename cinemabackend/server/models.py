@@ -39,6 +39,12 @@ class Card(models.Model):
     card_state = models.CharField(db_column='card_state', max_length=255, default='')
     card_zip = models.CharField(db_column='card_zip', max_length=255, default='')
 
+
+class Movie_States(models.Model):
+    class Meta: 
+        db_table: 'movie_states'
+    msid = models.IntegerField(db_column='msid', primary_key=True)
+    movie_state = models.CharField(db_column='movie_state',max_length=255, default='')
 class Movies(models.Model):
     mid = models.IntegerField(db_column='mid',primary_key=True)
     category = models.CharField(db_column='category', max_length=255, default='')
@@ -51,6 +57,7 @@ class Movies(models.Model):
     rating = models.CharField(db_column='rating',max_length=255, default='')
     title = models.CharField(db_column='title',max_length=255, default='')
     poster_path = models.CharField(db_column='image',max_length=255, default='')
+    state_id = models.ForeignKey(Movie_States, on_delete=models.DO_NOTHING, db_column='state_id')
     class Meta: 
         db_table: 'movies'
 class Periods(models.Model):
@@ -80,6 +87,7 @@ class Showings(models.Model):
     movie_id = models.ForeignKey(Movies, on_delete=models.DO_NOTHING, db_column='movie_id')
     period_id = models.ForeignKey(Periods, on_delete=models.DO_NOTHING, db_column='period_id')
     room_id = models.ForeignKey(Rooms, on_delete=models.DO_NOTHING, db_column='room_id')
+    show_date = models.DateField(db_column='show_date')
 
 class Promotions(models.Model):
     class Meta:
