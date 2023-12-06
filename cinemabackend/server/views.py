@@ -227,13 +227,30 @@ class GetCards(APIView):
             cardHandler = CardActions()
             cards = cardHandler.getCards(data.get('user_token'))
             return Response(cards)
+        
 class MovieList(APIView):
     def get(self, request):
         queryset = Movies.objects.all()
-        print("queryset:", queryset)
         serializer_class = MovieSerializer(queryset, many=True)
-        movieList = {"movies":serializer_class.data}
-        return Response(movieList)
+        movies_data = serializer_class.data
+
+        sorted_movies = {
+            'Now Playing': [],
+            'Trending': [],
+            'Coming Soon': [],
+        }
+
+        for movie in queryset:
+            state_id = movie.state_id.msid
+            serialized_movie = MovieSerializer(movie).data  # Serialize the movie instance
+            if state_id == 2:
+                sorted_movies['Now Playing'].append(serialized_movie)
+            elif state_id == 3:
+                sorted_movies['Trending'].append(serialized_movie)
+            elif state_id == 4:
+                sorted_movies['Coming Soon'].append(serialized_movie)
+
+        return Response(sorted_movies)
     
 class Movie(APIView):
     def get(self, request):
