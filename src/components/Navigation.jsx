@@ -109,16 +109,24 @@ const Navigation = () => {
                   <Link to='/admin'><button className='navigation-link non-CTA-button'>Portal</button></Link>
                 ) : null}
 
-                {/* Profile */}
-                {location.pathname !== '/profile' ? (
-                  <Link to='/profile'><button className='navigation-link non-CTA-button'>Profile</button></Link>
-                ) : null}
-
-                {/* Cart */}
-                <Link to='/order/confirmation'><button className='navigation-link non-CTA-button'>Cart</button></Link>
+                <Link to='/profile'><button className='navigation-link non-CTA-button'>Profile</button></Link>
 
                 {/* Sign Out */}
                 <button onClick={handleSignOut} className='navigation-link CTA-button-one'>Sign out</button>
+
+                {/* Search Icon */}
+                {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
+                  <button className={`mobile-search-wrapper ${sideNav ? 'is-hidden' : ''}`}>
+                    <FontAwesomeIcon icon='fa-solid fa-magnifying-glass fa-1x' className='mobile-search-icon' />
+                  </button>
+                ) : null}
+
+                {/* Hamburger Menu */}
+                {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
+                  <button onClick={handleSideNav} className={`hamburger-menu ${sideNav ? 'is-active' : ''}`}>
+                    <div className='hamburger-line'></div>
+                  </button>
+                ) : null}
               </ol>
             ) : (
               <ol>
@@ -173,17 +181,43 @@ const Navigation = () => {
         <nav className={`side-navigation-menu ${sideNav ? 'is-active' : ''}`}>
           <div className='side-navigation-header'></div>
           <div className='side-navigation-lists'>
-            <div className='side-navigation-title'>Movies</div>
+            <div className='side-navigation-title-top'>Movies</div>
             <ol className='side-navigation-list'>
               <li><Link to='/trending'><button onClick={handleSideNav} className='side-navigation-link'>Trending</button></Link></li>
               <li><Link to='/now-playing'><button onClick={handleSideNav} className='side-navigation-link'>Now Playing</button></Link></li>
               <li><Link to='/coming-soon'><button onClick={handleSideNav} className='side-navigation-link'>Coming Soon</button></Link></li>
             </ol>
+            {(userToken || rememberMe === 'true') ? (
+              <div>
+                <div className='side-navigation-title'>Account</div>
+                <ol className='side-navigation-list'>
+                  <li>
+                    {(userType === '1') ? (
+                      <Link to='/profile'><button onClick={handleSideNav} className='side-navigation-link'>Profile</button></Link>
+                    ) : null}
+                  </li>
+                  <li>
+                    {(userType === '2') ? (
+                      // Admin Portal
+                      <Link to='/admin'><button onClick={handleSideNav} className='side-navigation-link'>Portal</button></Link>
+                    ) : null}
+                  </li>
+                </ol>
+              </div>
+              ) : (
+                null
+              )}
           </div>
-          <ol className='side-navigation-user-account'>
-            <li><Link to='/login'><button onClick={handleSideNav} className='CTA-button-two'>Log in</button></Link></li>
-            <li><Link to='/sign-up'><button onClick={handleSideNav} className='CTA-button-one'>Sign up</button></Link></li>
-          </ol>
+          {(userToken || rememberMe === 'true') ? (
+            <ol className='side-navigation-user-account'>
+              <li><button onClick={() => { handleSignOut(); handleSideNav();}} className='CTA-button-one'>Sign out</button></li>
+            </ol>
+          ) : (
+            <ol className='side-navigation-user-account'>
+              <li><Link to='/login'><button onClick={handleSideNav} className='CTA-button-two'>Log in</button></Link></li>
+              <li><Link to='/sign-up'><button onClick={handleSideNav} className='CTA-button-one'>Sign up</button></Link></li>
+            </ol>
+          )}
         </nav>
 
         {/* Side Navigation Overlay */}
