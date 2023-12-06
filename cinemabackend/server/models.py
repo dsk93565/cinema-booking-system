@@ -40,7 +40,8 @@ class Card(models.Model):
     card_zip = models.CharField(db_column='card_zip', max_length=255, default='')
 
 class Movies(models.Model):
-    mid = models.IntegerField(db_column='mid',primary_key=True)
+    # Changing for testing purposes, double check this
+    mid = models.BigAutoField(default=100,auto_created=True, serialize=False, db_column='mid', primary_key=True)
     category = models.CharField(db_column='category', max_length=255, default='')
     cast = models.CharField(db_column='cast',max_length=255, default='')
     director = models.CharField(db_column='director',max_length=255, default='')
