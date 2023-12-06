@@ -69,6 +69,16 @@ class Send_Verification_Email(APIView):
         return Response({'email_sent': 1})
 
 
+class SubsribeToPromo(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+            email = data.get('email')
+            user = CustomUser.objects.get(email=email)
+            user.promotions = 1
+            user.save()
+        except json.JSONDecodeError:
+            return Response({"email_sent": -2})
 #How this is currently implemented besides Email, pass only the fields that you want to modify
 #Need a way to distinguish which card is being edited!
 class EditUser(APIView):
