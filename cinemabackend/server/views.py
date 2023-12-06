@@ -6,28 +6,14 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from .models import Movies, CustomUser, Card, Periods, Rooms, Showings
-from .serializer import MovieSerializer, UserSerializer, ShowingSerializer
+from .models import Movies, CustomUser, Card
+from .serializer import MovieSerializer, UserSerializer
 from .backends.auth_by_email import EmailAuthBackend
 from django.conf import settings
 from .utils import *
 import json, random
 
 
-# expects mid
-# returns
- # showings: ['shid', 'movie_id', 'period_id', 'room_id', 'room_id', 'show_date']
-class GetShows(APIView):
-    def get(self, request):
-        try: 
-            data = json.loads(request.body.decode('utf-8'))
-            movie = Movies.objects.get(mid=data.get('mid'))
-            query = Showings.objects.filter(movie_id=movie)
-            serializer = ShowingSerializer(query, many=True)
-            showings = {'showings': serializer}
-            return Response(showings)
-        except json.JSONDecodeError:
-            return Response({"error": -1})
 
 #TODO: define error class and error codes and properly throw errors
 
@@ -81,7 +67,7 @@ class EditUser(APIView):
             user_to_modify = getUserFromToken(data.get('user_token'))
             #CAN BE REFACTORED WITH SERIALIZER
             new_password = data.get('password')
-            new_number = data.get('phonenumber')
+            new_number = data.get('phone_number')
             new_first = data.get('first_name')
             new_last = data.get('last_name')
             new_promo = data.get('promotions')
@@ -217,13 +203,33 @@ class GetCards(APIView):
             cardHandler = CardActions()
             cards = cardHandler.getCards(data.get('user_token'))
             return Response(cards)
+
 class MovieList(APIView):
     def get(self, request):
         queryset = Movies.objects.all()
-        print("queryset:", queryset)
-        serializer_class = MovieSerializer(queryset, many=True)
-        movieList = {"movies":serializer_class.data}
-        return Response(movieList)
+        categorized_movies = self.categorize_movies(queryset)
+        serializer_class = MovieSerializer(categorized_movies, many=True)
+        movie_list = {"movies": serializer_class.data}
+        print(queryset)
+        print(categorized_movies)
+        return Response(movie_list)
+
+    def categorize_movies(self, queryset):
+        categorized_movies = {
+            'Now Playing': [],
+            'Trending': [],
+            'Coming Soon': [],
+        }
+
+        for movie in queryset:
+            if movie.category == 2:
+                categorized_movies['Now Playing'].append(movie)
+            elif movie.category == 3:
+                categorized_movies['Trending'].append(movie)
+            elif movie.category == 4:
+                categorized_movies['Coming Soon'].append(movie)
+
+        return categorized_movies
     
 class Movie(APIView):
     def get(self, request):

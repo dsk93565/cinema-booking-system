@@ -7,24 +7,18 @@ const MoviesCard = (props) => {
     const [flippedCard, setFlippedCard] = useState(null); // State to track flipped card
 
     useEffect(() => {
-        fetchMovies(props.sectionTitle);
-    }, []);
+        fetchMovies(props.sectionTitle, props.categoryFilter);
+    }, [props.sectionTitle, props.categoryFilter]);
 
     const sectionRef = useRef(null);
 
-    const fetchMovies = async (sectionTitle, categoryFilter) => {
-        let response;
-
+    const fetchMovies = async (sectionTitle) => {
         try {
-            response = await axios.get(`http://localhost:8000/api/get-movies`);
+            const response = await axios.get(`http://localhost:8000/api/get-movies`);
             const { data } = response;
 
-            if (sectionTitle === 'Trending' || sectionTitle === 'Now Playing' || sectionTitle === 'Coming Soon') {
-                setMovies(data.movies);
-            } else {
-                const filteredMovies = data.movies.filter(movie => movie.category === categoryFilter);
-                setMovies(filteredMovies);
-            }
+            const categoryMovies = data.movies[sectionTitle];
+            setMovies(categoryMovies);
         } catch (error) {
             console.error('Error fetching movies:', error);
         }
@@ -44,7 +38,7 @@ const MoviesCard = (props) => {
             <div className='movies-container' ref={sectionRef}>
                 {movies.map(movie => (
                     <div key={movie.mid}>
-                        <MovieCard 
+                        <MovieCard
                             movie={movie} 
                             origin="MoviesCard" 
                             isFlipped={flippedCard === movie.mid} 
