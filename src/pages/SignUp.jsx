@@ -5,7 +5,7 @@ import axios from 'axios';
 import Select from 'react-select';
 import '../stylings/account.css';
 
-const SignUp = (props) => {
+const SignUp = () => {
   // Form Data
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -701,10 +701,10 @@ const SignUp = (props) => {
                 <div className='user-info state'>
                   <label className='user-info-label'>State</label>
                   <Select
+                    options={usStates}
                     placeholder=''
                     value={usStates.find((state) => state.value === shippingStateAddress)}
                     onChange={(selectedOption) => setShippingStateAddress(selectedOption.value)}
-                    options={usStates}
                     styles={selectStyling}
                   />
                 </div>

@@ -18,6 +18,7 @@
     align-items: center;
     transition: outline 0.2s ease-in-out;
 }
+
 .password-info.is-active {
     outline: var(--accent-two) 0.125rem solid;
 }
@@ -44,56 +45,72 @@
     height: 100%;
     padding: 0 1.125rem 0 0.5625rem;
 }
+
 .eye-icon-wrapper:hover .eye-icon {
     color: var(--primary);
 }
+
 .eye-icon {
     color: var(--accent-three);
     height: 1.125rem;
     transition: color 0.1s ease-in-out;
 }
+
 .sign-up .user-infos {
     flex-direction: column;
     row-gap: 2rem;
 }
+
 .sign-up .user-infos .user-info {
     margin-top: 0;
 }
+
 .shipping-address .user-infos {
     flex-direction: column;
 }
+
 .user-info.state, .user-info.zip, .user-info.card-num, .user-info.exp-date {
     width: 100%;
 }
+
 .shipping-address .user-info:nth-last-child(3) {
     margin-top: 0;
 }
+
 .payment-info .user-info:first-child {
     margin-top: 0;
 }
+
 .payment-info .user-infos {
     flex-direction: column;
 }
+
 .payment-info .user-infos .user-info {
     margin-top: 2rem;
 }
+
 .payment-info .user-info-option {
     width: fit-content;
     align-self: end;
 }
+
 .payment-info .user-info-CTA-button {
     margin-top: 0;
 }
+
 .verification h2, .confirmation h2 {
     margin-bottom: 2rem;
 }
+
 .verification p {
     font-size: 1.125rem;
     margin-bottom: 3rem;
 }
+
 .forgot-password .section-container-narrow, .verification .section-container-narrow, .confirmation .section-container-narrow {
     row-gap: 0;
 }
+
 .verification-code {
     margin-bottom: 1.5rem;
     display: flex;
@@ -102,6 +119,7 @@
     column-gap: 1.25rem;
     row-gap: 1.25rem;
 }
+
 .verification-number {
     color: var(--primary);
     background-color: var(--accent-four);
@@ -115,20 +133,17 @@
     transition: outline 0.2s ease-in-out;
     text-align: center;
 }
+
 .verification-number:focus {
     outline: var(--accent-two) 0.125rem solid;
 }
+
 .verification .user-info-option {
     width: fit-content;
     margin: 0 0 3rem 0;
     align-self: end;
 }
-/** .user-info-option {
-    width: fit-content;
-    margin: 0 0 3rem 0;
-    align-self: end;
-    transition: color 0.3s ease-in-out;
-} **/
+
 .confirmation p {
     font-size: 1.25rem;
     margin-bottom: 4rem;
@@ -140,74 +155,101 @@
     align-items: stretch;
 }
 
-/* Grid layout for user information sections */
-.user-infos {
+/** ----- Profile Page ----- **/
+
+.user-profile h2 {
+    color: var(--accent-three);
+    cursor: pointer;
+    transition: color 0.1s ease-in-out;
+}
+
+.user-profile h2.active {
+    color: var(--primary);
+}
+
+.user-profile .section-container-top {
+    align-items: normal;
+    flex-direction: column;
+    row-gap: 3rem;
+}
+
+.user-profile .user-infos {
+    column-gap: 3rem;
+}
+
+.user-profile .CTA-button-one, .user-profile .CTA-button-two {
+    font-size: 1rem;
+    font-weight: 500;
+    max-width: 36rem;
+    width: 100%;
+    padding: 1rem 1.25rem;
+}
+
+.user-profile-header {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    row-gap: 2rem;
 }
 
-/* Label styles */
-.user-infos label {
-    margin-bottom: 0.5rem;
+.user-profile-categories {
+    display: flex;
+    column-gap: 3.25rem;
+    overflow-x: scroll;
+    white-space: nowrap;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
-.user-infos input[type="text"],
-.user-infos input[type="email"],
-.user-infos input[type="password"] {
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.user-profile-categories::-webkit-scrollbar {
+    display: none;
 }
 
-/* Input field styles */
-.user-infos input[type="text"],
-.user-infos input[type="email"],
-.user-infos input[type="tel"] { /* Added type="tel" for phone number */
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.section-separator {
+    border: var(--tertiary-two) 0.0625rem solid;
+    width: 100%;
 }
 
-/* Styles for displaying user information */
-.user-info-display {
-    background-color: #f4f4f4;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    border-radius: 4px;
+.user-profile-page {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-/* Edit, Save, and Cancel button styles */
-.edit-button {
-    background-color: rgb(167, 87, 167);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    padding: 0.5rem 1rem;
-    margin-top: 1rem;
-    cursor: pointer;
-}
-.save-changes-button, .cancel-button {
-    padding: 0.5rem 1rem;
-    margin: 0.5rem 0;
-    border-radius: 4px;
-    cursor: pointer;
+.user-profile-buttons {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    column-gap: 0;
+    row-gap: 3rem;
 }
 
-.save-changes-button {
-    background-color: purple;
-    color: white;
-    border: none;
+.user-basic-info .user-infos .user-info {
+    margin-top: 0;
 }
 
-.cancel-button {
-    background-color: white;
-    color: black;
-    border: 1px solid #ddd;
+.user-shipping-info .user-infos {
+    flex-direction: column;
 }
 
+.user-shipping-info .user-info:nth-last-child(4) {
+    margin-top: 0;
+}
+
+.user-payments-info {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4rem;
+}
+
+.user-profile-payment {
+    font-size: 1.5rem;
+}
+
+.user-profile-billing {
+    margin-top: 3rem;
+}
 
 @media only screen and (min-width: 22rem) {
     .verification-code {
@@ -220,81 +262,59 @@
         width: 4.25rem;
     }
 }
+
 @media only screen and (min-width: 24rem) {
     .sign-up .user-infos, .payment-info .user-infos {
         flex-direction: row;
         row-gap: 0;
     }
+
     .shipping-address .user-infos {
         flex-direction: row;
     }
+
+    .user-info.state {
+        width: 55%;
+    }
+
+    .user-info.zip {
+        width: 45%;
+    }
+
     .user-info.state, .user-info.card-num {
         width: 65%;
     }
+
     .user-info.zip, .user-info.exp-date {
         width: 35%;
     }
+
+    .user-shipping-info .user-infos {
+        flex-direction: row;
+    }
 }
+
 @media only screen and (min-width: 40rem) {
     .verification-number {
         height: 4.5rem;
         width: 4.5rem;
     }
-}
-@keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @media only screen and (min-width: 24rem) {
-    .sign-up .user-infos,
-    .payment-info .user-infos,
-    .shipping-address .user-infos {
-        /* Remove flex-direction: row; to keep the default column direction */
-    }
 
-    .user-info.state, .user-info.zip, .user-info.card-num, .user-info.exp-date {
-        width: 100%; /* Ensure full width for individual fields */
+    .user-profile-buttons {
+        flex-direction: row;
+        column-gap: 3rem;
+        row-gap: 0;
     }
 }
 
-/** ----- Profile Page ----- **/
-
-.user-profile .section-container-top {
-    align-items: normal;
-    flex-direction: column;
-    row-gap: 3rem;
+@media only screen and (min-width: 48rem) {
+    .user-profile .user-infos {
+        column-gap: 6rem;
+    }
 }
 
-.user-profile h2 {
-    cursor: pointer;
-}
-
-.profile-header {
-    display: flex;
-    flex-direction: column;
-    row-gap: 2rem;
-}
-
-.profile-categories {
-    display: flex;
-    column-gap: 3.25rem;
-    overflow-x: scroll;
-    white-space: nowrap;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.profile-categories::-webkit-scrollbar {
-    display: none;
-}
-
-.section-separator {
-    border: var(--tertiary-two) 0.0625rem solid;
-    width: 100%;
+@media only screen and (min-width: 80rem) {
+    .user-profile .user-infos {
+        column-gap: 9rem;
+    }
 }
