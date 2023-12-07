@@ -2,6 +2,7 @@ import '../stylings/admin.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import AddMovie from '../components/AddMovie';
+import AddShowing from '../components/AddShowing';
 
 const ManageMovies = () => {
 
@@ -14,13 +15,12 @@ const ManageMovies = () => {
   }, []);
 
   const fetchMovies = async () => {
-    let response;
-
     try {
-        response = await axios.get(`http://localhost:8000/api/get-movies`);
-        const { data } = response;
-        console.log(data.movies)
-        setMovies(data.movies);
+        const movies = [];
+        const response = await axios.get(`http://localhost:8000/api/get-movies`);
+        setMovies(movies.concat(response.data["Now Playing"], response.data["Coming Soon"], response.data["Trending"]));
+        movies.map((movie) => {console.log(typeof movie)})
+        console.log(response.data["Now Playing"]);
     } catch (error) {
         console.error('Error fetching movies:', error);
     }
@@ -31,7 +31,7 @@ const ManageMovies = () => {
         <div className='admin-container-narrow'>
             <h2>Manage movies</h2>
             <button className='CTA-button-one' onClick={() => setAddMovieModal(true)}>Add movie</button>            
-            <button className='CTA-button-one'>Schedule movie</button>
+            <button className='CTA-button-one' onClick={() => setScheduleMovieModal(true)}>Schedule movie</button>
         </div>
         <div className='admin-body'>
           {movies.map(movie => (
@@ -57,6 +57,9 @@ const ManageMovies = () => {
 
         {/** Add Movie Modal */}
         {addMovieModal && (<AddMovie onClose={() => setAddMovieModal(false)}></AddMovie>)}
+
+        {/** Add Showing Modal */}
+        {scheduleMovieModal && (<AddShowing movies={movies} onClose={() => setScheduleMovieModal(false)}></AddShowing>)}
     </section>
   )
 }

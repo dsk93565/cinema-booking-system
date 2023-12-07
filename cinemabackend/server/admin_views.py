@@ -12,14 +12,19 @@ class AddMovie(APIView):
     def post(self, request):
         print("checking of here")
         try: 
-            data = json.loads(request.body.decode('utf-8'))
-            print(data)
-            user = getUserFromToken(data.get('user_token'))
+            response = json.loads(request.body.decode('utf-8'))
+            print(response)
+            # Load the JSON string from the 'body' field
+            data = json.loads(response['body'])
+            # Extract the userToken
+            user_token = data['userToken']
+            user = getUserFromToken(user_token)
             if user is None or user.type_id != 2:
                 return({"error:"-1})
             msid = data.get('msid')
             moviestate = Movie_States.objects.get(msid=msid)
-            new_movie = Movies.objects.create(category=data.get('category'), 
+            new_movie = Movies.objects.create(release_date=data.get('release_date'), 
+                                              category=data.get('category'), 
                                               cast=data.get('cast'),
                                               director=data.get('director'), 
                                               producer=data.get('producer'), 
@@ -33,6 +38,7 @@ class AddMovie(APIView):
             new_movie.save()
         except json.JSONDecodeError:
             return Response({"error": -1})
+        return Response({'mid': new_movie.mid})
 
 # EXPECTED REQUEST
 # {user_token, mid, category, cast, director, producer, 

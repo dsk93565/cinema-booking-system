@@ -6,6 +6,7 @@ import axios from 'axios';
 export default function AddMovie({ onClose }) {
     
     const [title, setTitle] = useState('');
+    const [release_date, setReleaseDate] = useState('');
     const [category, setCategory] = useState('');
     const [cast, setCast] = useState('');
     const [director, setDirector] = useState('');
@@ -15,11 +16,10 @@ export default function AddMovie({ onClose }) {
     const [trailer, setTrailer] = useState('');
     const [rating, setRating] = useState('');
     const [poster_path, setPosterPath] = useState('');
-
-
+    const [msid, setStateID] = useState('');
 
     // Filled Form Checker For Basic Information Section
-    const isAddMovieFormFilled = (title && category && cast && director && producer && synopsis && reviews && trailer && rating && poster_path);
+    const isAddMovieFormFilled = (title && release_date && category && cast && director && producer && synopsis && reviews && trailer && rating && poster_path && msid);
 
     const userToken = localStorage.getItem('userToken');
     
@@ -27,6 +27,7 @@ export default function AddMovie({ onClose }) {
 
         const movieInfoExport = {
             userToken,
+            release_date,
             category,
             cast,
             director,
@@ -37,6 +38,7 @@ export default function AddMovie({ onClose }) {
             rating,
             title,
             poster_path,
+            msid,
         }
 
         console.log(JSON.stringify(movieInfoExport));
@@ -70,6 +72,10 @@ export default function AddMovie({ onClose }) {
                                 <div className='movie-info'>
                                     <label className='movie-info-label'>Title</label>
                                     <input type='text' className='add-movie-input' onChange={(e) => setTitle(e.target.value)}></input>
+                                </div>
+                                <div className='movie-info'>
+                                    <label className='movie-info-label'>Release Date</label>
+                                    <input type='date' className='add-movie-input' onChange={(e) => setReleaseDate(e.target.value)}></input>
                                 </div>
                                 <div className='movie-info'>
                                     <label className='movie-info-label'>Genre</label>
@@ -109,12 +115,21 @@ export default function AddMovie({ onClose }) {
                                     <label className='movie-info-label'>Poster Image Path</label>
                                     <input type='text' className='add-movie-input' onChange={(e) => setPosterPath(e.target.value)}></input>
                                 </div>
+                                <div className='movie-info'>
+                                    <label className='movie-info-label'>Category</label>
+                                    <select className='add-movie-input' onChange={(e) => setStateID(e.target.value)}>
+                                        <option value={"1"}>Archived</option>
+                                        <option value={"2"}>Now Playing</option>
+                                        <option value={"3"}>Trending</option>
+                                        <option value={"4"}>Coming Soon</option>
+                                    </select>
+                                </div>
                             </div>
                             
                         </form>
                     </div>
                     <div className='modal-footer'>
-                        <button disabled={!isAddMovieFormFilled} className='admin-movie-button' type='submit' onClick={handleSubmit}>Add Movie</button>
+                    <button disabled={!isAddMovieFormFilled} className='admin-movie-button' type='submit' onClick={handleSubmit}>Add Movie</button>
                     </div>
                 </div>
         </div>
