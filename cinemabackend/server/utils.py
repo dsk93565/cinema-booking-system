@@ -33,6 +33,10 @@ class CardActions():
             data['cards'][cid] = {}
             data['cards'][cid]['card_type'] = fern.decrypt(cards[i].card_type)
             data['cards'][cid]['last_four'] = fern.decrypt(cards[i].card_number)[-4:]
+            data['cards'][cid]['card_street_address'] = fern.decrypt(cards[i].card_street)
+            data['cards'][cid]['card_city_address'] = fern.decrypt(cards[i].card_city)
+            data['cards'][cid]['card_state_address'] = fern.decrypt(cards[i].card_state)
+            data['cards'][cid]['card_zip'] = fern.decrypt(cards[i].card_zip)
         return data
 
         #should prolly refactor the encryption 
