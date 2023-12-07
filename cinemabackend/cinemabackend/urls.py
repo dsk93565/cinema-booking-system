@@ -31,6 +31,7 @@ urlpatterns = [
     path('api/get-user', views.GetUser.as_view()),
     path('api/get-cards', views.GetCards.as_view()),
     path('api/edit-user', views.EditUser.as_view()),
+    path('api/email-subscription', views.SubsribeToPromo.as_view()),
     path('api/login', views.Login.as_view()),
     path('api/verify-email', views.Send_Verification_Email.as_view()),
     path('api/email-is-verified', views.Email_Is_Verified.as_view()),

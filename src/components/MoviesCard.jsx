@@ -3,28 +3,24 @@ import axios from 'axios';
 import MovieCard from './MovieCard';
 
 const MoviesCard = (props) => {
-    const [movies, setMovies] = useState([]);
+    const [moviesByState, setMoviesByState] = useState({
+        'Now Playing': [],
+        'Trending': [],
+        'Coming Soon': [],
+    });
     const [flippedCard, setFlippedCard] = useState(null); // State to track flipped card
 
     useEffect(() => {
         fetchMovies(props.sectionTitle);
-    }, []);
+    }, [props.sectionTitle]);
 
     const sectionRef = useRef(null);
 
-    const fetchMovies = async (sectionTitle, categoryFilter) => {
-        let response;
-        
+    const fetchMovies = async (sectionTitle) => {
         try {
-            response = await axios.get(`http://localhost:8000/api/get-movies`);
+            const response = await axios.get('http://localhost:8000/api/get-movies');
             const { data } = response;
-
-            if (sectionTitle === 'Trending' || sectionTitle === 'Now Playing' || sectionTitle === 'Coming Soon') {
-                setMovies(data.movies);
-            } else {
-                const filteredMovies = data.movies.filter(movie => movie.category === categoryFilter);
-                setMovies(filteredMovies);
-            }
+            setMoviesByState(data);
         } catch (error) {
             console.error('Error fetching movies:', error);
         }
@@ -38,15 +34,17 @@ const MoviesCard = (props) => {
         }
     };
 
+    const currentMovies = moviesByState[props.sectionTitle] || [];
+
     return (
         <div className='movies-card'>
             <h2>{props.sectionTitle}</h2>
             <div className='movies-container' ref={sectionRef}>
-                {movies.map(movie => (
+                {currentMovies.map(movie => (
                     <div key={movie.mid}>
                         <MovieCard 
                             movie={movie} 
-                            origin="MoviesCard" 
+                            origin='MoviesCard'
                             isFlipped={flippedCard === movie.mid} 
                             onFlip={handleFlip} />
                         <h3 className='movie-title'>{movie.title}</h3>

@@ -69,6 +69,17 @@ class Send_Verification_Email(APIView):
         return Response({'email_sent': 1})
 
 
+class SubsribeToPromo(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+            email = data.get('email')
+            user = CustomUser.objects.get(email=email)
+            user.promotions = 1
+            user.save()
+            return Response({'success': 1})
+        except json.JSONDecodeError:
+            return Response({"error": -1})
 #How this is currently implemented besides Email, pass only the fields that you want to modify
 #Need a way to distinguish which card is being edited!
 class EditUser(APIView):
@@ -128,7 +139,7 @@ class Create_User(APIView):
         new_number = data.get('mobileNumber')
         new_first = data.get('firstName')
         new_last = data.get('lastName')
-        new_promo = data.get('promotions')
+        new_promo = data.get('optInEmail')
         new_shipping_street = data.get('shippingStreetAddress')
         new_shipping_city = data.get('shippingCityAddress')
         new_shipping_state = data.get('shippingStateAddress')
@@ -217,13 +228,30 @@ class GetCards(APIView):
             cardHandler = CardActions()
             cards = cardHandler.getCards(data.get('user_token'))
             return Response(cards)
+        
 class MovieList(APIView):
     def get(self, request):
         queryset = Movies.objects.all()
-        print("queryset:", queryset)
         serializer_class = MovieSerializer(queryset, many=True)
-        movieList = {"movies":serializer_class.data}
-        return Response(movieList)
+        movies_data = serializer_class.data
+
+        sorted_movies = {
+            'Now Playing': [],
+            'Trending': [],
+            'Coming Soon': [],
+        }
+
+        for movie in queryset:
+            state_id = movie.state_id.msid
+            serialized_movie = MovieSerializer(movie).data  # Serialize the movie instance
+            if state_id == 2:
+                sorted_movies['Now Playing'].append(serialized_movie)
+            elif state_id == 3:
+                sorted_movies['Trending'].append(serialized_movie)
+            elif state_id == 4:
+                sorted_movies['Coming Soon'].append(serialized_movie)
+
+        return Response(sorted_movies)
     
 class Movie(APIView):
     def get(self, request):
