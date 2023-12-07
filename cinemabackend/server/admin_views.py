@@ -22,7 +22,8 @@ class AddMovie(APIView):
             if user is None or user.type_id != 2:
                 print("am i here")
                 return Response({"error": -1})
-            new_movie = Movies.objects.create(category=data.get('category'), 
+            new_movie = Movies.objects.create(release_date=data.get('release_date'),
+                                              category=data.get('category'), 
                                               cast=data.get('cast'),
                                               director=data.get('director'), 
                                               producer=data.get('producer'), 
@@ -31,10 +32,12 @@ class AddMovie(APIView):
                                               trailer=data.get('trailer'), 
                                               rating=data.get('rating'), 
                                               title=data.get('title'), 
-                                              poster_path=data.get('poster_path'))
+                                              poster_path=data.get('poster_path'),
+                                              state_id=data.get('state_id'))
             new_movie.save()
         except json.JSONDecodeError:
             return Response({"error": -1})
+        return Response({'mid': new_movie.mid})
 
 # EXPECTED REQUEST
 # {user_token, mid, category, cast, director, producer, 
