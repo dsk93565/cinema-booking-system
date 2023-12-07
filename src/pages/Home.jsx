@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import Hero from '../components/Hero';
 import MoviesCard from '../components/MoviesCard';
 import Footer from '../components/Footer';
@@ -6,13 +7,29 @@ import '../stylings/home.css';
 
 
 const Home = () => {
-  const [flippedCard, setFlippedCard] = useState(null);
 
+  // Single Flipped Card Functionality
+  const [flippedCard, setFlippedCard] = useState(null);
   const handleFlip = (movieId) => {
     if (flippedCard === movieId) {
       setFlippedCard(null);
     } else {
       setFlippedCard(movieId);
+    }
+  };
+
+  // Email Subscription Functionality
+  const handleEmailSubscription = async (email) => {
+    try {
+      const response = await axios.post('http://localhost:8000/api/email-subscription', { email });
+  
+      if (response.status === 200 && response.data.success === 1) {
+        alert('Subscription successful:', response.data);
+      } else {
+        alert('Subscription failed:', response.data.error);
+      }
+    } catch (error) {
+      alert('Subscription failed:', error.message);
     }
   };
 
@@ -39,7 +56,7 @@ const Home = () => {
           <h2>Want to receive promotional codes and weekly newsletters?</h2>
           <form>
             <input type='email' placeholder='Email' className='user-info-input' />
-            <button className='CTA-button-one'>Subscribe</button>
+            <button onClick={handleEmailSubscription} className='CTA-button-one'>Subscribe</button>
           </form>
         </div>
       </section>
