@@ -41,16 +41,23 @@ class CardActions():
         fern = Fernet(key)
         user = request[0]
         data = request[1]
-        cardInfo = [data.get('cardType'), data.get('cardNumber'),  data.get('expirationDate'), data.get('billingStreetAddress'), 
-                    data.get('billingCityAddress'), data.get('billingStateAddress)'), data.get('billingZipCodeAddress')]
-        for i in range(len(cardInfo)):
-            if cardInfo[i] is not None:
-                cardInfo[i] = fern.encrypt(cardInfo[i].encode('utf-8'))
-            else: 
-                raise Exception("Card info not fully received")
-        new_card = Card.objects.create(user_id=user, card_type=cardInfo[0], card_number=cardInfo[1], 
-                                       card_expiration=cardInfo[2], card_street=cardInfo[3], card_city=cardInfo[4], 
-                                       card_state=cardInfo[5], card_zip=cardInfo[6])
-        new_card.save()
+        print(data)
+        print('cp1')
+        cardUnencryptedInfo = [data.get('cardType'), data.get('cardNumber'),  data.get('expirationDate'), data.get('billingStreetAddress'), 
+                    data.get('billingCityAddress'), str(data.get('billingStateAddress)')), data.get('billingZipCodeAddress')]
+        cardInfo = []
+        for i in cardUnencryptedInfo:
+            tmp = i.encode('utf-8')
+            encrypted = fern.encrypt(tmp)
+            cardInfo.append(encrypted)
+        try:
+            new_card = Card.objects.create(user_id=user, card_type=cardInfo[0], card_number=cardInfo[1], 
+                                           card_expiration=cardInfo[2], card_street=cardInfo[3], card_city=cardInfo[4], 
+                                           card_state=cardInfo[5], card_zip=cardInfo[6])
+            
+            new_card.save()
+        except: 
+            raise Exception({'could not save card': -1})
         key_storage = Encryption_Keys.objects.get_or_create(encryption_key=key, user_id=user)
         key_storage.save() 
+        return 1
