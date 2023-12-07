@@ -6,12 +6,13 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from .models import Movies, CustomUser, Card, Periods, Rooms, Showings
-from .serializer import MovieSerializer, UserSerializer, ShowingSerializer
+from .models import Movies, CustomUser, Card, Periods, Rooms, Showings, Promotions
+from .serializer import MovieSerializer, UserSerializer, ShowingSerializer, PromoSerializer
 from .backends.auth_by_email import EmailAuthBackend
 from django.conf import settings
 from .utils import *
 import json, random
+
 
 
 # expects mid
@@ -69,6 +70,13 @@ class Send_Verification_Email(APIView):
         return Response({'email_sent': 1})
 
 
+#returns {promotions}
+class GetPromo(APIView):
+    def get(self, request):
+        queryset = Promotions.objects.all()
+        serializer_class = PromoSerializer(queryset, many=True)
+        promoList = {"promotions":serializer_class.data}
+        return Response(promoList)
 class SubsribeToPromo(APIView):
     def post(self, request):
         try: 

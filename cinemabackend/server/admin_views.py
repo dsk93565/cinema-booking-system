@@ -5,6 +5,14 @@ from .serializer import MovieSerializer, UserSerializer
 from .utils import *
 import json, random
 
+
+class GetUsers(APIView):
+    def get(self, request):
+        queryset = CustomUser.objects.all()
+        serializer_class = UserSerializer(queryset, many=True)
+        userList = {"users":serializer_class.data}
+        return Response(userList)
+
 # EXPECTED REQUEST
 # {user_token, category, cast, director, producer, 
 #  synopsis, reviews, trailer, rating, title, poster_path}

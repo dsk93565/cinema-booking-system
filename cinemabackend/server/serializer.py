@@ -1,6 +1,10 @@
 from rest_framework import serializers
-from .models import Movies, CustomUser, Card, Showings,Movie_States
+from .models import Movies, CustomUser, Card, Showings,Movie_States, Promotions
 
+class PromoSerializer(serializers.ModelSerializer):
+       class Meta:
+              model = Promotions
+              fields = ['pmid', 'promotion_code', 'percent', 'start_date', 'end_date']
 class UserSerializer(serializers.ModelSerializer):
         class Meta: 
                model = CustomUser
