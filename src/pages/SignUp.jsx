@@ -25,21 +25,28 @@ const SignUp = () => {
   const [billingCityAddress, setBillingCityAddress] = useState('');
   const [billingStateAddress, setBillingStateAddress] = useState('');
   const [billingZipCodeAddress, setBillingZipCodeAddress] = useState('');
-  const verifyEmail = localStorage.getItem('userEmail'); // Used for verification process for non-verified accounts
+  const verifyEmail = localStorage.getItem('userEmail');
 
   // Sign Up Process
   const { verifyStep } = useParams();
   const [signUpStep, setSignUpStep] = useState(1);
+  const [loadingEmail, setLoadingEmail] = useState(false);
 
   useEffect(() => {
     setSignUpStep(parseInt(verifyStep, 10) === 4 ? 4 : 1);
 
     if (parseInt(verifyStep, 10) === 4) {
-      setEmail(verifyEmail);
+      setLoadingEmail(true);
+
+      if (verifyEmail !== null && verifyEmail !== undefined) {
+        setEmail(verifyEmail);
+      } // if
       sendVerificationCode();
+      setLoadingEmail(false);
+
       localStorage.removeItem('userEmail');
     } // if
-  }, [verifyEmail, verifyStep]);
+  }, [verifyStep, verifyEmail]);
 
   const handleSkipButtonClick = () => {
     if (signUpStep === 2) {
@@ -536,10 +543,6 @@ const SignUp = () => {
 
     const enteredVerificationCode = verificationCodeInputs.join('');
 
-    if (enteredVerificationCode.length !== 5) {
-      setStatusMessage('Please enter all 5 digits');
-    } // if
-
     try {
       const response = await axios.post(`http://localhost:8000/api/email-is-verified`, {
         email: email,
@@ -559,26 +562,33 @@ const SignUp = () => {
   // Resend Verification Code
   const [verificationHeaderText, setVerificationHeaderText] = useState('Verification code sent');
   const resendVerificationCode = () => {
-    fetch('http://localhost:8000/api/verify-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: email }),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          setVerificationHeaderText('New verification code sent');
-          const newInputs = Array(5).fill('');
-          setVerificationCodeInputs(newInputs);
-          setStatusMessage('');
-        } else {
-          setStatusMessage('Failed to send email');
-        } // if else
+    if (!loadingEmail) {
+      setLoadingEmail(true);
+
+      fetch('http://localhost:8000/api/verify-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
       })
-      .catch((error) => {
-        console.error('Error occurred while sending email:', error);
-      });
+        .then((response) => {
+          if (response.status === 200) {
+            setVerificationHeaderText('New verification code sent');
+            const newInputs = Array(5).fill('');
+            setVerificationCodeInputs(newInputs);
+            setStatusMessage('');
+          } else {
+            setStatusMessage('Failed to send email');
+          } // if else
+        })
+        .catch((error) => {
+          console.error('Error occurred while sending email:', error);
+        })
+        .finally(() => {
+          setLoadingEmail(false);
+        });
+    } // if
   };
 
   return (
