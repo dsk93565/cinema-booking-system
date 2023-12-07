@@ -60,7 +60,7 @@ const ManageMovies = () => {
         {addMovieModal && (<AddMovie onClose={() => setAddMovieModal(false)}></AddMovie>)}
 
         {/** Add Showing Modal */}
-        {scheduleMovieModal && (<AddShowing onClose={() => setScheduleMovieModal(false)}></AddShowing>)}
+        {scheduleMovieModal && (<AddShowing movies={movies} onClose={() => setScheduleMovieModal(false)}></AddShowing>)}
     </section>
   )
 }

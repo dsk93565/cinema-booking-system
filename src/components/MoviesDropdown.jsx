@@ -1,12 +1,12 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
 
 export default function MoviesDropdown ({movies}) {
 
-    const [display, setDisplay] = useState('none');
     const [moviesList, setMoviesList] = useState([]);
-
-    // Options Styling
+    
     // Select Styling
     const selectStyling = {
         control: (provided, state) => ({
@@ -34,6 +34,7 @@ export default function MoviesDropdown ({movies}) {
         valueContainer: (provided) => ({
         ...provided,
         padding: '0',
+        overflowY: "scroll",
         }),
         placeholder: (provided) => ({
         ...provided,
@@ -67,26 +68,16 @@ export default function MoviesDropdown ({movies}) {
         }),
     };
 
-    function handleClick(e) {
-        e.preventDefault();
-        
-        if ( display == 'none' ) {
-            setDisplay( 'block' )
-        } else {
-            setDisplay( 'none' )
-        }
-    }
-
-    const dispatchMovie = (movie) => {
+    /* const dispatchMovie = (movie) => {
         const event = new CustomEvent("movie_selected", { detail: movie});
         window.dispatchEvent(event);
-    }
+    } */
 
     const selectMoviesList = () => {
-        movies.map(movie => {moviesList.add(
-            {value: movie, label: movie.title }
-        )});
-        console.log(moviesList);
+        const playingMovies = movies.filter(movie => (movie.state_id === "2"));
+        const list = playingMovies.map(movie => (movie.title));
+        console.log(list);
+        setMoviesList(playingMovies);
     }
 
     useEffect(() => {
@@ -98,9 +89,8 @@ export default function MoviesDropdown ({movies}) {
             <div>
                 <Select
                     placeholder='Select Movie'
-                    options={moviesList}
                     styles={selectStyling}
-                    onChange={(movie) => dispatchMovie(movie)}
+                    options={moviesList}                    
                 />
             </div>
         </div>

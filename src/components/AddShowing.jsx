@@ -5,7 +5,7 @@ import axios from 'axios';
 import DateTime from 'react-datetime';
 import MoviesDropdown from './MoviesDropdown';
 
-export default function AddShowing({ onClose }) {
+export default function AddShowing({ onClose, movies }) {
     
     // Variables for submission
     const [movie, setMovie] = useState('');
@@ -67,8 +67,7 @@ export default function AddShowing({ onClose }) {
         try {
             response = await axios.get(`http://localhost:8000/api/get-movies`);
             const { data } = response;
-            console.log(data.movies);
-            const filteredMovies = data.movies.filter(movie => movie.state_id === 2);
+            const filteredMovies = data.movies.filter(movie => movie.state_id === "2");
             console.log(filteredMovies);
             setPlayingMovies(filteredMovies);
 
@@ -95,7 +94,7 @@ export default function AddShowing({ onClose }) {
                                 <DateTime />
                             </div>
                             <div className='admin-movie-form-col'>
-                                <MoviesDropdown movies={playingMovies}/>                               
+                                <MoviesDropdown movies={movies}/>                               
                             </div>
                             
                         </form>
