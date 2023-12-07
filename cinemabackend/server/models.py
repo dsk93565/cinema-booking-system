@@ -21,6 +21,8 @@ class CustomUser(AbstractUser):
     shipping_city = models.CharField(db_column='shipping_city', max_length=255, default='')
     shipping_state = models.CharField(db_column='shipping_state', max_length=255, default='')
     shipping_zip = models.CharField(db_column='shipping_zip', max_length=255, default='')
+    def password_length(self):
+        return len(self.password)
 
 class Encryption_Keys(models.Model):
     encryption_key = models.CharField(db_column='encryption_key', max_length=255)

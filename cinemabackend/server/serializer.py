@@ -6,11 +6,14 @@ class PromoSerializer(serializers.ModelSerializer):
               model = Promotions
               fields = ['pmid', 'promotion_code', 'percent', 'start_date', 'end_date']
 class UserSerializer(serializers.ModelSerializer):
+        password_length = serializers.SerializerMethodField()
         class Meta: 
                model = CustomUser
                fields = ['username', 'email', 'phone_number', 'first_name', 
                          'last_name', 'type_id', 'state_id', 'promotions',
-                         'shipping_street', 'shipping_city', 'shipping_state', 'shipping_zip']
+                         'shipping_street', 'shipping_city', 'shipping_state', 'shipping_zip', 'password_length']
+               def get_password_length(self, obj):
+                      return len(obj.password)
 
 class ShowingSerializer(serializers.ModelSerializer):
        class Meta: 
