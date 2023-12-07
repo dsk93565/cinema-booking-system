@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Movies, CustomUser, Card, Periods, Showings, Rooms, Promotions
+from .models import Movies, CustomUser, Card, Periods, Showings, Rooms, Promotions, Movie_States
 from .serializer import MovieSerializer, UserSerializer
 from .utils import *
 import json, random
@@ -15,6 +15,8 @@ class AddMovie(APIView):
             user = getUserFromToken(data.get('user_token'))
             if user is None or user.type_id != 2:
                 return({"error:"-1})
+            msid = data.get('msid')
+            moviestate = Movie_States.objects.get(msid=msid)
             new_movie = Movies.objects.create(category=data.get('category'), 
                                               cast=data.get('cast'),
                                               director=data.get('director'), 
@@ -24,7 +26,8 @@ class AddMovie(APIView):
                                               trailer=data.get('trailer'), 
                                               rating=data.get('rating'), 
                                               title=data.get('title'), 
-                                              poster_path=data.get('poster_path'))
+                                              poster_path=data.get('poster_path'),
+                                              state_id=moviestate)
             new_movie.save()    
         except json.JSONDecodeError:
             return Response({"error": -1})
