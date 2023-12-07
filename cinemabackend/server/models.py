@@ -29,7 +29,7 @@ class Encryption_Keys(models.Model):
 class Card(models.Model):
     class Meta: 
         db_table = 'cards'
-    cid = models.BigAutoField(auto_created=True, serialize=False, db_column='cid', primary_key=True)
+    cid = models.IntegerField(db_column='cid', primary_key=True)
     user_id = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING, db_column='user_id')
     card_type = models.CharField(db_column='card_type', max_length=255, default='')
     card_number = models.CharField(db_column='card_number', max_length=255, default='')

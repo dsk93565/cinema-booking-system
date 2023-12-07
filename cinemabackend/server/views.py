@@ -152,14 +152,13 @@ class Create_User(APIView):
                                              shipping_city=new_shipping_city, shipping_state=new_shipping_state,
                                              shipping_zip=new_shipping_zip)
         
-        new_user.save()
-        try: 
-            if data.get('cardNumber') is not None:
-                new_request = [new_user, data]
-                card = CardActions()
-                card.saveCard(new_request)
-        except:
-            print('could not save card')
+        new_user.save() 
+        if data.get('cardNumber') is not None:
+            new_request = [new_user, data]
+            card = CardActions()
+            res = card.saveCard(new_request)
+        else: 
+            print('did not save card')
         token, created = Token.objects.get_or_create(user=new_user)
         return Response({'user_token': token.key})
 
