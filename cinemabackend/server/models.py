@@ -47,6 +47,7 @@ class Movie_States(models.Model):
     movie_state = models.CharField(db_column='movie_state',max_length=255, default='')
 class Movies(models.Model):
     mid = models.IntegerField(db_column='mid',primary_key=True)
+    release_date = models.DateField(db_column='release_date')
     category = models.CharField(db_column='category', max_length=255, default='')
     cast = models.CharField(db_column='cast',max_length=255, default='')
     director = models.CharField(db_column='director',max_length=255, default='')
