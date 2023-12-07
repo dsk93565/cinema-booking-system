@@ -8,10 +8,10 @@ import MoviesDropdown from './MoviesDropdown';
 export default function AddShowing({ onClose, movies }) {
     
     // Variables for submission
-    const [movie, setMovie] = useState('');
-    const [period, setPeriod] = useState('');
-    const [room, setRoom] = useState('');
-    const [date, setDate] = useState('');
+    const [mid, setMid] = useState('');
+    const [pid, setPid] = useState('');
+    const [rid, setRid] = useState('');
+    // const [date, setDate] = useState('');
 
     // Variables for form display
     const [playingMovies, setPlayingMovies] = useState([])
@@ -21,10 +21,9 @@ export default function AddShowing({ onClose, movies }) {
     const handleSubmit = async() => {
 
         const showInfoExport = {
-            movie,
-            period,
-            room,
-            date
+            mid,
+            pid,
+            rid,
         }
 
         console.log(JSON.stringify(showInfoExport));
@@ -62,16 +61,10 @@ export default function AddShowing({ onClose, movies }) {
 
     // Fetches currently playing movies to be scheduled.
     const fetchPlayingMovies = async () => {
-        let response;
-        
         try {
-            response = await axios.get(`http://localhost:8000/api/get-movies`);
-            const { data } = response;
-            const filteredMovies = data.movies.filter(movie => movie.state_id === "2");
-            console.log(filteredMovies);
-            setPlayingMovies(filteredMovies);
-
-
+            const response = await axios.get(`http://localhost:8000/api/get-movies`);
+            console.log(response.data["Now Playing"]);
+            setPlayingMovies(response.data["Now Playing"]);
         } catch (error) {
             console.error('Error fetching movies:', error);
         }
@@ -91,10 +84,14 @@ export default function AddShowing({ onClose, movies }) {
                     <div className='admin-modal-body'>
                         <form className='add-movie-form' id="addMovieForm">
                             <div className='admin-movie-form-col'>
-                                <DateTime />
+                                <input type='date'></input>
                             </div>
                             <div className='admin-movie-form-col'>
-                                <MoviesDropdown movies={movies}/>                               
+                                <select className='add-movie-input'>
+                                    {playingMovies.map(movie => (
+                                        <option value={movie.mid} key={movie.mid}>{movie.title}</option>
+                                    ))}
+                                </select>
                             </div>
                             
                         </form>

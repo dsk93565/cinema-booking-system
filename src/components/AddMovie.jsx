@@ -16,12 +16,10 @@ export default function AddMovie({ onClose }) {
     const [trailer, setTrailer] = useState('');
     const [rating, setRating] = useState('');
     const [poster_path, setPosterPath] = useState('');
-    const [state_id, setStateID] = useState('');
-
-    console.log(state_id);
+    const [msid, setStateID] = useState('');
 
     // Filled Form Checker For Basic Information Section
-    const isAddMovieFormFilled = (title && release_date && category && cast && director && producer && synopsis && reviews && trailer && rating && poster_path && state_id);
+    const isAddMovieFormFilled = (title && release_date && category && cast && director && producer && synopsis && reviews && trailer && rating && poster_path && msid);
 
     const userToken = localStorage.getItem('userToken');
     
@@ -40,7 +38,7 @@ export default function AddMovie({ onClose }) {
             rating,
             title,
             poster_path,
-            state_id,
+            msid,
         }
 
         console.log(JSON.stringify(movieInfoExport));
@@ -120,10 +118,10 @@ export default function AddMovie({ onClose }) {
                                 <div className='movie-info'>
                                     <label className='movie-info-label'>Category</label>
                                     <select className='add-movie-input' onChange={(e) => setStateID(e.target.value)}>
-                                        <option value={1}>Archived</option>
-                                        <option value={2}>Now Playing</option>
-                                        <option value={3}>Trending</option>
-                                        <option value={4}>Coming Soon</option>
+                                        <option value={"1"}>Archived</option>
+                                        <option value={"2"}>Now Playing</option>
+                                        <option value={"3"}>Trending</option>
+                                        <option value={"4"}>Coming Soon</option>
                                     </select>
                                 </div>
                             </div>

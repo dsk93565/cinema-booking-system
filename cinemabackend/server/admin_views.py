@@ -23,7 +23,8 @@ class AddMovie(APIView):
                 return({"error:"-1})
             msid = data.get('msid')
             moviestate = Movie_States.objects.get(msid=msid)
-            new_movie = Movies.objects.create(category=data.get('category'), 
+            new_movie = Movies.objects.create(release_date=data.get('release_date'), 
+                                              category=data.get('category'), 
                                               cast=data.get('cast'),
                                               director=data.get('director'), 
                                               producer=data.get('producer'), 

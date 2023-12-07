@@ -18,7 +18,7 @@ const ManageMovies = () => {
     try {
         const movies = [];
         const response = await axios.get(`http://localhost:8000/api/get-movies`);
-        setMovies(movies.concat(response.data["Archived"], response.data["Now Playing"], response.data["Coming Soon"], response.data["Trending"]));
+        setMovies(movies.concat(response.data["Now Playing"], response.data["Coming Soon"], response.data["Trending"]));
         movies.map((movie) => {console.log(typeof movie)})
         console.log(response.data["Now Playing"]);
     } catch (error) {
