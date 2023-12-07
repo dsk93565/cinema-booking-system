@@ -30,7 +30,7 @@ class AddMovie(APIView):
                                               title=data.get('title'), 
                                               poster_path=data.get('poster_path'),
                                               state_id=moviestate)
-            new_movie.save()    
+            new_movie.save()
         except json.JSONDecodeError:
             return Response({"error": -1})
 
