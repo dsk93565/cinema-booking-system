@@ -18,9 +18,18 @@ export default function AddMovie({ onClose }) {
     const [poster_path, setPosterPath] = useState('');
     const [msid, setStateID] = useState('');
 
-    // Filled Form Checker For Basic Information Section
-    const isAddMovieFormFilled = (title && release_date && category && cast && director && producer && synopsis && reviews && trailer && rating && poster_path && msid);
-
+    const isAddMovieFormFilled = (!title || 
+                                  !release_date || 
+                                  !category || 
+                                  !cast ||
+                                  !director ||
+                                  !producer || 
+                                  !synopsis || 
+                                  !reviews || 
+                                  !trailer || 
+                                  !rating || 
+                                  !poster_path);
+    console.log("filled: ", isAddMovieFormFilled);
     const userToken = localStorage.getItem('userToken');
     
     const handleSubmit = async() => {
@@ -129,7 +138,7 @@ export default function AddMovie({ onClose }) {
                         </form>
                     </div>
                     <div className='modal-footer'>
-                    <button disabled={!isAddMovieFormFilled} className='admin-movie-button' type='submit' onClick={handleSubmit}>Add Movie</button>
+                    <button disabled={isAddMovieFormFilled} className='admin-movie-button' type='submit' onClick={handleSubmit}>Add Movie</button>
                     </div>
                 </div>
         </div>

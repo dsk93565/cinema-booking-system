@@ -51,6 +51,7 @@ class EditMovie(APIView):
             movie = Movies.objects.get(mid=data.get('mid'))
             if user is None or user.type_id != 2 or movie is None:
                 return Response({"error:"-1})
+            movie.release_date=data.get('release_date') 
             movie.category=data.get('category') 
             movie.cast=data.get('cast')
             movie.director=data.get('director') 
@@ -61,6 +62,9 @@ class EditMovie(APIView):
             movie.rating=data.get('rating')
             movie.title=data.get('title')
             movie.poster_path=data.get('poster_path')
+            msid = data.get('msid')
+            moviestate = Movie_States.objects.get(msid=msid)
+            movie.state_id=moviestate
             movie.save()    
         except json.JSONDecodeError:
             return Response({"error": -1})

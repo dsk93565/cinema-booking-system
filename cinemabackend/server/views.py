@@ -114,6 +114,7 @@ class EditUser(APIView):
 class GetUser(APIView):
     def post(self, request):
         try: 
+            print(request)
             data = json.loads(request.body.decode('utf-8'))
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
@@ -253,8 +254,9 @@ class MovieList(APIView):
         return Response(sorted_movies)
     
 class Movie(APIView):
-    def get(self, request):
-        try: 
+    def post(self, request):
+        try:
+            print(request)
             data = json.loads(request.body.decode('utf-8'))
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})

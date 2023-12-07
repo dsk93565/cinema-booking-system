@@ -3,11 +3,14 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import AddMovie from '../components/AddMovie';
 import AddShowing from '../components/AddShowing';
+import EditMovie from '../components/EditMovie';
 
 const ManageMovies = () => {
 
   const [movies, setMovies] = useState([]);
   const [addMovieModal, setAddMovieModal] = useState(false);
+  const [editMovieModal, setEditMovieModal] = useState(false);
+  const [movieToEdit, setMovieToEdit] = useState(0);
   const [scheduleMovieModal, setScheduleMovieModal] = useState(false);
 
   useEffect( () => {
@@ -16,15 +19,19 @@ const ManageMovies = () => {
 
   const fetchMovies = async () => {
     try {
-        const movies = [];
+        const moviesList = [];
         const response = await axios.get(`http://localhost:8000/api/get-movies`);
-        setMovies(movies.concat(response.data["Now Playing"], response.data["Coming Soon"], response.data["Trending"]));
-        movies.map((movie) => {console.log(typeof movie)})
-        console.log(response.data["Now Playing"]);
+        setMovies(moviesList.concat(response.data["Now Playing"], response.data["Coming Soon"], response.data["Trending"]));
+        console.log(movies);
     } catch (error) {
         console.error('Error fetching movies:', error);
     }
-};
+  };
+
+  const handleEditMovie = (mid) => {
+    setEditMovieModal(true);
+    setMovieToEdit(mid);
+  }
 
   return (
     <section className='admin-section-wrapper'>
@@ -48,7 +55,7 @@ const ManageMovies = () => {
                 </div>
                 <div className='admin-button-container'>
                   <button className='admin-movie-button'>Hide Movie</button>
-                  <button className='admin-movie-button'>Edit Movie</button>
+                  <button className='admin-movie-button' onClick={() => handleEditMovie(movie.mid)}>Edit Movie</button>
                 </div>
               </div>
             </div>
@@ -57,6 +64,9 @@ const ManageMovies = () => {
 
         {/** Add Movie Modal */}
         {addMovieModal && (<AddMovie onClose={() => setAddMovieModal(false)}></AddMovie>)}
+
+        {/** Edit Movie Modal */}
+        {editMovieModal && (<EditMovie onClose={() => setEditMovieModal(false)} movieid={movieToEdit}></EditMovie>)}
 
         {/** Add Showing Modal */}
         {scheduleMovieModal && (<AddShowing movies={movies} onClose={() => setScheduleMovieModal(false)}></AddShowing>)}
