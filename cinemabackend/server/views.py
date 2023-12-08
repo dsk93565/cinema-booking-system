@@ -297,7 +297,18 @@ class Login(APIView):
         }
         return Response(data)
         
+# expects user_token
+class Logout(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error: could not decode json object": -5})
+        token = Token.objects.get(key=data.get('user_token'))
+        token.delete()
+        return ({'success': 1})
 class ForgotPassword(APIView):
+
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
