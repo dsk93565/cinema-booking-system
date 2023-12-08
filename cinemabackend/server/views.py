@@ -6,8 +6,8 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from .models import Movies, CustomUser, Card, Periods, Rooms, Showings, Promotions, Logical_Seats
-from .serializer import MovieSerializer, UserSerializer, ShowingSerializer, PromoSerializer
+from .models import Movies, CustomUser, Card, Periods, Rooms, Showings, Promotions, Seats, Logical_Seats
+from .serializer import MovieSerializer, UserSerializer, ShowingSerializer, PromoSerializer, LogicalSeatSerializer
 from .backends.auth_by_email import EmailAuthBackend
 from django.conf import settings
 from .utils import *
@@ -229,16 +229,27 @@ class GetCards(APIView):
 class GetShows(APIView):
     def get(self, request):
         try: 
-            data = json.loads(request.body.decode('utf-8'))
-            movie = Movies.objects.get(mid=data.get('mid'))
-            start_date = data.get('start_date')
-            end_date = data.get('end_date')
-            query = Showings.objects.filter(movie_id=movie)
-            if start_date is not None:
-                query = query.filter(show_date__range=[start_date, end_date])
-            serializer = ShowingSerializer(query, many=True)
+            showObjects = getShowObjects(request)
+            serializer = ShowingSerializer(showObjects, many=True)
             showings = {'showings': serializer}
             return Response(showings)
+        except json.JSONDecodeError:
+            return Response({"error": -1})
+
+#Currently returns all seats and if they are available or not
+#can be changed to 
+#expects {shid} (I can change this to be similar to GetShows)
+#returns {seats: {['lsid', 'seat_number', 'room_id', 'period_id', 'available']}}
+class GetSeats(APIView):
+    def get(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+            show = Showings.objects.get(shid=data.get('shid'))
+            seats = Seats.objects.filter(room_id=show.room_id)
+            logical_seats = Logical_Seats.objects.filter(seat_id__in=seats)
+            serializer = LogicalSeatSerializer(logical_seats, many=True)
+            seat_data = {'seats': serializer.data}
+            return Response(seat_data)
         except json.JSONDecodeError:
             return Response({"error": -1})
 class MovieList(APIView):
