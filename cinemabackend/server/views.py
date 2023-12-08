@@ -6,7 +6,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from .models import Movies, CustomUser, Card, Periods, Rooms, Showings, Promotions
+from .models import Movies, CustomUser, Card, Periods, Rooms, Showings, Promotions, Logical_Seats
 from .serializer import MovieSerializer, UserSerializer, ShowingSerializer, PromoSerializer
 from .backends.auth_by_email import EmailAuthBackend
 from django.conf import settings
@@ -221,7 +221,8 @@ class GetCards(APIView):
             cards = cardHandler.getCards(data.get('user_token'))
             return Response(cards)
 
-# expects mid, start_date, end_date
+# expects      mid, 
+# (optional)   start_date, end_date
 # dates should be formated as 2023-01-01
 # returns
  # showings: ['shid', 'movie_id', 'period_id', 'room_id', 'room_id', 'show_date']

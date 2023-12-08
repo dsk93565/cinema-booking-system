@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Movies, CustomUser, Card, Periods, Showings, Rooms, Promotions, Movie_States
+from .models import Movies, CustomUser, Card, Periods, Showings, Rooms, Promotions, Movie_States, Seats, Logical_Seats
 from .serializer import MovieSerializer, UserSerializer
 from .utils import *
 import json, random
@@ -85,9 +85,18 @@ class AddShow(APIView):
             period = Periods.objects.get(pid=data.get('pid'))
             movie = Movies.objects.get(mid=data.get('mid'))
             room = Rooms.objects.get(rid=data.get('rid'))
+            seats = Seats.objects.filter(room_id=room)
+            for i in room.seatsInRoom:
+                seat = seats.filter(seat_number=i)
+                logical_seat = Logical_Seats.objects.create(seat_id=seat, period_id=period, available=1)
+                logical_seat.save()
             showing = Showings.objects.create(movie_id=movie,period_id=showing,room_id=room)
         except json.JSONDecodeError:
             return Response({"error": -1})
+        
+class RemoveShow(APIView):
+    def post(self, request):
+        return Response({'left to be implemented': -1})
 
 # EXPECTED REQUEST
 # {promotion_code, percent}
