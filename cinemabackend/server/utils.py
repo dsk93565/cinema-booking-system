@@ -3,6 +3,12 @@ from cryptography.fernet import Fernet
 from rest_framework.authtoken.models import Token
 import json
 
+def checkAdmin(token_str):
+    user = getUserFromToken(token_str)
+    if user is not None and user.type_id == 2:
+        return user
+    else:
+        return None
 
 def getUserFromToken(token_str):
     try: 
