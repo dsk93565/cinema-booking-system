@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movies, CustomUser, Card, Showings,Movie_States, Promotions, Tickets, TicketType
+from .models import Movies, CustomUser, Card, Showings,Movie_States, Promotions, Bookings, Tickets, TicketType
 from .models import Seats, Logical_Seats
 class PromoSerializer(serializers.ModelSerializer):
        class Meta:
@@ -38,6 +38,10 @@ class ShowingSerializer(serializers.ModelSerializer):
        class Meta: 
               model = Showings
               fields = ['shid', 'movie_id', 'period_id', 'room_id', 'room_id', 'show_date'] 
+class BookingSerializer(serializers.ModelSerializer):
+       class Meta:
+              model = Bookings
+              fields = ['bid', 'user_id', 'showing_id', 'card_id', 'promotion_id', 'total']
 class MovieSerializer(serializers.ModelSerializer):
         state_id = serializers.CharField(source='state_id.msid', read_only=True)
         class Meta:

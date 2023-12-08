@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from .models import Movies, CustomUser, Card, Periods, Rooms, Showings, Promotions, Seats, Logical_Seats, Bookings, Tickets
-from .serializer import MovieSerializer, UserSerializer, ShowingSerializer, PromoSerializer, LogicalSeatSerializer
+from .serializer import MovieSerializer, UserSerializer, ShowingSerializer, PromoSerializer, LogicalSeatSerializer, BookingSerializer
 from .backends.auth_by_email import EmailAuthBackend
 from django.conf import settings
 from .utils import *
@@ -19,6 +19,7 @@ import json, random
 # {
 #  "tickets": [1, 2, 3, 4] // tids
 #}
+#returns bid // booking id
 #im already applying the promo percent here but can take that out
 class CreateBooking(APIView):
     def post(self, request):
@@ -44,8 +45,32 @@ class CreateBooking(APIView):
         for i in tickets:
             i.booking_id = booking
             i.save()
-        return Response({'booking': booking.bid})
+        return Response({'bid': booking.bid})
 
+#expects user_token
+#(optional)   start_date, end_date //to filter the bookings
+#returns bookings: ['bid', 'user_id', 'showing_id', 'card_id', 'promotion_id', 'total']
+class GetBookings(APIView):
+    def get(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error: could not decode json object": -5})
+        user = getUserFromToken(data.get('user_token'))
+        if user is None:
+            return Response({'error': -1})
+        bookings = Bookings.objects.filter(user_id=user)
+        start_date = data.get('start_date')
+        end_date = data.get('end_date')
+        shows = []
+        if start_date is not None:
+            shows = [i.showing_id for i in bookings]
+            shows = shows.filter(show_date__range=[start_date, end_date])
+            bookings = bookings.filter(showing_id__in=shows)
+        serializer = BookingSerializer(bookings, many=True)
+        booking_data = {"bookings": bookings.data}
+        return Response(booking_data)
+        
 #expects
 # {
 #   "tickets": [
@@ -58,6 +83,7 @@ class CreateBooking(APIView):
 # }
 #ask db (josh) what ttid correspond which ticket types... can make get method but seems extra
 #returns tids
+#TIDS must be stored in browser somehow if a booking is not created for them yet
 class CreateTickets(APIView):
     def post(self, request):
         try: 
@@ -78,6 +104,10 @@ class CreateTickets(APIView):
             tids.append(new_ticket.tid)
         return Response({'tids': tids})
 
+#expects bid
+class Send_Booking_Email(APIView):
+    def post(self, request):
+        print('left to implement')
 #might want a json auth token of some sort
 class Email_Is_Verified(APIView):
     def post(self, request):
@@ -149,8 +179,8 @@ class SubsribeToPromo(APIView):
             return Response({'success': 1})
         except json.JSONDecodeError:
             return Response({"error": -1})
+
 #How this is currently implemented besides Email, pass only the fields that you want to modify
-#Need a way to distinguish which card is being edited!
 class EditUser(APIView):
     def post(self, request):
         try: 
