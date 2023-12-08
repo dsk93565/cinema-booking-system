@@ -104,10 +104,24 @@ class CreateTickets(APIView):
             tids.append(new_ticket.tid)
         return Response({'tids': tids})
 
-#expects bid
+#expects user_token, bid
 class Send_Booking_Email(APIView):
     def post(self, request):
-        print('left to implement')
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error: could not decode json object": -5})
+        user = getUserFromToken(data.get('user_token'))
+        email = user.email
+        booking = Bookings.objects.get(bid=data.get('bid'))
+        show = booking.showing_id
+        r
+        # can add more info if we want
+        email_body = render_to_string('booking_email.html', 
+                                      {'total': str(booking.tota)})
+        subject = 'Cinera Booking for ' + str(show.show_date)
+        send_mail(subject, email_body, "ebookingsystemcinera@gmail.com", [email])
+        return Response({'email sent': 1})
 #might want a json auth token of some sort
 class Email_Is_Verified(APIView):
     def post(self, request):
