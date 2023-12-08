@@ -14,8 +14,6 @@ class UserSerializer(serializers.ModelSerializer):
                fields = ['username', 'email', 'phone_number', 'first_name', 
                          'last_name', 'type_id', 'state_id', 'promotions',
                          'shipping_street', 'shipping_city', 'shipping_state', 'shipping_zip', 'password_length']
-       
-       
 
 class ShowingSerializer(serializers.ModelSerializer):
        class Meta: 

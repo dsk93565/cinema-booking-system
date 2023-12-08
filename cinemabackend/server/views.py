@@ -15,21 +15,6 @@ import json, random
 
 
 
-# expects mid
-# returns
- # showings: ['shid', 'movie_id', 'period_id', 'room_id', 'room_id', 'show_date']
-class GetShows(APIView):
-    def get(self, request):
-        try: 
-            data = json.loads(request.body.decode('utf-8'))
-            movie = Movies.objects.get(mid=data.get('mid'))
-            query = Showings.objects.filter(movie_id=movie)
-            serializer = ShowingSerializer(query, many=True)
-            showings = {'showings': serializer}
-            return Response(showings)
-        except json.JSONDecodeError:
-            return Response({"error": -1})
-
 #TODO: define error class and error codes and properly throw errors
 
 #might want a json auth token of some sort
@@ -235,7 +220,26 @@ class GetCards(APIView):
             cardHandler = CardActions()
             cards = cardHandler.getCards(data.get('user_token'))
             return Response(cards)
-        
+
+# expects mid, start_date, end_date
+# dates should be formated as 2023-01-01
+# returns
+ # showings: ['shid', 'movie_id', 'period_id', 'room_id', 'room_id', 'show_date']
+class GetShows(APIView):
+    def get(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+            movie = Movies.objects.get(mid=data.get('mid'))
+            start_date = data.get('start_date')
+            end_date = data.get('end_date')
+            query = Showings.objects.filter(movie_id=movie)
+            if start_date is not None:
+                query = query.filter(show_date__range=[start_date, end_date])
+            serializer = ShowingSerializer(query, many=True)
+            showings = {'showings': serializer}
+            return Response(showings)
+        except json.JSONDecodeError:
+            return Response({"error": -1})
 class MovieList(APIView):
     def get(self, request):
         queryset = Movies.objects.all()
