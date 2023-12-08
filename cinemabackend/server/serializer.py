@@ -1,11 +1,20 @@
 from rest_framework import serializers
-from .models import Movies, CustomUser, Card, Showings,Movie_States, Promotions
+from .models import Movies, CustomUser, Card, Showings,Movie_States, Promotions, Tickets, TicketType
 from .models import Seats, Logical_Seats
 class PromoSerializer(serializers.ModelSerializer):
        class Meta:
               model = Promotions
               fields = ['pmid', 'promotion_code', 'percent', 'start_date', 'end_date']
 
+class TicketTypeSerializer(serializers.ModelSerializer):
+       class Meta:
+              model = TicketType
+              fields = ['ttid', 'ticket_type', 'price']
+class TicketSerializer(serializers.ModelSerializer):
+       ticketType = TicketTypeSerializer()
+       class Meta:
+              model = Tickets
+              fields = ['tid', 'seat_id', 'price']
 class SeatSerializer(serializers.ModelSerializer):
        class Meta:
               model = Seats

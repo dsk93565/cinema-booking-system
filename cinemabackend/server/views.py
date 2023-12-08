@@ -6,7 +6,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from .models import Movies, CustomUser, Card, Periods, Rooms, Showings, Promotions, Seats, Logical_Seats
+from .models import Movies, CustomUser, Card, Periods, Rooms, Showings, Promotions, Seats, Logical_Seats, Bookings, Tickets
 from .serializer import MovieSerializer, UserSerializer, ShowingSerializer, PromoSerializer, LogicalSeatSerializer
 from .backends.auth_by_email import EmailAuthBackend
 from django.conf import settings
@@ -14,7 +14,32 @@ from .utils import *
 import json, random
 
 
-
+#expects user_token, shid, cid, promo_code, tickets: tid (can be multiple)
+class CreateBooking(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error: could not decode json object": -5})
+        user = getUserFromToken(data.get('user_token'))
+        show = Showings.objects.get(shid=data.get('shid'))
+        
+        #may wanna remove this as an initial requirement idk
+        card = Card.objects.get(cid=data.get('cid'))
+        promo = Promotions.objects.get(promotion_code=data.get('promo_code'))
+        tickets_ids = data.get('tickets', [])
+        tickets = Tickets.objects.filter(tid__in=tickets_ids)
+        price = 0
+        for i in tickets:
+            price += i.ticket_type_id.price
+        if promo is not None:
+            price *= (1 - promo.percent)
+        booking = Bookings.objects.create(user_id=user, showing_id=show, card_id=card, promotion_id=promo, total=price)
+        booking.save()
+        for i in tickets:
+            i.booking_id = booking
+            i.save()
+        return Response({'booking': booking.bid})
 #TODO: define error class and error codes and properly throw errors
 
 #might want a json auth token of some sort
