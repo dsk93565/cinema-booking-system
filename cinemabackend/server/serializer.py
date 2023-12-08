@@ -1,10 +1,20 @@
 from rest_framework import serializers
 from .models import Movies, CustomUser, Card, Showings,Movie_States, Promotions
-
+from .models import Seats, Logical_Seats
 class PromoSerializer(serializers.ModelSerializer):
        class Meta:
               model = Promotions
               fields = ['pmid', 'promotion_code', 'percent', 'start_date', 'end_date']
+
+class SeatSerializer(serializers.ModelSerializer):
+       class Meta:
+              model = Seats
+              fields = ['sid', 'seat_number', 'room_id']
+class LogicalSeatSerializer(serializers.ModelSerializer):
+       seat = SeatSerializer()
+       class Meta:
+              model: Logical_Seats
+              fields = ['lsid', 'seat_number', 'room_id', 'period_id', 'available']
 class UserSerializer(serializers.ModelSerializer):
         password_length = serializers.SerializerMethodField()
         def password_length(self, obj):
