@@ -15,6 +15,11 @@ import json, random
 
 
 #expects user_token, shid, cid, promo_code, tickets: tid (can be multiple)
+#for tickets
+# {
+#  "tickets": [1, 2, 3, 4] // tids
+#}
+#im already applying the promo percent here but can take that out
 class CreateBooking(APIView):
     def post(self, request):
         try: 
@@ -40,7 +45,38 @@ class CreateBooking(APIView):
             i.booking_id = booking
             i.save()
         return Response({'booking': booking.bid})
-#TODO: define error class and error codes and properly throw errors
+
+#expects
+# {
+#   "tickets": [
+#     [ttid, seat_id]
+#     [1, 2],
+#     [2, 2],
+#     [3, 2]
+#      ...
+#   ]
+# }
+#ask db (josh) what ttid correspond which ticket types... can make get method but seems extra
+#returns tids
+class CreateTickets(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error: could not decode json object": -5})
+        tickets = data.get('tickets', [])
+        tids = []
+        for i in tickets:
+            ttid, seat_id = i
+            ticketType = ticketType.object.get(ttid=ttid)
+            seat = Seats.objects.get(sid=seat_id)
+            new_ticket = Tickets.objects.create(ticket_type_id=ticketType, seat_id=seat)
+            logical_seat = Logical_Seats.objects.get(seat_id=seat)
+            logical_seat.available = 0
+            logical_seat.save()
+            new_ticket.save()
+            tids.append(new_ticket.tid)
+        return Response({'tids': tids})
 
 #might want a json auth token of some sort
 class Email_Is_Verified(APIView):
@@ -87,6 +123,21 @@ class GetPromo(APIView):
         serializer_class = PromoSerializer(queryset, many=True)
         promoList = {"promotions":serializer_class.data}
         return Response(promoList)
+
+#expects promo_code
+#returns percent or wrong_promo
+class CheckPromo(APIView):
+    def post(self, request):
+     try: 
+        data = json.loads(request.body.decode('utf-8'))
+        promo = Promotions.objects.get(promotion_code=data.get('promo_code'))
+        if promo is None:
+            return Response({'wrong_promo': -1})
+        else: 
+            return Response({'percent': promo.percent})
+     except json.JSONDecodeError:
+        return Response({"error": -1})
+    
 class SubsribeToPromo(APIView):
     def post(self, request):
         try: 
