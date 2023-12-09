@@ -21,6 +21,8 @@ class CustomUser(AbstractUser):
     shipping_city = models.CharField(db_column='shipping_city', max_length=255, default='')
     shipping_state = models.CharField(db_column='shipping_state', max_length=255, default='')
     shipping_zip = models.CharField(db_column='shipping_zip', max_length=255, default='')
+    def password_length(self):
+        return len(self.password)
 
 class Encryption_Keys(models.Model):
     encryption_key = models.CharField(db_column='encryption_key', max_length=255)
@@ -79,6 +81,16 @@ class Seats(models.Model):
     sid = models.IntegerField(db_column='sid',primary_key=True)
     seat_number = models.IntegerField(db_column='seat_number', default='')
     room_id = models.ForeignKey(Rooms, on_delete=models.DO_NOTHING, db_column='room_id')
+    available = models.IntegerField(db_column='available', default='')
+
+
+# 1 is available 0 is unavailible
+class Logical_Seats(models.Model):
+    class Meta:
+        db_table: 'logical_seats'
+    lsid = models.IntegerField(db_column='lsid', primary_key=True)
+    seat_id = models.ForeignKey(Seats, on_delete=models.DO_NOTHING, db_column='seat_id')
+    period_id = models.ForeignKey(Periods, on_delete=models.DO_NOTHING, db_column='period_id')
     available = models.IntegerField(db_column='available', default='')
 
 class Showings(models.Model):

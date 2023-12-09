@@ -1,26 +1,54 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Movies, CustomUser, Card, Periods, Showings, Rooms, Promotions, Movie_States
+from .models import Movies, CustomUser, Card, Periods, Showings, Rooms, Promotions, Movie_States, Seats, Logical_Seats
 from .serializer import MovieSerializer, UserSerializer
 from .utils import *
 import json, random
 
+
+#Need to added user_token to check for admin here 
+#just uncomment the code
+class GetUsers(APIView):
+    def get(self, request):
+        # try: 
+        #     data = json.loads(request.body.decode('utf-8'))
+        #  except json.JSONDecodeError:
+        #     return Response({"error": -1})
+        # user_token = data.get('user_token')
+        # if checkAdmin(user_token) is None:
+        #         return Response({'error': -1})
+        queryset = CustomUser.objects.all()
+        serializer_class = UserSerializer(queryset, many=True)
+        userList = {"users":serializer_class.data}
+        return Response(userList)
+
+#expects uid, and user_token (this is for admin auth)
+class SuspendUser(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+            user_token = data.get('user_token')
+            if checkAdmin(user_token) is None:
+                return Response({'error': -1})
+            user = CustomUser.objects.get(data.get('uid'))
+            user.state_id = 3
+            user.save()
+            return Response({"success": 1})
+        except json.JSONDecodeError:
+            return Response({"error": -1})
 # EXPECTED REQUEST
 # {user_token, category, cast, director, producer, 
 #  synopsis, reviews, trailer, rating, title, poster_path}
 class AddMovie(APIView):
     def post(self, request):
-        print("checking of here")
         try: 
             response = json.loads(request.body.decode('utf-8'))
-            print(response)
             # Load the JSON string from the 'body' field
             data = json.loads(response['body'])
             # Extract the userToken
             user_token = data['userToken']
-            user = getUserFromToken(user_token)
-            if user is None or user.type_id != 2:
-                return({"error:"-1})
+            if checkAdmin(user_token) is None:
+                return Response({'error': -1})
             msid = data.get('msid')
             moviestate = Movie_States.objects.get(msid=msid)
             new_movie = Movies.objects.create(release_date=data.get('release_date'), 
@@ -40,6 +68,21 @@ class AddMovie(APIView):
             return Response({"error": -1})
         return Response({'mid': new_movie.mid})
 
+#expects MID, user_token
+class ArchiveMove(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+            user_token = data.get('user_token')
+            if checkAdmin(user_token) is None:
+                return Response({'error': -1})
+            mid = data.get('mid')
+            movie = Movies.objects.get(mid=mid)
+            movie.state_id = 1
+            movie.save()
+            return Response({"success": 1})
+        except json.JSONDecodeError:
+            return Response({"error": -1})
 # EXPECTED REQUEST
 # {user_token, mid, category, cast, director, producer, 
 #  synopsis, reviews, trailer, rating, title, poster_path}
@@ -47,7 +90,9 @@ class EditMovie(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
-            user = getUserFromToken(data.get('user_token'))
+            user_token = data.get('user_token')
+            if checkAdmin(user_token) is None:
+                return Response({'error': -1})
             movie = Movies.objects.get(mid=data.get('mid'))
             if user is None or user.type_id != 2 or movie is None:
                 return Response({"error:"-1})
@@ -75,15 +120,24 @@ class AddShow(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
-            user = getUserFromToken(data.get('user_token'))
-            if user is None or user.type_id != 2:
-                return({"error:"-1})
+            user_token = data.get('user_token')
+            if checkAdmin(user_token) is None:
+                return Response({'error': -1})
             period = Periods.objects.get(pid=data.get('pid'))
             movie = Movies.objects.get(mid=data.get('mid'))
             room = Rooms.objects.get(rid=data.get('rid'))
+            seats = Seats.objects.filter(room_id=room)
+            for i in room.seatsInRoom:
+                seat = seats.filter(seat_number=i)
+                logical_seat = Logical_Seats.objects.create(seat_id=seat, period_id=period, available=1)
+                logical_seat.save()
             showing = Showings.objects.create(movie_id=movie,period_id=showing,room_id=room)
         except json.JSONDecodeError:
             return Response({"error": -1})
+        
+class RemoveShow(APIView):
+    def post(self, request):
+        return Response({'left to be implemented': -1})
 
 # EXPECTED REQUEST
 # {promotion_code, percent}
@@ -91,6 +145,9 @@ class AddPromo(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
+            user_token = data.get('user_token')
+            if checkAdmin(user_token) is None:
+                return Response({'error': -1})
             promo = Promotions.objects.create(promotion_code=data.get('promotion_code'), percent=data.get('percent'))
             promo.save()
         except:

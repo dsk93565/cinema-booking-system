@@ -1,6 +1,14 @@
-from .models import CustomUser, Card, Encryption_Keys
+from .models import CustomUser, Card, Encryption_Keys, Movies, Showings
 from cryptography.fernet import Fernet
 from rest_framework.authtoken.models import Token
+import json
+
+def checkAdmin(token_str):
+    user = getUserFromToken(token_str)
+    if user is not None and user.type_id == 2:
+        return user
+    else:
+        return None
 
 def getUserFromToken(token_str):
     try: 
@@ -16,6 +24,19 @@ def checkToken(user, testToken):
         return token.key == testToken
     except Token.DoesNotExist:
         return False
+
+def getShowObjects(request):
+    try: 
+        data = json.loads(request.body.decode('utf-8'))
+        movie = Movies.objects.get(mid=data.get('mid'))
+        start_date = data.get('start_date')
+        end_date = data.get('end_date')
+        query = Showings.objects.filter(movie_id=movie)
+        if start_date is not None:
+            query = query.filter(show_date__range=[start_date, end_date])
+        return query
+    except json.JSONDecodeError:
+        raise Exception({"error: could not decode json object": -5})
 
 class CardActions():
     def getCards(self, request):
@@ -33,6 +54,10 @@ class CardActions():
             data['cards'][cid] = {}
             data['cards'][cid]['card_type'] = fern.decrypt(cards[i].card_type)
             data['cards'][cid]['last_four'] = fern.decrypt(cards[i].card_number)[-4:]
+            data['cards'][cid]['card_street_address'] = fern.decrypt(cards[i].card_street)
+            data['cards'][cid]['card_city_address'] = fern.decrypt(cards[i].card_city)
+            data['cards'][cid]['card_state_address'] = fern.decrypt(cards[i].card_state)
+            data['cards'][cid]['card_zip'] = fern.decrypt(cards[i].card_zip)
         return data
 
         #should prolly refactor the encryption 
