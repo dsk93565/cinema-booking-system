@@ -91,7 +91,8 @@ class EditMovie(APIView):
         try: 
             data = json.loads(request.body.decode('utf-8'))
             user_token = data.get('user_token')
-            if checkAdmin(user_token) is None:
+            user = checkAdmin(user_token)
+            if user is None:
                 return Response({'error': -1})
             movie = Movies.objects.get(mid=data.get('mid'))
             if user is None or user.type_id != 2 or movie is None:

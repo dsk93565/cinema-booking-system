@@ -35,6 +35,7 @@ const MoviesCard = (props) => {
     };
 
     const currentMovies = moviesByState[props.sectionTitle] || [];
+    
 
     return (
         <div className='movies-card'>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/admin.css'
 import axios from 'axios';
@@ -17,7 +17,9 @@ export default function AddMovie({ onClose }) {
     const [rating, setRating] = useState('');
     const [poster_path, setPosterPath] = useState('');
     const [msid, setStateID] = useState('');
+    const [readyToSubmit, setReadyToSubmit] = useState(false);
 
+    // Returns false until every input is filled.
     const isAddMovieFormFilled = (!title || 
                                   !release_date || 
                                   !category || 
@@ -29,44 +31,49 @@ export default function AddMovie({ onClose }) {
                                   !trailer || 
                                   !rating || 
                                   !poster_path);
-    console.log("filled: ", isAddMovieFormFilled);
-    const userToken = localStorage.getItem('userToken');
+        
+    const userToken = localStorage.getItem('userToken');    
     
-    const handleSubmit = async() => {
+    const handleSubmit = useCallback(() => {
+        function createSubmit() {
+            return {
+                userToken,
+                release_date,
+                category,
+                cast,
+                director,
+                producer,
+                synopsis,
+                reviews,
+                trailer,
+                rating,
+                title,
+                poster_path,
+                msid,
+            }
+        };
 
-        const movieInfoExport = {
-            userToken,
-            release_date,
-            category,
-            cast,
-            director,
-            producer,
-            synopsis,
-            reviews,
-            trailer,
-            rating,
-            title,
-            poster_path,
-            msid,
+        const movieData = createSubmit();
+        console.log(JSON.stringify(movieData));
+        
+        async function postMovie (movieInfoExport) {
+            await axios.post('http://localhost:8000/api/admin/add-movie', {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(movieInfoExport),
+            }).then(function (response) {
+                if (response.status === 403)
+                    console.log("Not Authorized");
+                console.log(response);
+            }).catch(function(error) {
+                console.log("Error adding movie: ", error.message);
+            });
         }
-
-        console.log(JSON.stringify(movieInfoExport));
-
-        await axios.post('http://localhost:8000/api/admin/add-movie', {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(movieInfoExport),
-        }).then(function (response) {
-            if (response.status === 403)
-                console.log("Not Authorized");
-            console.log(response);
-        }).catch(function(error) {
-            console.log("Error adding movie: ", error.message);
-        });
-          
+        
+        postMovie(movieData);
         onClose();
-    }
+    }, [readyToSubmit])
 
     return (
         <div className='modal-wrapper'>
@@ -138,7 +145,11 @@ export default function AddMovie({ onClose }) {
                         </form>
                     </div>
                     <div className='modal-footer'>
-                    <button disabled={isAddMovieFormFilled} className='admin-movie-button' type='submit' onClick={handleSubmit}>Add Movie</button>
+                        <button disabled={isAddMovieFormFilled}
+                                className='admin-movie-button'
+                                onClick={handleSubmit}>
+                                    Add Movie
+                        </button>
                     </div>
                 </div>
         </div>
