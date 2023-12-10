@@ -51,7 +51,7 @@ const MoviesCard = (props) => {
                     </div>
                 ))}
             </div>
-            <div>
+            <div className='scroll-buttons'>
                 <button className='scroll-button' onClick={() => sectionRef.current.scrollTo({
                     left: sectionRef.current.scrollLeft - sectionRef.current.offsetWidth,
                     behavior: 'smooth'
