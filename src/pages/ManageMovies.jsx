@@ -12,26 +12,81 @@ const ManageMovies = () => {
   const [editMovieModal, setEditMovieModal] = useState(false);
   const [movieToEdit, setMovieToEdit] = useState(0);
   const [scheduleMovieModal, setScheduleMovieModal] = useState(false);
-
-  useEffect( () => {
-    fetchMovies();
-  }, []);
+  const [midHidden, setMidHidden] = useState(0);
+  const user_token = localStorage.getItem('userToken');
 
   const fetchMovies = async () => {
     try {
         const moviesList = [];
         const response = await axios.get(`http://localhost:8000/api/get-movies`);
         console.log(response.data);
-        setMovies(moviesList.concat(response.data["Now Playing"], response.data["Coming Soon"], response.data["Trending"]));
+        setMovies(moviesList.concat(response.data["Now Playing"],
+                                    response.data["Coming Soon"],
+                                    response.data["Trending"]));
     } catch (error) {
         console.error('Error fetching movies:', error);
     }
   };
 
+  const hideMovie = (event, movie) => {
+      event.preventDefault();
+      setMidHidden(movie.mid);
+      const movieData = {
+            user_token: user_token,
+            mid: movie.mid,
+            release_date: movie.release_date,
+            category: movie.category,
+            cast: movie.cast,
+            director: movie.director,
+            producer: movie.producer,
+            synopsis: movie.synopsis,
+            reviews: movie.reviews,
+            trailer: movie.trailer,
+            rating: movie.rating,
+            title: movie.title,
+            poster_path: movie.poster_path,
+            msid: 1,
+      }
+
+      console.log(JSON.stringify(movieData));
+
+      async function postMovie (movieInfoExport) {
+          await axios.post('http://localhost:8000/api/admin/edit-movie', {
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(movieInfoExport),
+          }).then(function (response) {
+              if (response.status === 403)
+                  console.log("Not Authorized");
+              console.log(response.data.success);
+              window.dispatchEvent(new Event('movieHidden'));
+          }).catch(function(error) {
+              console.log("Error adding movie: ", error.message);
+          });
+      }
+
+      postMovie(movieData);
+  }
+
   const handleEditMovie = (mid) => {
     setEditMovieModal(true);
     setMovieToEdit(mid);
   }
+
+  useEffect( () => {
+    fetchMovies();
+  }, []);
+
+  useEffect( () => {
+    window.addEventListener('movieHidden', () => {
+      setMovies(movies.map(movie => {
+        if(movie.mid === midHidden)
+          return null;
+      }))
+      fetchMovies();
+    })
+  }, []);
 
   return (
     <section className='admin-section-wrapper'>
@@ -54,7 +109,7 @@ const ManageMovies = () => {
                     <p><strong>Producer:</strong> {movie.producer}</p>
                 </div>
                 <div className='admin-button-container'>
-                  <button className='admin-movie-button'>Hide Movie</button>
+                  <button className='admin-movie-button' onClick={(event) => hideMovie(event, movie)}>Hide Movie</button>
                   <button className='admin-movie-button' onClick={() => handleEditMovie(movie.mid)}>Edit Movie</button>
                 </div>
               </div>
