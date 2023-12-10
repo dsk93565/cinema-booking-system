@@ -201,28 +201,33 @@ class EditUser(APIView):
             data = json.loads(request.body.decode('utf-8'))
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
+
         try:
             user_to_modify = getUserFromToken(data.get('user_token'))
-            #CAN BE REFACTORED WITH SERIALIZER
             new_password = data.get('password')
             new_number = data.get('phonenumber')
             new_first = data.get('first_name')
             new_last = data.get('last_name')
             new_promo = data.get('promotions')
-            if new_password is not None:
-                user_to_modify.password = new_password
-            if new_number is not None:
-                user_to_modify.phone_number = new_number
+            
             if new_first is not None: 
                 user_to_modify.first_name = new_first
             if new_last is not None: 
                 user_to_modify.last_name = new_last
+            if new_number is not None:
+                user_to_modify.phone_number = new_number
             if new_promo is not None:
                 user_to_modify.promotions = new_promo
+            if new_password is not None:
+                # Here you might want to validate the new password
+                # and encrypt/hash it before saving
+                user_to_modify.set_password(new_password)
+            
             user_to_modify.save()
             return Response({"Success": 1})
-        except: 
-            return Response({"error":-1})
+        except Exception as e: 
+            return Response({"error": str(e)})
+
 
 class GetUser(APIView):
     def post(self, request):
