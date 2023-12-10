@@ -10,7 +10,6 @@ const UserProfile = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
-  const [passwordCurrentLength, setPasswordCurrentLength] = useState(0);
   const [passwordCurrent, setPasswordCurrent] = useState('');
   const [passwordNew, setPasswordNew] = useState(''); // Not needed in database due to implemented password match checker
   const [optInEmail, setOptInEmail] = useState(0);
@@ -47,6 +46,7 @@ const UserProfile = () => {
     setEditMode(false);
     setEditMode2(false);
     setEditMode3(false);
+    setStatusMessage('');
     setProfilePage(page);
   };
 
@@ -66,7 +66,6 @@ const UserProfile = () => {
         setLastName(response.data.user.last_name);
         setEmail(response.data.user.email);
         setMobileNumber(response.data.user.phone_number);
-        setPasswordCurrentLength(response.data.user.password_length);
         setOptInEmail(response.data.user.promotions);
         setShippingStreetAddress(response.data.user.shipping_street);
         setShippingCityAddress(response.data.user.shipping_city);
@@ -83,14 +82,39 @@ const UserProfile = () => {
 
   const handleSaveChanges = async () => {
     try {
-      if (passwordNew === passwordCurrent) {
+      if (profilePage === 'basic' && passwordNew === '') {
+        const response = await axios.post('http://localhost:8000/api/edit-user', {
+            user_token: localStorage.getItem('userToken'),
+            first_name: firstName,
+            last_name: lastName,
+            phone_number: mobileNumber,
+            promotions: optInEmail,
+          });
+          setEditMode(false);
+          setStatusMessage('Changes saved successfully');
+      } else if (profilePage === 'basic' && passwordNew !== '') {
+        const response1 = await axios.post(`http://localhost:8000/api/login`, {
+          email: email,
+          password: passwordCurrent,
+        });
+
+        if (response1.data.user_token === -1) {
+          setStatusMessage('Invalid current password');
+        } else if (response1.data.user_token !== -2) {
+          const response2 = await axios.post('http://localhost:8000/api/edit-user', {
+            user_token: localStorage.getItem('userToken'),
+            first_name: firstName,
+            last_name: lastName,
+            phone_number: mobileNumber,
+            password: passwordNew,
+            promotions: optInEmail,
+          });
+          setEditMode(false);
+          setStatusMessage('Changes saved successfully');
+        } // if else-if
+      } else if (profilePage === 'shipping') {
         const response = await axios.post('http://localhost:8000/api/edit-user', {
           user_token: localStorage.getItem('userToken'),
-          first_name: firstName,
-          last_name: lastName,
-          phone_number: mobileNumber,
-          password: passwordNew,
-          promotions: optInEmail,
           shipping_street: shippingStreetAddress,
           shipping_city: shippingCityAddress,
           shipping_state: shippingStateAddress,
@@ -98,19 +122,18 @@ const UserProfile = () => {
         });
         setEditMode(false);
         setStatusMessage('Changes saved successfully');
-      } else {
-        setStatusMessage('Current password is incorrect');
-        return;
-      }
+      } else if (profilePage === 'payment') {
+        const response = await axios.post('http://localhost:8000/api/edit-user', {
+          user_token: localStorage.getItem('userToken'),
+        });
+        setEditMode(false);
+        setStatusMessage('Changes saved successfully');
+      } // if else-if else-if else-if
     } catch (error) {
       console.error('Error:', error);
       setError(error.message || 'Error saving changes');
     }
   };
-
-  if (error) {
-    return alert('Error: ' + error);
-  } // if
 
   // ----- Shipping Information Section -----
 
@@ -298,7 +321,7 @@ const UserProfile = () => {
                     <input
                       type='password'
                       autoComplete='off'
-                      placeholder={passwordCurrentLength ? '*'.repeat(Number(passwordCurrentLength)) : ''}
+                      placeholder={!editMode ? 'No peaking :)' : 'Enter current password to change password'}
                       onChange={(e) => setPasswordCurrent(e.target.value)}
                       className='user-info-input'
                     />
@@ -376,7 +399,7 @@ const UserProfile = () => {
                     <input
                       type='password'
                       autoComplete='off'
-                      placeholder={!editMode ? (passwordCurrentLength ? '*'.repeat(Number(passwordCurrentLength)) : '') : ''}
+                      placeholder={!editMode ? 'No peaking :)' : 'Enter current password to change password'}
                       disabled
                       className='user-info-input disabled-input'
                     />
@@ -394,6 +417,7 @@ const UserProfile = () => {
                   <div className='user-profile-buttons'>
                     <button className='CTA-button-one' type='button' onClick={() => setEditMode(true)}>Edit</button>
                   </div>
+                  <div className='status-message'>{statusMessage}</div>
                 </form>
               )}
             </div>
@@ -450,6 +474,7 @@ const UserProfile = () => {
                     <button className='CTA-button-one' type='button' onClick={handleSaveChanges}>Save</button>
                     <button className='CTA-button-two' type='button' onClick={() => setEditMode(false)}>Cancel</button>
                   </div>
+                  <div className='status-message'>{statusMessage}</div>
                 </form>
               ) : (
                 <form className='user-info-form user-shipping-info'>
@@ -504,6 +529,7 @@ const UserProfile = () => {
                       <button className='CTA-button-one' type='button' onClick={() => setEditMode(true)}>Edit</button>
                     </div>
                   )}
+                  <div className='status-message'>{statusMessage}</div>
                 </form>
               )}
             </div>
@@ -514,6 +540,7 @@ const UserProfile = () => {
             <div className='user-profile-page user-payments-info'>
               {editMode ? (
                 <form className='user-info-form'>
+                  <div className='status-message'>{statusMessage}</div>
                 </form>
               ) : (
                 <form className='user-info-form'>
@@ -595,10 +622,12 @@ const UserProfile = () => {
                       <button className='CTA-button-one' type='button' onClick={() => setEditMode(true)}>Edit</button>
                     </div>
                   )}
+                  <div className='status-message'>{statusMessage}</div>
                 </form>
               )}
               {editMode2 ? (
                 <form className='user-info-form'>
+                  <div className='status-message'>{statusMessage}</div>
                 </form>
               ) : (
                 <form className='user-info-form'>
@@ -680,6 +709,7 @@ const UserProfile = () => {
                       <button className='CTA-button-one' type='button' onClick={() => setEditMode2(true)}>Edit</button>
                     </div>
                   )}
+                  <div className='status-message'>{statusMessage}</div>
                 </form>
               )}
               {editMode3 ? (
@@ -758,6 +788,7 @@ const UserProfile = () => {
                     <button className='CTA-button-one' type='button' onClick={handleSaveChanges}>Save</button>
                     <button className='CTA-button-two' type='button' onClick={() => setEditMode3(false)}>Cancel</button>
                   </div>
+                  <div className='status-message'>{statusMessage}</div>
                 </form>
               ) : (
                 <form className='user-info-form'>
@@ -839,6 +870,7 @@ const UserProfile = () => {
                       <button className='CTA-button-one' type='button' onClick={() => setEditMode3(true)}>Edit</button>
                     </div>
                   )}
+                  <div className='status-message'>{statusMessage}</div>
                 </form>
               )}
             </div>

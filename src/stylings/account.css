@@ -190,6 +190,10 @@
     padding: 1rem 1.25rem;
 }
 
+.user-profile .status-message {
+    color: var(--primary);
+}
+
 .user-profile-header {
     display: flex;
     flex-direction: column;
@@ -198,6 +202,7 @@
 
 .user-profile-categories {
     display: flex;
+    justify-content: center;
     column-gap: 3.25rem;
     overflow-x: scroll;
     white-space: nowrap;
@@ -238,7 +243,7 @@
     flex-direction: column;
 }
 
-.user-shipping-info .user-info:nth-last-child(4) {
+.user-shipping-info .user-info:nth-last-child(5) {
     margin-top: 0;
 }
 
