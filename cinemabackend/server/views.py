@@ -286,30 +286,21 @@ class Create_User(APIView):
         exsisting_users = CustomUser.objects.filter(email=new_email)
         if exsisting_users.exists():
             return Response({"email_is_already_registered": -1})
-        new_password = data.get("password")
-        new_number = data.get("mobileNumber")
-        new_first = data.get("firstName")
-        new_last = data.get("lastName")
-        new_promo = data.get("optInEmail")
-        new_shipping_street = data.get("shippingStreetAddress")
-        new_shipping_city = data.get("shippingCityAddress")
-        new_shipping_state = data.get("shippingStateAddress")
-        new_shipping_zip = data.get("shippingZipCodeAddress")
-        new_user = CustomUser.objects.create(
-            username=new_username,
-            email=new_email,
-            password=make_password(new_password),
-            first_name=new_first,
-            last_name=new_last,
-            phone_number=new_number,
-            state_id=1,
-            promotions=new_promo,
-            shipping_street=new_shipping_street,
-            shipping_city=new_shipping_city,
-            shipping_state=new_shipping_state,
-            shipping_zip=new_shipping_zip,
-        )
-
+        fields = {
+            'username': data.get("username"),
+            'email': data.get("email"),
+            'password': make_password(data.get("password")),
+            'first_name': data.get("firstName"),
+            'last_name': data.get("lastName"),
+            'phone_number': data.get("mobileNumber"),
+            'state_id': 1,
+            'promotions': data.get("optInEmail"),
+            'shipping_street': data.get("shippingStreetAddress"),
+            'shipping_city': data.get("shippingCityAddress"),
+            'shipping_state': data.get("shippingStateAddress"),
+            'shipping_zip': data.get("shippingZipCodeAddress"),
+        }
+        new_user = CustomUser.objects.create(**fields)
         new_user.save()
         if data.get("cardNumber") is not None:
             new_request = [new_user, data]
