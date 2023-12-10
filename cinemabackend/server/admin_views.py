@@ -116,7 +116,7 @@ class EditMovie(APIView):
             return Response({"error": -1})
 
 # EXPECTED REQUEST
-# {mid, pid, rid}
+# {user_token, mid, pid, rid}
 class AddShow(APIView):
     def post(self, request):
         try: 

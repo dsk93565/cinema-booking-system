@@ -98,6 +98,13 @@
 }
 
 .add-movie-form {
+    justify-content: center;   
+    align-items: center;
+    width: 80%;
+    padding: 2rem;
+}
+
+.admin-movie-form-body {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -148,4 +155,13 @@
 
 .add-movie-input:focus {
     outline: var(--accent-two) 0.125rem solid;
+}
+
+.show-listing-holder {
+    display: flex;
+    flex-direction: column;
+}
+
+.show-listing {
+    background-color: var(--accent-one);
 }

@@ -6,15 +6,20 @@ import '../stylings/search.css';
 
 const SearchResults = () => {
   const { data } = useDataContext();
+  const [movies, setMovies] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        
+        const moviesList = [];
         const BACKEND_URL = 'http://localhost:8000/api/get-movies'; // Adjust the URL as needed
         const response = await axios.get(`${BACKEND_URL}`);
-        const results = response.data.movies.filter( (m) => m.title.toLowerCase().includes(data.toLowerCase()));
+        setMovies(moviesList.concat(response.data["Now Playing"],
+                                       response.data["Coming Soon"],
+                                       response.data["Trending"]));
+        console.log(movies);
+        const results = movies.filter( (m) => m.title.toLowerCase().includes(data.toLowerCase()));
         console.log(results);
         // Assuming your API returns an array of movies in the 'results' property
         setSearchResults(results);

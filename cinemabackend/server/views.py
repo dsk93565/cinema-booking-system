@@ -359,9 +359,10 @@ class GetCards(APIView):
 # returns
  # showings: ['shid', 'movie_id', 'period_id', 'room_id', 'room_id', 'show_date']
 class GetShows(APIView):
-    def get(self, request):
+    def post(self, request):
         try: 
             showObjects = getShowObjects(request)
+            print("OBJECTS: ", showObjects)
             serializer = ShowingSerializer(showObjects, many=True)
             showings = {'showings': serializer}
             return Response(showings)

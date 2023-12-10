@@ -21,8 +21,8 @@ const ManageMovies = () => {
     try {
         const moviesList = [];
         const response = await axios.get(`http://localhost:8000/api/get-movies`);
+        console.log(response.data);
         setMovies(moviesList.concat(response.data["Now Playing"], response.data["Coming Soon"], response.data["Trending"]));
-        console.log(movies);
     } catch (error) {
         console.error('Error fetching movies:', error);
     }

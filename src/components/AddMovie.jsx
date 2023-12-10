@@ -17,10 +17,10 @@ export default function AddMovie({ onClose }) {
     const [rating, setRating] = useState('');
     const [poster_path, setPosterPath] = useState('');
     const [msid, setStateID] = useState('');
-    const [readyToSubmit, setReadyToSubmit] = useState(false);
+    const [readyToSubmit, setReadyToSubmit] = useState(true);
 
-    // Returns false until every input is filled.
-    const isAddMovieFormFilled = (!title || 
+    // Returns true until every input is filled.
+    const isFormEmpty = (!title || 
                                   !release_date || 
                                   !category || 
                                   !cast ||
@@ -33,10 +33,23 @@ export default function AddMovie({ onClose }) {
                                   !poster_path);
         
     const userToken = localStorage.getItem('userToken');    
-    
-    const handleSubmit = useCallback(() => {
-        function createSubmit() {
-            return {
+    /* console.log(isFormEmpty);
+    console.log(title);
+    console.log(release_date);
+    console.log(category);
+    console.log(cast);
+    console.log(director);
+    console.log(producer);
+    console.log(synopsis);
+    console.log(reviews);
+    console.log(trailer);
+    console.log(rating);
+    console.log(poster_path); */
+
+    const handleSubmit = () => {        
+        console.log("top", readyToSubmit);
+        if(!isFormEmpty && readyToSubmit) {
+            const movieData =  {
                 userToken,
                 release_date,
                 category,
@@ -50,30 +63,31 @@ export default function AddMovie({ onClose }) {
                 title,
                 poster_path,
                 msid,
+            };
+            
+            console.log(JSON.stringify(movieData));
+            
+            async function postMovie (movieInfoExport) {
+                await axios.post('http://localhost:8000/api/admin/add-movie', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(movieInfoExport),
+                }).then(function (response) {
+                    if (response.status === 403)
+                        console.log("Not Authorized");
+                    console.log(response);
+                }).catch(function(error) {
+                    console.log("Error adding movie: ", error.message);
+                });
             }
-        };
 
-        const movieData = createSubmit();
-        console.log(JSON.stringify(movieData));
-        
-        async function postMovie (movieInfoExport) {
-            await axios.post('http://localhost:8000/api/admin/add-movie', {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(movieInfoExport),
-            }).then(function (response) {
-                if (response.status === 403)
-                    console.log("Not Authorized");
-                console.log(response);
-            }).catch(function(error) {
-                console.log("Error adding movie: ", error.message);
-            });
+            postMovie(movieData);
+            setReadyToSubmit(false);
+            console.log("bottom", readyToSubmit);
         }
-        
-        postMovie(movieData);
         onClose();
-    }, [readyToSubmit])
+    }
 
     return (
         <div className='modal-wrapper'>
@@ -83,7 +97,7 @@ export default function AddMovie({ onClose }) {
                         <span className='close'><FontAwesomeIcon onClick={onClose} icon='fa fa-window-close'/></span>
                     </div>
                     <div className='admin-modal-body'>
-                        <form className='add-movie-form' id="addMovieForm">
+                        <form onSubmit={handleSubmit} className='add-movie-form' id="addMovieForm">
                             <div className='admin-movie-form-col'>
                                 <div className='movie-info'>
                                     <label className='movie-info-label'>Title</label>
@@ -141,15 +155,14 @@ export default function AddMovie({ onClose }) {
                                     </select>
                                 </div>
                             </div>
-                            
-                        </form>
-                    </div>
-                    <div className='modal-footer'>
-                        <button disabled={isAddMovieFormFilled}
-                                className='admin-movie-button'
-                                onClick={handleSubmit}>
-                                    Add Movie
-                        </button>
+                            <div className='modal-footer'>
+                                <button 
+                                        className='admin-movie-button'
+                                        type='submit'>
+                                            Add Movie
+                                </button>
+                            </div>
+                        </form>    
                     </div>
                 </div>
         </div>
