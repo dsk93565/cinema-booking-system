@@ -226,7 +226,7 @@ class SubsribeToPromo(APIView):
             return Response({"error": -1})
 
 
-# How this is currently implemented besides Email, pass only the fields that you want to modify
+#besides Email, pass only the fields that you want to modify
 class EditUser(APIView):
     def post(self, request):
         try:
