@@ -38,6 +38,7 @@ const UserProfile = () => {
   const [billingCityAddress3, setBillingCityAddress3] = useState('');
   const [billingStateAddress3, setBillingStateAddress3] = useState('');
   const [billingZipCodeAddress3, setBillingZipCodeAddress3] = useState('');
+  const [subscribedForPromos, setSubscribedForPromos] = useState(false);
 
   // Profile Page Change
   const [profilePage, setProfilePage] = useState('basic');
@@ -63,6 +64,7 @@ const UserProfile = () => {
         });
         setFirstName(response.data.user.first_name);
         setLastName(response.data.user.last_name);
+        setSubscribedForPromos(response.data.user.subscribedForPromos);
         setEmail(response.data.user.email);
         setMobileNumber(response.data.user.phone_number);
         setPasswordCurrent(response.data.user.password);
@@ -77,24 +79,27 @@ const UserProfile = () => {
 
   const handleSaveChanges = async () => {
     try {
-      if (passwordNew === passwordCurrent) {
-        const response = await axios.post('http://localhost:8000/api/edit-user', {
-          user_token: localStorage.getItem('userToken'),
-          first_name: firstName,
-          last_name: lastName,
-          phone_number: mobileNumber,
-          password: passwordNew,
-        });
-        setEditMode(false);
-        setStatusMessage('Changes saved successfully');
-      } else {
-        setStatusMessage('Current password is incorrect');
+      const data = {
+        user_token: localStorage.getItem('userToken'),
+        first_name: firstName,
+        last_name: lastName,
+        promotions: subscribedForPromos,
+        phone_number: mobileNumber,
+      };
+  
+      if (passwordNew) {
+        data.password = passwordNew;
       }
+  
+      const response = await axios.post('http://localhost:8000/api/edit-user', data);
+      setEditMode(false);
+      setStatusMessage('Changes saved successfully');
     } catch (error) {
       console.error('Error:', error);
       setError(error.message || 'Error saving changes');
     }
   };
+  
 
   if (error) {
     return alert('Error: ' + error);
@@ -293,6 +298,14 @@ const UserProfile = () => {
                       type='password'
                       onChange={(e) => setPasswordNew(e.target.value)}
                       className='user-info-input'
+                    />
+                  </div>
+                  <div className='user-info'>
+                    <label className='user-info-label'>Subscribe to Promotions</label>
+                    <input
+                      type='checkbox'
+                      checked={subscribedForPromos}
+                      onChange={(e) => setSubscribedForPromos(e.target.checked)}
                     />
                   </div>
                   <div className='user-profile-buttons'>
@@ -557,20 +570,20 @@ const UserProfile = () => {
                   <div className='user-info'>
                     <label className='user-info-label'>Card type</label>
                     <Select
-                    options={cardTypeOptions}
-                    placeholder={billingStreetAddress2}
-                    isDisabled={!editMode2}
-                    styles={selectStyling}
+                      options={cardTypeOptions}
+                      placeholder={billingStreetAddress2}
+                      isDisabled={!editMode2}
+                      styles={selectStyling}
                     />
                   </div>
                   <div className='user-infos'>
                     <div className='user-info card-num'>
                       <label className='user-info-label'>Card number</label>
                       <input
-                          type='text'
-                          placeholder={cardNumber2}
-                          disabled={!editMode2}
-                          className='user-info-input disabled-input'
+                        type='text'
+                        placeholder={cardNumber2}
+                        disabled={!editMode2}
+                        className='user-info-input disabled-input'
                       />
                     </div>
                     <div className='user-info exp-date'>
@@ -606,10 +619,10 @@ const UserProfile = () => {
                     <div className='user-info'>
                       <label className='user-info-label'>State</label>
                       <Select
-                          options={usStates}
-                          placeholder={billingStateAddress2}
-                          isDisabled={!editMode2}
-                          styles={selectStyling}
+                        options={usStates}
+                        placeholder={billingStateAddress2}
+                        isDisabled={!editMode2}
+                        styles={selectStyling}
                       />
                     </div>
                     <div className='user-info zip'>
@@ -642,20 +655,20 @@ const UserProfile = () => {
                   <div className='user-info'>
                     <label className='user-info-label'>Card type</label>
                     <Select
-                    options={cardTypeOptions}
-                    placeholder={billingStreetAddress3}
-                    isDisabled={!editMode3}
-                    styles={selectStyling}
+                      options={cardTypeOptions}
+                      placeholder={billingStreetAddress3}
+                      isDisabled={!editMode3}
+                      styles={selectStyling}
                     />
                   </div>
                   <div className='user-infos'>
                     <div className='user-info card-num'>
                       <label className='user-info-label'>Card number</label>
                       <input
-                          type='text'
-                          placeholder={cardNumber3}
-                          disabled={!editMode3}
-                          className='user-info-input disabled-input'
+                        type='text'
+                        placeholder={cardNumber3}
+                        disabled={!editMode3}
+                        className='user-info-input disabled-input'
                       />
                     </div>
                     <div className='user-info exp-date'>
@@ -691,10 +704,10 @@ const UserProfile = () => {
                     <div className='user-info'>
                       <label className='user-info-label'>State</label>
                       <Select
-                          options={usStates}
-                          placeholder={billingStateAddress3}
-                          isDisabled={!editMode3}
-                          styles={selectStyling}
+                        options={usStates}
+                        placeholder={billingStateAddress3}
+                        isDisabled={!editMode3}
+                        styles={selectStyling}
                       />
                     </div>
                     <div className='user-info zip'>
