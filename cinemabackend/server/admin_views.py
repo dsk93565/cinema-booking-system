@@ -10,17 +10,41 @@ import json, random
 #just uncomment the code
 class GetUsers(APIView):
     def get(self, request):
-        # try: 
-        #     data = json.loads(request.body.decode('utf-8'))
-        #  except json.JSONDecodeError:
-        #     return Response({"error": -1})
-        # user_token = data.get('user_token')
-        # if checkAdmin(user_token) is None:
-        #         return Response({'error': -1})
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error": "Invalid JSON format"})
+
+        user_token = data.get('user_token')
+        if checkAdmin(user_token) is None:
+            return Response({'error': "User is not authorized or not an admin"})
+
         queryset = CustomUser.objects.all()
-        serializer_class = UserSerializer(queryset, many=True)
-        userList = {"users":serializer_class.data}
+        serializer = self.get_serializer(queryset, many=True)
+        userList = {"users": serializer.data}
         return Response(userList)
+
+class MakeAdmin(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error": "Invalid JSON format"})
+
+        user_token = data.get('user_token')
+        if checkAdmin(user_token) is None:
+            return Response({'error': "User is not authorized or not an admin"})
+
+        user_id = data.get('uid')
+        try:
+            user = CustomUser.objects.get(pk=user_id)
+            user.type_id = 2  # Setting type_id to 2 to make the user an admin
+            user.save()
+            return Response({"success": 1})
+        except CustomUser.DoesNotExist:
+            return Response({"error": "User not found"})
+        except Exception as e:
+            return Response({"error": str(e)})
 
 #expects uid, and user_token (this is for admin auth)
 class SuspendUser(APIView):
@@ -36,6 +60,34 @@ class SuspendUser(APIView):
             return Response({"success": 1})
         except json.JSONDecodeError:
             return Response({"error": -1})
+# EXPECTED REQUEST
+# {user_token, category, cast, director, producer, 
+#  synopsis, reviews, trailer, rating, title, poster_path}
+
+class EditUser(APIView):
+    def post(self, request):
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return Response({"error": "Invalid JSON format"})
+
+        user_token = data.get('user_token')
+        if checkAdmin(user_token) is None:
+            return Response({'error': "User is not authorized or not an admin"})
+
+        user_id = data.get('uid')
+        try:
+            user = CustomUser.objects.get(pk=user_id)
+        except CustomUser.DoesNotExist:
+            return Response({'error': "User not found"})
+
+        serializer = UserSerializer(user, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success': 1})
+        return Response(serializer.errors)        
+
+
 # EXPECTED REQUEST
 # {user_token, category, cast, director, producer, 
 #  synopsis, reviews, trailer, rating, title, poster_path}
@@ -153,4 +205,23 @@ class AddPromo(APIView):
             promo.save()
         except:
             return Response({"error": -1})
+        
+class RemovePromo(APIView):
+    def post(self, request):
+        try: 
+            data = json.loads(request.body.decode('utf-8'))
+            user_token = data.get('user_token')
+            if checkAdmin(user_token) is None:
+                return Response({'error': "Not authorized"})
+            
+            promotion_code = data.get('promotion_code')
+            try:
+                promo = Promotions.objects.get(promotion_code=promotion_code)
+                promo.delete()
+                return Response({"success": "Promotion removed"})
+            except Promotions.DoesNotExist:
+                return Response({"error": "Promotion not found"})
+        except Exception as e:
+            return Response({"error": str(e)})
+
         
