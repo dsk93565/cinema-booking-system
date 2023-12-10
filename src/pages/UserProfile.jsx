@@ -10,6 +10,7 @@ const UserProfile = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
+  const [passwordCurrentLength, setPasswordCurrentLength] = useState(0);
   const [passwordCurrent, setPasswordCurrent] = useState('');
   const [passwordNew, setPasswordNew] = useState(''); // Not needed in database due to implemented password match checker
   const [optInEmail, setOptInEmail] = useState(0);
@@ -38,7 +39,6 @@ const UserProfile = () => {
   const [billingCityAddress3, setBillingCityAddress3] = useState('');
   const [billingStateAddress3, setBillingStateAddress3] = useState('');
   const [billingZipCodeAddress3, setBillingZipCodeAddress3] = useState('');
-  const [subscribedForPromos, setSubscribedForPromos] = useState(false);
 
   // Profile Page Change
   const [profilePage, setProfilePage] = useState('basic');
@@ -64,10 +64,14 @@ const UserProfile = () => {
         });
         setFirstName(response.data.user.first_name);
         setLastName(response.data.user.last_name);
-        setSubscribedForPromos(response.data.user.subscribedForPromos);
         setEmail(response.data.user.email);
         setMobileNumber(response.data.user.phone_number);
-        setPasswordCurrent(response.data.user.password);
+        setPasswordCurrentLength(response.data.user.password_length);
+        setOptInEmail(response.data.user.promotions);
+        setShippingStreetAddress(response.data.user.shipping_street);
+        setShippingCityAddress(response.data.user.shipping_city);
+        setShippingStateAddress(response.data.user.shipping_state);
+        setShippingZipCodeAddress(response.data.user.shipping_zip);
       } catch (error) {
         console.error('Error fetching user data:', error);
         setError(error.message || 'Error fetching user data');
@@ -79,27 +83,30 @@ const UserProfile = () => {
 
   const handleSaveChanges = async () => {
     try {
-      const data = {
-        user_token: localStorage.getItem('userToken'),
-        first_name: firstName,
-        last_name: lastName,
-        promotions: subscribedForPromos,
-        phone_number: mobileNumber,
-      };
-  
-      if (passwordNew) {
-        data.password = passwordNew;
+      if (passwordNew === passwordCurrent) {
+        const response = await axios.post('http://localhost:8000/api/edit-user', {
+          user_token: localStorage.getItem('userToken'),
+          first_name: firstName,
+          last_name: lastName,
+          phone_number: mobileNumber,
+          password: passwordNew,
+          promotions: optInEmail,
+          shipping_street: shippingStreetAddress,
+          shipping_city: shippingCityAddress,
+          shipping_state: shippingStateAddress,
+          shipping_zip: shippingZipCodeAddress,
+        });
+        setEditMode(false);
+        setStatusMessage('Changes saved successfully');
+      } else {
+        setStatusMessage('Current password is incorrect');
+        return;
       }
-  
-      const response = await axios.post('http://localhost:8000/api/edit-user', data);
-      setEditMode(false);
-      setStatusMessage('Changes saved successfully');
     } catch (error) {
       console.error('Error:', error);
       setError(error.message || 'Error saving changes');
     }
   };
-  
 
   if (error) {
     return alert('Error: ' + error);
@@ -244,13 +251,14 @@ const UserProfile = () => {
           {profilePage === 'basic' && (
             <div className='user-profile-page'>
               {editMode ? (
-                <div className='user-info-form user-basic-info'>
+                <form className='user-info-form user-basic-info'>
                   <div className='user-infos'>
                     <div className='user-info'>
                       <label className='user-info-label'>First name</label>
                       <input
                         type='text'
-                        value={firstName}
+                        placeholder={!editMode ? firstName : ''}
+                        value={editMode ? firstName : ''}
                         onChange={(e) => setFirstName(e.target.value)}
                         className='user-info-input'
                       />
@@ -259,7 +267,8 @@ const UserProfile = () => {
                       <label className='user-info-label'>Last name</label>
                       <input
                         type='text'
-                        value={lastName}
+                        placeholder={!editMode ? lastName : ''}
+                        value={editMode ? lastName : ''}
                         onChange={(e) => setLastName(e.target.value)}
                         className='user-info-input'
                       />
@@ -269,7 +278,8 @@ const UserProfile = () => {
                     <label className='user-info-label'>Mobile number</label>
                     <input
                       type='text'
-                      value={mobileNumber}
+                      placeholder={!editMode ? mobileNumber : ''}
+                      value={editMode ? mobileNumber : ''}
                       onChange={(e) => setMobileNumber(e.target.value)}
                       className='user-info-input'
                     />
@@ -287,7 +297,8 @@ const UserProfile = () => {
                     <label className='user-info-label'>Current password</label>
                     <input
                       type='password'
-                      placeholder={passwordCurrent ? Array(passwordCurrent.length + 1).join('*') : ''}
+                      autoComplete='off'
+                      placeholder={passwordCurrentLength ? '*'.repeat(Number(passwordCurrentLength)) : ''}
                       onChange={(e) => setPasswordCurrent(e.target.value)}
                       className='user-info-input'
                     />
@@ -296,32 +307,36 @@ const UserProfile = () => {
                     <label className='user-info-label'>New password</label>
                     <input
                       type='password'
+                      autoComplete='off'
                       onChange={(e) => setPasswordNew(e.target.value)}
                       className='user-info-input'
                     />
                   </div>
                   <div className='user-info'>
-                    <label className='user-info-label'>Subscribe to Promotions</label>
-                    <input
-                      type='checkbox'
-                      checked={subscribedForPromos}
-                      onChange={(e) => setSubscribedForPromos(e.target.checked)}
-                    />
+                    <label className='user-checkbox-option'>
+                      <input
+                        type='checkbox'
+                        checked={optInEmail === 1}
+                        onChange={(e) => setOptInEmail(e.target.checked ? 1 : 0)}
+                      />
+                      Promotional emails
+                    </label>
                   </div>
                   <div className='user-profile-buttons'>
-                    <button className='CTA-button-one' onClick={handleSaveChanges}>Save</button>
-                    <button className='CTA-button-two' onClick={() => setEditMode(false)}>Cancel</button>
+                    <button className='CTA-button-one' type='button' onClick={handleSaveChanges}>Save</button>
+                    <button className='CTA-button-two' type='button' onClick={() => setEditMode(false)}>Cancel</button>
                   </div>
                   <div className='status-message'>{statusMessage}</div>
-                </div>
+                </form>
               ) : (
-                <div className='user-info-form user-basic-info'>
+                <form className='user-info-form user-basic-info'>
                   <div className='user-infos'>
                     <div className='user-info'>
                       <label className='user-info-label'>First name</label>
                       <input
                         type='text'
-                        placeholder={firstName}
+                        placeholder={!editMode ? firstName : ''}
+                        value={editMode ? firstName : ''}
                         disabled={!editMode}
                         className='user-info-input disabled-input'
                       />
@@ -330,7 +345,8 @@ const UserProfile = () => {
                       <label className='user-info-label'>Last name</label>
                       <input
                         type='text'
-                        placeholder={lastName}
+                        placeholder={!editMode ? lastName : ''}
+                        value={editMode ? lastName : ''}
                         disabled={!editMode}
                         className='user-info-input disabled-input'
                       />
@@ -340,7 +356,8 @@ const UserProfile = () => {
                     <label className='user-info-label'>Mobile number</label>
                     <input
                       type='text'
-                      placeholder={mobileNumber}
+                      placeholder={!editMode ? mobileNumber : ''}
+                      value={editMode ? mobileNumber : ''}
                       disabled={!editMode}
                       className='user-info-input disabled-input'
                     />
@@ -358,15 +375,26 @@ const UserProfile = () => {
                     <label className='user-info-label'>Password</label>
                     <input
                       type='password'
-                      placeholder={passwordCurrent ? Array(passwordCurrent.length + 1).join('*') : ''}
-                      disabled={!editMode}
+                      autoComplete='off'
+                      placeholder={!editMode ? (passwordCurrentLength ? '*'.repeat(Number(passwordCurrentLength)) : '') : ''}
+                      disabled
                       className='user-info-input disabled-input'
                     />
                   </div>
-                  <div className='user-profile-buttons'>
-                    <button className='CTA-button-one' onClick={() => setEditMode(true)}>Edit</button>
+                  <div className='user-info'>
+                    <label className='user-checkbox-option'>
+                      <input
+                        type='checkbox'
+                        checked={optInEmail === 1}
+                        disabled
+                      />
+                      Promotional emails
+                    </label>
                   </div>
-                </div>
+                  <div className='user-profile-buttons'>
+                    <button className='CTA-button-one' type='button' onClick={() => setEditMode(true)}>Edit</button>
+                  </div>
+                </form>
               )}
             </div>
           )}
@@ -375,12 +403,13 @@ const UserProfile = () => {
           {profilePage === 'shipping' && (
             <div className='user-profile-page'>
               {editMode ? (
-                <div className='user-info-form user-shipping-info'>
+                <form className='user-info-form user-shipping-info'>
                   <div className='user-info'>
                     <label className='user-info-label'>Street</label>
                     <input
                       type='text'
-                      value={shippingStreetAddress}
+                      placeholder={!editMode ? shippingStreetAddress : ''}
+                      value={editMode ? shippingStreetAddress : ''}
                       onChange={(e) => setShippingStreetAddress(e.target.value)}
                       className='user-info-input'
                     />
@@ -389,7 +418,8 @@ const UserProfile = () => {
                     <label className='user-info-label'>City</label>
                     <input
                       type='text'
-                      value={shippingCityAddress}
+                      placeholder={!editMode ? shippingCityAddress : ''}
+                      value={editMode ? shippingCityAddress : ''}
                       onChange={(e) => setShippingCityAddress(e.target.value)}
                       className='user-info-input'
                     />
@@ -399,7 +429,8 @@ const UserProfile = () => {
                       <label className='user-info-label'>State</label>
                       <Select
                         options={usStates}
-                        value={usStates.find((state) => state.value === shippingStateAddress)}
+                        placeholder={!editMode ? shippingStateAddress : ''}
+                        value={editMode ? (usStates.find((state) => state.value === shippingStateAddress)) : ''}
                         onChange={(selectedOption) => setShippingStateAddress(selectedOption.value)}
                         styles={selectStyling}
                       />
@@ -408,24 +439,26 @@ const UserProfile = () => {
                       <label className='user-info-label'>Zip code</label>
                       <input
                         type='text'
-                        value={shippingZipCodeAddress}
+                        placeholder={!editMode ? shippingZipCodeAddress : ''}
+                        value={editMode ? shippingZipCodeAddress : ''}
                         onChange={(e) => setShippingZipCodeAddress(e.target.value)}
                         className='user-info-input'
                       />
                     </div>
                   </div>
                   <div className='user-profile-buttons'>
-                    <button className='CTA-button-one' onClick={handleSaveChanges}>Save</button>
-                    <button className='CTA-button-two' onClick={() => setEditMode(false)}>Cancel</button>
+                    <button className='CTA-button-one' type='button' onClick={handleSaveChanges}>Save</button>
+                    <button className='CTA-button-two' type='button' onClick={() => setEditMode(false)}>Cancel</button>
                   </div>
-                </div>
+                </form>
               ) : (
-                <div className='user-info-form user-shipping-info'>
+                <form className='user-info-form user-shipping-info'>
                   <div className='user-info'>
                     <label className='user-info-label'>Street</label>
                     <input
                       type='text'
-                      placeholder={shippingStreetAddress}
+                      placeholder={!editMode ? shippingStreetAddress : ''}
+                      value={editMode ? shippingStreetAddress : ''}
                       disabled={!editMode}
                       className='user-info-input disabled-input'
                     />
@@ -434,7 +467,8 @@ const UserProfile = () => {
                     <label className='user-info-label'>City</label>
                     <input
                       type='text'
-                      placeholder={shippingCityAddress}
+                      placeholder={!editMode ? shippingCityAddress : ''}
+                      value={editMode ? shippingCityAddress : ''}
                       disabled={!editMode}
                       className='user-info-input disabled-input'
                     />
@@ -444,7 +478,8 @@ const UserProfile = () => {
                       <label className='user-info-label'>State</label>
                       <Select
                         options={usStates}
-                        placeholder={shippingStateAddress}
+                        placeholder={!editMode ? shippingStateAddress : ''}
+                        value={editMode ? (usStates.find((state) => state.value === shippingStateAddress)) : ''}
                         isDisabled={!editMode}
                         styles={selectStyling}
                       />
@@ -453,7 +488,8 @@ const UserProfile = () => {
                       <label className='user-info-label'>Zip code</label>
                       <input
                         type='text'
-                        placeholder={shippingZipCodeAddress}
+                        placeholder={!editMode ? shippingZipCodeAddress : ''}
+                        value={editMode ? shippingZipCodeAddress : ''}
                         disabled={!editMode}
                         className='user-info-input disabled-input'
                       />
@@ -461,14 +497,14 @@ const UserProfile = () => {
                   </div>
                   {(shippingStreetAddress === '') ? (
                     <div className='user-profile-buttons'>
-                      <button className='CTA-button-one' onClick={() => setEditMode(true)}>Add</button>
+                      <button className='CTA-button-one' type='button' onClick={() => setEditMode(true)}>Add</button>
                     </div>
                   ) : (
                     <div className='user-profile-buttons'>
-                      <button className='CTA-button-one' onClick={() => setEditMode(true)}>Edit</button>
+                      <button className='CTA-button-one' type='button' onClick={() => setEditMode(true)}>Edit</button>
                     </div>
                   )}
-                </div>
+                </form>
               )}
             </div>
           )}
@@ -477,16 +513,16 @@ const UserProfile = () => {
           {profilePage === 'payment' && (
             <div className='user-profile-page user-payments-info'>
               {editMode ? (
-                <div className='user-info-form'>
-                </div>
+                <form className='user-info-form'>
+                </form>
               ) : (
-                <div className='user-info-form'>
+                <form className='user-info-form'>
                   <h3 className='user-profile-payment'>Payment method 1</h3>
                   <div className='user-info'>
                     <label className='user-info-label'>Card type</label>
                     <Select
                       options={cardTypeOptions}
-                      placeholder={billingStreetAddress1}
+                      placeholder={cardType1}
                       isDisabled={!editMode}
                       styles={selectStyling}
                     />
@@ -552,38 +588,38 @@ const UserProfile = () => {
                   </div>
                   {(billingStreetAddress1 === '') ? (
                     <div className='user-profile-buttons'>
-                      <button className='CTA-button-one' onClick={() => setEditMode(true)}>Add</button>
+                      <button className='CTA-button-one' type='button' onClick={() => setEditMode(true)}>Add</button>
                     </div>
                   ) : (
                     <div className='user-profile-buttons'>
-                      <button className='CTA-button-one' onClick={() => setEditMode(true)}>Edit</button>
+                      <button className='CTA-button-one' type='button' onClick={() => setEditMode(true)}>Edit</button>
                     </div>
                   )}
-                </div>
+                </form>
               )}
               {editMode2 ? (
-                <div className='user-info-form'>
-                </div>
+                <form className='user-info-form'>
+                </form>
               ) : (
-                <div className='user-info-form'>
+                <form className='user-info-form'>
                   <h3 className='user-profile-payment'>Payment method 2</h3>
                   <div className='user-info'>
                     <label className='user-info-label'>Card type</label>
                     <Select
-                      options={cardTypeOptions}
-                      placeholder={billingStreetAddress2}
-                      isDisabled={!editMode2}
-                      styles={selectStyling}
+                    options={cardTypeOptions}
+                    placeholder={cardType2}
+                    isDisabled={!editMode2}
+                    styles={selectStyling}
                     />
                   </div>
                   <div className='user-infos'>
                     <div className='user-info card-num'>
                       <label className='user-info-label'>Card number</label>
                       <input
-                        type='text'
-                        placeholder={cardNumber2}
-                        disabled={!editMode2}
-                        className='user-info-input disabled-input'
+                          type='text'
+                          placeholder={cardNumber2}
+                          disabled={!editMode2}
+                          className='user-info-input disabled-input'
                       />
                     </div>
                     <div className='user-info exp-date'>
@@ -637,26 +673,100 @@ const UserProfile = () => {
                   </div>
                   {(billingStreetAddress2 === '') ? (
                     <div className='user-profile-buttons'>
-                      <button className='CTA-button-one' onClick={() => setEditMode2(true)}>Add</button>
+                      <button className='CTA-button-one' type='button' onClick={() => setEditMode2(true)}>Add</button>
                     </div>
                   ) : (
                     <div className='user-profile-buttons'>
-                      <button className='CTA-button-one' onClick={() => setEditMode2(true)}>Edit</button>
+                      <button className='CTA-button-one' type='button' onClick={() => setEditMode2(true)}>Edit</button>
                     </div>
                   )}
-                </div>
+                </form>
               )}
               {editMode3 ? (
-                <div className='user-info-form'>
-                </div>
-              ) : (
-                <div className='user-info-form'>
+                <form className='user-info-form'>
                   <h3 className='user-profile-payment'>Payment method 3</h3>
                   <div className='user-info'>
                     <label className='user-info-label'>Card type</label>
                     <Select
                       options={cardTypeOptions}
-                      placeholder={billingStreetAddress3}
+                      value={cardTypeOptions.find((option) => option.value === cardType3)}
+                      onChange={(selectedOption) => setCardType3(selectedOption.value)}
+                      styles={selectStyling}
+                    />
+                  </div>
+                  <div className='user-infos'>
+                    <div className='user-info card-num'>
+                      <label className='user-info-label'>Card number</label>
+                      <input
+                        type='text'
+                        value={cardNumber3}
+                        onChange={(e) => setCardNumber3(e.target.value)}
+                        className='user-info-input'
+                      />
+                    </div>
+                    <div className='user-info exp-date'>
+                      <label className='user-info-label'>Exp. date</label>
+                      <input
+                        type='text'
+                        value={expirationDate3}
+                        onChange={(e) => setExpirationDate3(e.target.value)}
+                        className='user-info-input'
+                      />
+                    </div>
+                  </div>
+                  <h3 className='user-profile-billing'>Billing address</h3>
+                  <div className='user-info'>
+                    <label className='user-info-label'>Street</label>
+                    <input
+                      type='text'
+                      value={billingStreetAddress3}
+                      onChange={(e) => setBillingStreetAddress3(e.target.value)}
+                      disabled={!editMode3}
+                      className='user-info-input'
+                    />
+                  </div>
+                  <div className='user-info'>
+                    <label className='user-info-label'>City</label>
+                    <input
+                      type='text'
+                      value={billingCityAddress3}
+                      onChange={(e) => setBillingCityAddress3(e.target.value)}
+                      className='user-info-input'
+                    />
+                  </div>
+                  <div className='user-infos state'>
+                    <div className='user-info'>
+                      <label className='user-info-label'>State</label>
+                      <Select
+                        options={usStates}
+                        value={usStates.find((state) => state.value === billingStateAddress3)}
+                        onChange={(selectedOption) => setBillingStateAddress3(selectedOption.value)}
+                        styles={selectStyling}
+                      />
+                    </div>
+                    <div className='user-info zip'>
+                      <label className='user-info-label'>Zip code</label>
+                      <input
+                        type='text'
+                        value={billingZipCodeAddress3}
+                        onChange={(e) => setBillingZipCodeAddress3(e.target.value)}
+                        className='user-info-input'
+                      />
+                    </div>
+                  </div>
+                  <div className='user-profile-buttons'>
+                    <button className='CTA-button-one' type='button' onClick={handleSaveChanges}>Save</button>
+                    <button className='CTA-button-two' type='button' onClick={() => setEditMode3(false)}>Cancel</button>
+                  </div>
+                </form>
+              ) : (
+                <form className='user-info-form'>
+                  <h3 className='user-profile-payment'>Payment method 3</h3>
+                  <div className='user-info'>
+                    <label className='user-info-label'>Card type</label>
+                    <Select
+                      options={cardTypeOptions}
+                      placeholder={cardType3}
                       isDisabled={!editMode3}
                       styles={selectStyling}
                     />
@@ -722,14 +832,14 @@ const UserProfile = () => {
                   </div>
                   {(billingStreetAddress3 === '') ? (
                     <div className='user-profile-buttons'>
-                      <button className='CTA-button-one' onClick={() => setEditMode3(true)}>Add</button>
+                      <button className='CTA-button-one' type='button' onClick={() => setEditMode3(true)}>Add</button>
                     </div>
                   ) : (
                     <div className='user-profile-buttons'>
-                      <button className='CTA-button-one' onClick={() => setEditMode3(true)}>Edit</button>
+                      <button className='CTA-button-one' type='button' onClick={() => setEditMode3(true)}>Edit</button>
                     </div>
                   )}
-                </div>
+                </form>
               )}
             </div>
           )}

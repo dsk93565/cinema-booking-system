@@ -4,18 +4,24 @@
     padding: 1rem 1.25rem;
 }
 
+.scroll-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    column-gap: 3rem;
+}
+
 .scroll-button {
-    background-color: var(--tertiary-two);
+    background-color: var(--accent-two);
     border-radius: 2rem;
-    color: var(--primary);
-    padding: 0.75rem 1.125rem;
-    transition: background-color 0.1s ease-in-out;
-    width: 50%;
-    
+    color: var(--secondary);
+    width: 100%;
+    padding: 1rem 1.25rem;
+    transition: background-color 0.1s ease-in-out;   
 }
 
 .scroll-button:hover {
-    background-color: var(--tertiary-one);
+    background-color: var(--accent-one);
 }
 
 .hero-info {
@@ -311,6 +317,10 @@
 
     .movies {
         column-gap: 3rem;
+    }
+
+    .scroll-buttons {
+        column-gap: 6rem;
     }
 
     .promo-subscription form {
