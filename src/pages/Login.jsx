@@ -116,6 +116,7 @@ const Login = () => {
             <div className={`password-info ${passwordInput ? 'is-active' : ''}`}>
               <input
                 type={passwordVisible ? 'text' : 'password'}
+                autoComplete='off'
                 value={password}
                 ref={passwordInputRef}
                 onFocus={handleInputFocus}

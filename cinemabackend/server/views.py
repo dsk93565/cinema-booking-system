@@ -210,9 +210,13 @@ class EditUser(APIView):
             new_last = data.get('last_name')
             new_promo = data.get('promotions')
             new_street = data.get('shipping_street')
+            print(new_street)
             new_city = data.get('shipping_city')
+            print(new_city)
             new_state = data.get('shipping_state')
+            print(new_state)
             new_zip = data.get('shipping_zip')
+            print(new_zip)
             if new_first is not None: 
                 user_to_modify.first_name = new_first
             if new_last is not None: 
@@ -230,9 +234,9 @@ class EditUser(APIView):
             if new_city is not None:
                 user_to_modify.shipping_city = new_city
             if new_state is not None:
-                user_to_modify.shipping_street = new_state
+                user_to_modify.shipping_state = new_state
             if new_zip is not None:
-                user_to_modify.shipping_street = new_zip
+                user_to_modify.shipping_zip = new_zip
             user_to_modify.save()
             return Response({"Success": 1})
         except Exception as e: 
