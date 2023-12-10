@@ -221,7 +221,7 @@ class EditUser(APIView):
             if new_password is not None:
                 # Here you might want to validate the new password
                 # and encrypt/hash it before saving
-                user_to_modify.set_password(new_password)
+                user_to_modify.password = make_password(new_password)
             
             user_to_modify.save()
             return Response({"Success": 1})
