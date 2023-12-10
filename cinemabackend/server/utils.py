@@ -12,9 +12,7 @@ def checkAdmin(token_str):
 
 def getUserFromToken(token_str):
     try: 
-        print("token_str: ", token_str)
         token = Token.objects.get(key=token_str)
-        print("token: ", token.user)
         return token.user
     except:
         return None

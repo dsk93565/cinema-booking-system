@@ -167,9 +167,10 @@ class EditMovie(APIView):
             msid = data.get('msid')
             moviestate = Movie_States.objects.get(msid=msid)
             movie.state_id=moviestate
-            movie.save()    
+            movie.save()
         except json.JSONDecodeError:
             return Response({"error": -1})
+        return Response({"success": movie.mid})
 
 # EXPECTED REQUEST
 # {user_token, mid, pid, rid}

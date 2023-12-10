@@ -45,10 +45,10 @@ const MoviesCard = (props) => {
   };
 
   const handleScrollToEnd = () => {
-    sectionRef.current.scrollTo({
-      left: sectionRef.current.scrollWidth,
-      behavior: 'smooth',
-    });
+        sectionRef.current.scrollTo({
+            left: sectionRef.current.scrollWidth,
+            behavior: 'smooth',
+        });
   };
 
   // Singular Flipped Card Functionality
