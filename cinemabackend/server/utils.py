@@ -43,7 +43,7 @@ class CardActions():
         user = getUserFromToken(request[0])
         cards = Card.objects.filter(user_id=user)
         if cards is None:
-            raise Exception("No cards")
+            raise Exception('No cards')
         key = Encryption_Keys.objects.get(user_id=user)
         fern = Fernet(key)
         data = {
@@ -83,6 +83,6 @@ class CardActions():
             new_card.save()
         except: 
             raise Exception({'could not save card': -1})
-        key_storage, created = Encryption_Keys.objects.get_or_create(encryption_key=key, user_id=user)
-        key_storage.save()
+        key_storage = Encryption_Keys.objects.get_or_create(encryption_key=key, user_id=user)
+        key_storage.save() 
         return 1
