@@ -118,7 +118,7 @@ class Send_Booking_Email(APIView):
         r
         # can add more info if we want
         email_body = render_to_string('booking_email.html', 
-                                      {'total': str(booking.tota)})
+                                      {'total': str(booking.total)})
         subject = 'Cinera Booking for ' + str(show.show_date)
         send_mail(subject, email_body, "ebookingsystemcinera@gmail.com", [email])
         return Response({'email sent': 1})
