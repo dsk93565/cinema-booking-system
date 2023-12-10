@@ -100,6 +100,7 @@ class AddMovie(APIView):
             # Extract the userToken
             user_token = data['userToken']
             if checkAdmin(user_token) is None:
+                print("userisnone")
                 return Response({'error': -1})
             msid = data.get('msid')
             moviestate = Movie_States.objects.get(msid=msid)
@@ -141,13 +142,16 @@ class ArchiveMove(APIView):
 class EditMovie(APIView):
     def post(self, request):
         try: 
-            data = json.loads(request.body.decode('utf-8'))
-            user_token = data.get('user_token')
+            response = json.loads(request.body.decode('utf-8'))
+            data = json.loads(response['body'])
+            user_token = data['user_token']
             user = checkAdmin(user_token)
             if user is None:
+                print("userisnone")
                 return Response({'error': -1})
             movie = Movies.objects.get(mid=data.get('mid'))
             if user is None or user.type_id != 2 or movie is None:
+                print("usernotauthorized")
                 return Response({"error:"-1})
             movie.release_date=data.get('release_date') 
             movie.category=data.get('category') 
@@ -188,7 +192,7 @@ class AddShow(APIView):
                 print("seat: ",seat)
                 logical_seat = Logical_Seats.objects.create(seat_id=seat, period_id=period, available=1)
                 logical_seat.save()
-            showing = Showings.objects.create(movie_id=movie,period_id=showing,room_id=room)
+            showing = Showings.objects.create(movie_id=movie,period_id=showing,room_id=room)# Need show_date?
         except json.JSONDecodeError:
             return Response({"error": -1})
         

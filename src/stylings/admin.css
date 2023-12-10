@@ -97,18 +97,17 @@
     border-radius: 2rem;
 }
 
-.add-movie-form {
-    justify-content: center;   
-    align-items: center;
-    width: 80%;
-    padding: 2rem;
+.admin-form-holder {
+    width: 100%;
+    overflow-y: scroll;
+    margin: 1rem;
 }
 
-.admin-movie-form-body {
+.add-movie-form {
+    justify-content: center;   
+    width: 100%;
     display: flex;
     flex-direction: row;
-    width: 100%;
-    margin: 2rem;
 }
 
 .admin-movie-form-col {

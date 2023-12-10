@@ -17,7 +17,7 @@ export default function AddMovie({ onClose }) {
     const [rating, setRating] = useState('');
     const [poster_path, setPosterPath] = useState('');
     const [msid, setStateID] = useState('');
-    const [readyToSubmit, setReadyToSubmit] = useState(true);
+    const [readyToSubmit, setReadyToSubmit] = useState(false);
 
     // Returns true until every input is filled.
     const isFormEmpty = (!title || 
@@ -45,6 +45,16 @@ export default function AddMovie({ onClose }) {
     console.log(trailer);
     console.log(rating);
     console.log(poster_path); */
+
+    useEffect(() => {
+        if (!isFormEmpty) {
+            console.log("Is form empty:", isFormEmpty);
+            setReadyToSubmit(true);
+        } else
+            setReadyToSubmit(false);
+        console.log("Is ready to submit:", readyToSubmit);
+        
+    }, [isFormEmpty, readyToSubmit])
 
     const handleSubmit = () => {        
         console.log("top", readyToSubmit);
@@ -96,74 +106,74 @@ export default function AddMovie({ onClose }) {
                         <div className='modal-title'><h1>Add Movie</h1></div>
                         <span className='close'><FontAwesomeIcon onClick={onClose} icon='fa fa-window-close'/></span>
                     </div>
-                    <div className='admin-modal-body'>
-                        <form onSubmit={handleSubmit} className='add-movie-form' id="addMovieForm">
-                            <div className='admin-movie-form-col'>
-                                <div className='movie-info'>
-                                    <label className='movie-info-label'>Title</label>
-                                    <input type='text' className='add-movie-input' onChange={(e) => setTitle(e.target.value)}></input>
+                    <form onSubmit={handleSubmit} className='admin-form-holder'>
+                        <div className='admin-modal-body'>
+                            <div className='add-movie-form' id="addMovieForm">
+                                <div className='admin-movie-form-col'>
+                                    <div className='movie-info'>
+                                        <label className='movie-info-label'>Title</label>
+                                        <input type='text' className='add-movie-input' onChange={(e) => setTitle(e.target.value)}></input>
+                                    </div>
+                                    <div className='movie-info'>
+                                        <label className='movie-info-label'>Release Date</label>
+                                        <input type='date' className='add-movie-input' onChange={(e) => setReleaseDate(e.target.value)}></input>
+                                    </div>
+                                    <div className='movie-info'>
+                                        <label className='movie-info-label'>Genre</label>
+                                        <input type='text' className='add-movie-input' onChange={(e) => setCategory(e.target.value)}></input>
+                                    </div>
+                                    <div className='movie-info'>
+                                        <label className='movie-info-label'>Cast</label>
+                                        <input type='text' className='add-movie-input' onChange={(e) => setCast(e.target.value)}></input>
+                                    </div>
+                                    <div className='movie-info'>
+                                        <label className='movie-info-label'>Director</label>
+                                        <input type='text' className='add-movie-input' onChange={(e) => setDirector(e.target.value)}></input>
+                                    </div>
+                                    <div className='movie-info'>
+                                        <label className='movie-info-label'>Producer</label>
+                                        <input type='text' className='add-movie-input' onChange={(e) => setProducer(e.target.value)}></input>
+                                    </div>
                                 </div>
-                                <div className='movie-info'>
-                                    <label className='movie-info-label'>Release Date</label>
-                                    <input type='date' className='add-movie-input' onChange={(e) => setReleaseDate(e.target.value)}></input>
-                                </div>
-                                <div className='movie-info'>
-                                    <label className='movie-info-label'>Genre</label>
-                                    <input type='text' className='add-movie-input' onChange={(e) => setCategory(e.target.value)}></input>
-                                </div>
-                                <div className='movie-info'>
-                                    <label className='movie-info-label'>Cast</label>
-                                    <input type='text' className='add-movie-input' onChange={(e) => setCast(e.target.value)}></input>
-                                </div>
-                                <div className='movie-info'>
-                                    <label className='movie-info-label'>Director</label>
-                                    <input type='text' className='add-movie-input' onChange={(e) => setDirector(e.target.value)}></input>
-                                </div>
-                                <div className='movie-info'>
-                                    <label className='movie-info-label'>Producer</label>
-                                    <input type='text' className='add-movie-input' onChange={(e) => setProducer(e.target.value)}></input>
+                                <div className='admin-movie-form-col'>
+                                    <div className='movie-info'>
+                                        <label className='movie-info-label'>Synopsis</label>
+                                        <input type='text' className='add-movie-input' onChange={(e) => setSynopsis(e.target.value)}></input>
+                                    </div>
+                                    <div className='movie-info'>
+                                        <label className='movie-info-label'>Reviews</label>
+                                        <input type='text' className='add-movie-input' onChange={(e) => setReviews(e.target.value)}></input>
+                                    </div>
+                                    <div className='movie-info'>
+                                        <label className='movie-info-label'>Trailer</label>
+                                        <input type='text' className='add-movie-input' onChange={(e) => setTrailer(e.target.value)}></input>
+                                    </div>
+                                    <div className='movie-info'>
+                                        <label className='movie-info-label'>Rating</label>
+                                        <input type='text' className='add-movie-input' onChange={(e) => setRating(e.target.value)}></input>
+                                    </div>
+                                    <div className='movie-info'>
+                                        <label className='movie-info-label'>Poster Image Path</label>
+                                        <input type='text' className='add-movie-input' onChange={(e) => setPosterPath(e.target.value)}></input>
+                                    </div>
+                                    <div className='movie-info'>
+                                        <label className='movie-info-label'>Category</label>
+                                        <select className='add-movie-input' onChange={(e) => setStateID(e.target.value)}>
+                                            <option value={"1"}>Archived</option>
+                                            <option value={"2"}>Now Playing</option>
+                                            <option value={"3"}>Trending</option>
+                                            <option value={"4"}>Coming Soon</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                            <div className='admin-movie-form-col'>
-                                <div className='movie-info'>
-                                    <label className='movie-info-label'>Synopsis</label>
-                                    <input type='text' className='add-movie-input' onChange={(e) => setSynopsis(e.target.value)}></input>
-                                </div>
-                                <div className='movie-info'>
-                                    <label className='movie-info-label'>Reviews</label>
-                                    <input type='text' className='add-movie-input' onChange={(e) => setReviews(e.target.value)}></input>
-                                </div>
-                                <div className='movie-info'>
-                                    <label className='movie-info-label'>Trailer</label>
-                                    <input type='text' className='add-movie-input' onChange={(e) => setTrailer(e.target.value)}></input>
-                                </div>
-                                <div className='movie-info'>
-                                    <label className='movie-info-label'>Rating</label>
-                                    <input type='text' className='add-movie-input' onChange={(e) => setRating(e.target.value)}></input>
-                                </div>
-                                <div className='movie-info'>
-                                    <label className='movie-info-label'>Poster Image Path</label>
-                                    <input type='text' className='add-movie-input' onChange={(e) => setPosterPath(e.target.value)}></input>
-                                </div>
-                                <div className='movie-info'>
-                                    <label className='movie-info-label'>Category</label>
-                                    <select className='add-movie-input' onChange={(e) => setStateID(e.target.value)}>
-                                        <option value={"1"}>Archived</option>
-                                        <option value={"2"}>Now Playing</option>
-                                        <option value={"3"}>Trending</option>
-                                        <option value={"4"}>Coming Soon</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className='modal-footer'>
-                                <button 
-                                        className='admin-movie-button'
-                                        type='submit'>
-                                            Add Movie
-                                </button>
-                            </div>
-                        </form>    
-                    </div>
+                        </div>
+                        <div className='modal-footer'>
+                                    <button className='admin-movie-button' type='submit'>
+                                                Add Movie
+                                    </button>
+                        </div>
+                    </form>
                 </div>
         </div>
     );

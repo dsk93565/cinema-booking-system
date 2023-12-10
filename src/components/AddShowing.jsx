@@ -11,9 +11,6 @@ export default function AddShowing({ onClose, movies }) {
     const [mid, setMid] = useState('');
     const [pid, setPid] = useState('');
     const [rid, setRid] = useState('');
-    /* console.log("mid: ",mid);
-    console.log("pid: ", pid);
-    console.log("rid: ", rid); */
 
     // Variables for form display
     const [playingMovies, setPlayingMovies] = useState([])
@@ -54,18 +51,21 @@ export default function AddShowing({ onClose, movies }) {
             if (response.status === 403)
                 console.log("Not Authorized");
             setShows(response.data.showings);
-            console.log(shows);
         }).catch(function(error) {
             console.log("Error getting shows: ", error.message);
         });
     }
 
     // Fetches currently playing movies to be scheduled.
-    const fetchPlayingMovies = async () => {
+    const fetchPlayingMovies = () => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/get-movies`);
-            /* console.log(response.data["Now Playing"]); */
-            setPlayingMovies(response.data["Now Playing"]);
+            async function getMovies() {
+                return axios.get(`http://localhost:8000/api/get-movies`)
+                .then(function (response) {
+                    setPlayingMovies(response.data["Now Playing"]);
+                })
+            }
+            getMovies();
         } catch (error) {
             console.error('Error fetching movies:', error);
         }
@@ -76,9 +76,18 @@ export default function AddShowing({ onClose, movies }) {
     }, [])
 
     useEffect(() => {
-        fetchShowings(mid);
+        if(mid)
+            fetchShowings(mid);
     }, [mid])
 
+    useEffect(() => {
+        if(playingMovies[0]) {
+            setMid(playingMovies[0].mid)
+            setPid(1);
+            setRid(1);
+        }
+    }, [playingMovies])
+    
     return (
         <div className='modal-wrapper'>
                 <div className='admin-modal'>
@@ -96,7 +105,7 @@ export default function AddShowing({ onClose, movies }) {
                                     </div>
                                     <div className='movie-info'>
                                         <label className='movie-info-label'>Select Time</label>
-                                        <select className='add-movie-input' onChange={(e) => setPid(e.target.value)}>
+                                        <select className='add-movie-input' value={1} onChange={(e) => setPid(e.target.value)}>
                                             <option value={1}>Period 1: 9:00 AM - 12:00 PM</option>
                                             <option value={2}>Period 2: 12:00 PM - 3:00 PM</option>
                                             <option value={3}>Period 3: 3:00 PM - 6:00 PM</option>
@@ -138,7 +147,7 @@ export default function AddShowing({ onClose, movies }) {
                                         </div>
                                     )))}
                                 </div>
-                                <button className='admin-movie-button' type='submit'>Add Showing</button>
+                                <button disabled={!mid || !pid || !rid} className='admin-movie-button' type='submit'>Add Showing</button>
                             </div>
                         </form>
                     </div>
