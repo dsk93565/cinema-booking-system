@@ -8,33 +8,25 @@ import json, random
 
 #Need to added user_token to check for admin here 
 #just uncomment the code
+@checkAdmin
 class GetUsers(APIView):
     def get(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
         except json.JSONDecodeError:
-            return Response({"error": "Invalid JSON format"})
-
-        user_token = data.get('user_token')
-        if checkAdmin(user_token) is None:
-            return Response({'error': "User is not authorized or not an admin"})
-
+            return Response({"error": "Invalid JSON format"})       
         queryset = CustomUser.objects.all()
         serializer = self.get_serializer(queryset, many=True)
         userList = {"users": serializer.data}
         return Response(userList)
 
+@checkAdmin
 class MakeAdmin(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
         except json.JSONDecodeError:
             return Response({"error": "Invalid JSON format"})
-
-        user_token = data.get('user_token')
-        if checkAdmin(user_token) is None:
-            return Response({'error': "User is not authorized or not an admin"})
-
         user_id = data.get('uid')
         try:
             user = CustomUser.objects.get(pk=user_id)
@@ -47,13 +39,11 @@ class MakeAdmin(APIView):
             return Response({"error": str(e)})
 
 #expects uid, and user_token (this is for admin auth)
+@checkAdmin
 class SuspendUser(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
-            user_token = data.get('user_token')
-            if checkAdmin(user_token) is None:
-                return Response({'error': -1})
             user = CustomUser.objects.get(data.get('uid'))
             user.state_id = 3
             user.save()
@@ -64,17 +54,13 @@ class SuspendUser(APIView):
 # {user_token, category, cast, director, producer, 
 #  synopsis, reviews, trailer, rating, title, poster_path}
 
+@checkAdmin
 class EditUser(APIView):
     def post(self, request):
         try:
             data = json.loads(request.body.decode('utf-8'))
         except json.JSONDecodeError:
             return Response({"error": "Invalid JSON format"})
-
-        user_token = data.get('user_token')
-        if checkAdmin(user_token) is None:
-            return Response({'error': "User is not authorized or not an admin"})
-
         user_id = data.get('uid')
         try:
             user = CustomUser.objects.get(pk=user_id)
@@ -91,6 +77,7 @@ class EditUser(APIView):
 # EXPECTED REQUEST
 # {user_token, category, cast, director, producer, 
 #  synopsis, reviews, trailer, rating, title, poster_path}
+@checkAdmin
 class AddMovie(APIView):
     def post(self, request):
         try: 
@@ -98,9 +85,6 @@ class AddMovie(APIView):
             # Load the JSON string from the 'body' field
             data = json.loads(response['body'])
             # Extract the userToken
-            user_token = data['userToken']
-            if checkAdmin(user_token) is None:
-                return Response({'error': -1})
             msid = data.get('msid')
             moviestate = Movie_States.objects.get(msid=msid)
             new_movie = Movies.objects.create(release_date=data.get('release_date'), 
@@ -121,13 +105,11 @@ class AddMovie(APIView):
         return Response({'mid': new_movie.mid})
 
 #expects MID, user_token
+@checkAdmin
 class ArchiveMove(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
-            user_token = data.get('user_token')
-            if checkAdmin(user_token) is None:
-                return Response({'error': -1})
             mid = data.get('mid')
             movie = Movies.objects.get(mid=mid)
             movie.state_id = 1
@@ -138,13 +120,11 @@ class ArchiveMove(APIView):
 # EXPECTED REQUEST
 # {user_token, mid, category, cast, director, producer, 
 #  synopsis, reviews, trailer, rating, title, poster_path}
+@checkAdmin
 class EditMovie(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
-            user_token = data.get('user_token')
-            if checkAdmin(user_token) is None:
-                return Response({'error': -1})
             movie = Movies.objects.get(mid=data.get('mid'))
             movie.category=data.get('category') 
             movie.cast=data.get('cast')
@@ -162,13 +142,11 @@ class EditMovie(APIView):
 
 # EXPECTED REQUEST
 # {mid, pid, rid}
+@checkAdmin
 class AddShow(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
-            user_token = data.get('user_token')
-            if checkAdmin(user_token) is None:
-                return Response({'error': -1})
             period = Periods.objects.get(pid=data.get('pid'))
             movie = Movies.objects.get(mid=data.get('mid'))
             room = Rooms.objects.get(rid=data.get('rid'))
@@ -187,39 +165,32 @@ class RemoveShow(APIView):
 
 # EXPECTED REQUEST
 # {promotion_code, percent}
+@checkAdmin
 class AddPromo(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
-            user_token = data.get('user_token')
-            if checkAdmin(user_token) is None:
-                return Response({'error': -1})
             promo = Promotions.objects.create(promotion_code=data.get('promotion_code'), percent=data.get('percent'))
             promo.save()
         except:
             return Response({"error": -1})
         
 #returns periods: {pid, start_time, end_time}
+@checkAdmin
 class GetPeriods(APIView):
     def get(self, request):
         try: 
-            user_token = json.loads(request.data.get('user_token'))
-            if checkAdmin(user_token) is None:
-                return Response({'error': -1})
             periods = Periods.objects.all()
             serializer = PeriodSerializer(periods, many=True)
             period_data = {'periods': serializer.data}
             return(period_data)
         except:
             return Response({"error": -1})
+@checkAdmin
 class RemovePromo(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
-            user_token = data.get('user_token')
-            if checkAdmin(user_token) is None:
-                return Response({'error': "Not authorized"})
-            
             promotion_code = data.get('promotion_code')
             try:
                 promo = Promotions.objects.get(promotion_code=promotion_code)

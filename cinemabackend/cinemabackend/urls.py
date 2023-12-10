@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from server import views, admin_views
+from server import views, admin_views, book_views, user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,24 +29,27 @@ urlpatterns = [
     path('api/admin/edit-users', admin_views.EditUser.as_view()),
     path('api/admin/suspend-user', admin_views.SuspendUser.as_view()),
     path('api/admin/archive-movie', admin_views.ArchiveMove.as_view()),
+    
+    path('api/get-booking', book_views.GetBookings.as_view()),
+    path('api/create-booking', book_views.CreateBooking.as_view()),
+    path('api/get-seats', book_views.GetSeats.as_view()),
+    path('api/create-tickets', book_views.CreateTickets.as_view()),
+    path('api/send-booking-email', book_views.Send_Booking_Email.as_view()),
+      
+    path('api/create-user', user_views.Create_User.as_view()),
+    path('api/get-user', user_views.GetUser.as_view()),
+    path('api/get-cards', user_views.GetCards.as_view()),
+    path('api/edit-user', user_views.EditUser.as_view()),
+    path('api/email-subscription', user_views.SubsribeToPromo.as_view()),
+    path('api/login', user_views.Login.as_view()),
+    path('api/logout', user_views.Logout.as_view()),
+    path('api/verify-email', user_views.Send_Verification_Email.as_view()),
+    path('api/email-is-verified', user_views.Email_Is_Verified.as_view()),
+    path('api/forgot-password', user_views.ForgotPassword.as_view()),
+    path('api/change-password/<int:uid>/<str:auth_str>', user_views.RecoverCreatePassword.as_view()),
+    
     path('api/get-movies', views.MovieList.as_view()),
-    path('api/get-promos', views.GetPromo.as_view()),
     path('api/get-movie', views.Movie.as_view()),
+    path('api/get-promos', views.GetPromo.as_view()),
     path('api/get-shows', views.GetShows.as_view()),
-    path('api/get-booking', views.GetBookings.as_view()),
-    path('api/get-seats', views.GetSeats.as_view()),
-    path('api/create-user', views.Create_User.as_view()),
-    path('api/get-user', views.GetUser.as_view()),
-    path('api/get-cards', views.GetCards.as_view()),
-    path('api/create-booking', views.CreateBooking.as_view()),
-    path('api/create-tickets', views.CreateTickets.as_view()),
-    path('api/edit-user', views.EditUser.as_view()),
-    path('api/email-subscription', views.SubsribeToPromo.as_view()),
-    path('api/login', views.Login.as_view()),
-    path('api/logout', views.Logout.as_view()),
-    path('api/verify-email', views.Send_Verification_Email.as_view()),
-    path('api/send-booking-email', views.Send_Booking_Email.as_view()),
-    path('api/email-is-verified', views.Email_Is_Verified.as_view()),
-    path('api/forgot-password', views.ForgotPassword.as_view()),
-    path('api/change-password/<int:uid>/<str:auth_str>', views.RecoverCreatePassword.as_view())
 ]

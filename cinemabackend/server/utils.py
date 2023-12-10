@@ -1,14 +1,20 @@
 from .models import CustomUser, Card, Encryption_Keys, Movies, Showings
 from cryptography.fernet import Fernet
 from rest_framework.authtoken.models import Token
+from functools import wraps
 import json
 
-def checkAdmin(token_str):
-    user = getUserFromToken(token_str)
-    if user is not None and user.type_id == 2:
-        return user
-    else:
-        return None
+# DECORATOR for checking if admin
+def checkAdmin(view):
+    @wraps(view)
+    def wrapper(request, *args, **kwargs):
+        token_str = json.loads(request.body.decode('utf-8')).get('user_token')
+        user = getUserFromToken(token_str)
+        if user is not None and user.type_id == 2:
+            return view(request, *args, **kwargs)
+        else:
+            return Exception({"could not verify admin": -1})
+    return wrapper
 
 def getUserFromToken(token_str):
     try: 

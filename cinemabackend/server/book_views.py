@@ -11,7 +11,7 @@ from .models import (
     Logical_Seats,
     Seats
 )
-from .serializer import BookingSerializer
+from .serializer import BookingSerializer, LogicalSeatSerializer
 
 # expects user_token, shid, cid, promo_code, tickets: tid (can be multiple)
 # for tickets
@@ -106,6 +106,23 @@ class CreateTickets(APIView):
             new_ticket.save()
             tids.append(new_ticket.tid)
         return Response({"tids": tids})
+
+# Currently returns all seats and if they are available or not
+# can be changed to
+# expects {shid} (I can change this to be similar to GetShows)
+# returns {seats: {['lsid', 'seat_number', 'room_id', 'period_id', 'available']}}
+class GetSeats(APIView):
+    def get(self, request):
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+            show = Showings.objects.get(shid=data.get("shid"))
+            seats = Seats.objects.filter(room_id=show.room_id)
+            logical_seats = Logical_Seats.objects.filter(seat_id__in=seats)
+            serializer = LogicalSeatSerializer(logical_seats, many=True)
+            seat_data = {"seats": serializer.data}
+            return Response(seat_data)
+        except json.JSONDecodeError:
+            return Response({"error": -1})
 
 
 # expects user_token, bid
