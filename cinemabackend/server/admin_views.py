@@ -199,7 +199,6 @@ class AddPromo(APIView):
         except:
             return Response({"error": -1})
         
-<<<<<<< HEAD
 #returns periods: {pid, start_time, end_time}
 class GetPeriods(APIView):
     def get(self, request):
@@ -213,7 +212,6 @@ class GetPeriods(APIView):
             return(period_data)
         except:
             return Response({"error": -1})
-=======
 class RemovePromo(APIView):
     def post(self, request):
         try: 
@@ -232,5 +230,3 @@ class RemovePromo(APIView):
         except Exception as e:
             return Response({"error": str(e)})
 
-        
->>>>>>> 0e12a3db204f111ae8083c4cbdc8dd5967110c5f

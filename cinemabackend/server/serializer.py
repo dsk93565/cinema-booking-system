@@ -31,8 +31,8 @@ class LogicalSeatSerializer(serializers.ModelSerializer):
               fields = ['lsid', 'seat_number', 'room_id', 'period_id', 'available']
 class UserSerializer(serializers.ModelSerializer):
         password_length = serializers.SerializerMethodField()
-        def password_length(self, obj):
-              return len(obj.password)
+        def get_password_length(self, obj):
+              return len(self.password)
         class Meta: 
                model = CustomUser
                fields = ['username', 'email', 'phone_number', 'first_name', 
