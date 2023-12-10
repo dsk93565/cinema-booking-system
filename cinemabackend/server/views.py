@@ -369,7 +369,7 @@ class GetShows(APIView):
             showObjects = getShowObjects(request)
             print("OBJECTS: ", showObjects)
             serializer = ShowingSerializer(showObjects, many=True)
-            showings = {'showings': serializer}
+            showings = {'showings': serializer.data}
             return Response(showings)
         except json.JSONDecodeError:
             return Response({"error": -1})

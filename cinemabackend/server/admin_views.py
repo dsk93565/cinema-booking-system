@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Movies, CustomUser, Card, Periods, Showings, Rooms, Promotions, Movie_States, Seats, Logical_Seats
-from .serializer import MovieSerializer, UserSerializer
+from .serializer import MovieSerializer, UserSerializer, PeriodSerializer
 from .utils import *
 import json, random
 
@@ -206,6 +206,21 @@ class AddPromo(APIView):
         except:
             return Response({"error": -1})
         
+<<<<<<< HEAD
+#returns periods: {pid, start_time, end_time}
+class GetPeriods(APIView):
+    def get(self, request):
+        try: 
+            user_token = json.loads(request.data.get('user_token'))
+            if checkAdmin(user_token) is None:
+                return Response({'error': -1})
+            periods = Periods.objects.all()
+            serializer = PeriodSerializer(periods, many=True)
+            period_data = {'periods': serializer.data}
+            return(period_data)
+        except:
+            return Response({"error": -1})
+=======
 class RemovePromo(APIView):
     def post(self, request):
         try: 
@@ -225,3 +240,4 @@ class RemovePromo(APIView):
             return Response({"error": str(e)})
 
         
+>>>>>>> 0e12a3db204f111ae8083c4cbdc8dd5967110c5f

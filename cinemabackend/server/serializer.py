@@ -1,6 +1,11 @@
 from rest_framework import serializers
-from .models import Movies, CustomUser, Card, Showings,Movie_States, Promotions, Bookings, Tickets, TicketType
+from .models import Movies, CustomUser, Card, Showings,Movie_States, Promotions, Bookings, Tickets, TicketType, Periods
 from .models import Seats, Logical_Seats
+
+class PeriodSerializer(serializers.ModelSerializer):
+       class Meta:
+              model = Periods
+              fields = ['pid', 'start_time', 'end_time']
 class PromoSerializer(serializers.ModelSerializer):
        class Meta:
               model = Promotions

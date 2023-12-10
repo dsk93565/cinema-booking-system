@@ -10,7 +10,6 @@ import ChangePassword from './ChangePassword';
 import SignUp from './SignUp';
 import UserProfile from './UserProfile';
 import SearchResults from './SearchResults';
-import TemporaryBookTicket from './TemporaryBookTicket';
 import TemporaryShowtimes from './TemporaryShowtimes';
 import TemporarySeats from './TemporarySeats';
 import TemporaryAgeCategory from './TemporaryAgeCategory';
@@ -42,8 +41,7 @@ function App() {
         <Route path='/profile' element={<UserProfile />} />
         <Route path='/search-results' element={<SearchResults />} />
         <Route path='/book'>
-          <Route path='' element={<TemporaryBookTicket />} />
-          <Route path='showtimes' element={<TemporaryShowtimes />} />
+          <Route path='' element={<TemporaryShowtimes />} />
           <Route path='seats' element={<TemporarySeats />} />
           <Route path='age' element={<TemporaryAgeCategory />} />
         </Route>

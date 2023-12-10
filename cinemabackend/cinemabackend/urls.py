@@ -38,7 +38,7 @@ urlpatterns = [
     path('api/create-user', views.Create_User.as_view()),
     path('api/get-user', views.GetUser.as_view()),
     path('api/get-cards', views.GetCards.as_view()),
-    path('api//create-booking', views.CreateBooking.as_view()),
+    path('api/create-booking', views.CreateBooking.as_view()),
     path('api/create-tickets', views.CreateTickets.as_view()),
     path('api/edit-user', views.EditUser.as_view()),
     path('api/email-subscription', views.SubsribeToPromo.as_view()),
