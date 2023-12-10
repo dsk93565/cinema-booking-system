@@ -160,8 +160,16 @@
 .show-listing-holder {
     display: flex;
     flex-direction: column;
+    margin: 2rem;
 }
 
 .show-listing {
-    background-color: var(--accent-one);
+    background-color: var(--accent-four);
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.show-listing-info {
+    background-color: var(--accent-six);
 }

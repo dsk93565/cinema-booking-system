@@ -22,20 +22,17 @@ export default function AddShowing({ onClose, movies }) {
     const user_token = localStorage.getItem('userToken');
     
     const handleSubmit = () => {
-        const showInfoExport = {
-            user_token,
-            mid,
-            pid,
-            rid,
+        /* const showInfoExport = {
+            
         }
-        console.log(JSON.stringify(showInfoExport));
+        console.log(JSON.stringify(showInfoExport)); */
 
-        async function postShowing (showInfoExport) {
+        async function postShowing () {
             await axios.post('http://localhost:8000/api/admin/add-showing', {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(showInfoExport),
+                user_token: user_token,
+                mid: mid,
+                pid: pid,
+                rid: rid
             }).then(function (response) {
                 if (response.status === 403)
                     console.log("Not Authorized");
@@ -45,7 +42,7 @@ export default function AddShowing({ onClose, movies }) {
             });
         }
 
-        postShowing(showInfoExport);
+        postShowing();
         onClose();
     }
 
@@ -56,7 +53,8 @@ export default function AddShowing({ onClose, movies }) {
         }).then(function (response) {
             if (response.status === 403)
                 console.log("Not Authorized");
-            console.log(response);
+            setShows(response.data.showings);
+            console.log(shows);
         }).catch(function(error) {
             console.log("Error getting shows: ", error.message);
         });
@@ -99,10 +97,10 @@ export default function AddShowing({ onClose, movies }) {
                                     <div className='movie-info'>
                                         <label className='movie-info-label'>Select Time</label>
                                         <select className='add-movie-input' onChange={(e) => setPid(e.target.value)}>
-                                            <option value={1}>9:00 AM - 12:00 PM</option>
-                                            <option value={2}>12:00 PM - 3:00 PM</option>
-                                            <option value={3}>3:00 PM - 6:00 PM</option>
-                                            <option value={4}>6:00 PM - 9:00 PM</option>
+                                            <option value={1}>Period 1: 9:00 AM - 12:00 PM</option>
+                                            <option value={2}>Period 2: 12:00 PM - 3:00 PM</option>
+                                            <option value={3}>Period 3: 3:00 PM - 6:00 PM</option>
+                                            <option value={4}>Period 4: 6:00 PM - 9:00 PM</option>
                                         </select>
                                     </div>
                                 </div>
@@ -132,7 +130,13 @@ export default function AddShowing({ onClose, movies }) {
                             </div>
                             <div className='modal-footer'>
                                 <div className='show-listing-holder'>
-
+                                    {shows[0] && (shows.map(show => (
+                                        <div key={show.shid} className='show-listing'>
+                                            <div className='show-listing-info'>Date: {show.show_date}</div>
+                                            <div className='show-listing-info'>Room: {show.room_id}</div>
+                                            <div className='show-listing-info'>Period: {show.period_id}</div>                                            
+                                        </div>
+                                    )))}
                                 </div>
                                 <button className='admin-movie-button' type='submit'>Add Showing</button>
                             </div>

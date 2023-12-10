@@ -175,13 +175,17 @@ class AddShow(APIView):
             data = json.loads(request.body.decode('utf-8'))
             user_token = data.get('user_token')
             if checkAdmin(user_token) is None:
+                print("No token")
                 return Response({'error': -1})
             period = Periods.objects.get(pid=data.get('pid'))
             movie = Movies.objects.get(mid=data.get('mid'))
             room = Rooms.objects.get(rid=data.get('rid'))
+            print(room)
             seats = Seats.objects.filter(room_id=room)
-            for i in room.seatsInRoom:
+            print("room seats", seats)
+            for i in range(room.seatsInRoom):
                 seat = seats.filter(seat_number=i)
+                print("seat: ",seat)
                 logical_seat = Logical_Seats.objects.create(seat_id=seat, period_id=period, available=1)
                 logical_seat.save()
             showing = Showings.objects.create(movie_id=movie,period_id=showing,room_id=room)
@@ -206,21 +210,6 @@ class AddPromo(APIView):
         except:
             return Response({"error": -1})
         
-<<<<<<< HEAD
-#returns periods: {pid, start_time, end_time}
-class GetPeriods(APIView):
-    def get(self, request):
-        try: 
-            user_token = json.loads(request.data.get('user_token'))
-            if checkAdmin(user_token) is None:
-                return Response({'error': -1})
-            periods = Periods.objects.all()
-            serializer = PeriodSerializer(periods, many=True)
-            period_data = {'periods': serializer.data}
-            return(period_data)
-        except:
-            return Response({"error": -1})
-=======
 class RemovePromo(APIView):
     def post(self, request):
         try: 
@@ -240,4 +229,3 @@ class RemovePromo(APIView):
             return Response({"error": str(e)})
 
         
->>>>>>> 0e12a3db204f111ae8083c4cbdc8dd5967110c5f
