@@ -1,69 +1,99 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import MovieCard from './MovieCard';
 
 const MoviesCard = (props) => {
-    const [moviesByState, setMoviesByState] = useState({
-        'Now Playing': [],
-        'Trending': [],
-        'Coming Soon': [],
+  const sectionRef = useRef(null);
+
+  // Fetch and Categorize Movies Functionality
+  const [moviesByState, setMoviesByState] = useState({
+    'Now Playing': [],
+    'Trending': [],
+    'Coming Soon': [],
+  });
+
+  const fetchMovies = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/get-movies');
+      const { data } = response;
+      setMoviesByState(data);
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+    } // try catch
+  };
+
+  const currentMovies = moviesByState[props.sectionTitle] || [];
+
+  // Scroll Functionality
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+
+  const handleScroll = () => {
+    const moviesContainer = sectionRef.current;
+    const isAtBeginning = moviesContainer.scrollLeft === 0;
+    const isAtEnd = Math.abs(moviesContainer.scrollWidth - (moviesContainer.scrollLeft + moviesContainer.clientWidth)) <= 1;
+
+    setAtStart(isAtBeginning);
+    setAtEnd(isAtEnd);
+  };
+
+  const handleScrollToStart = () => {
+    sectionRef.current.scrollTo({
+      left: 0,
+      behavior: 'smooth',
     });
-    const [flippedCard, setFlippedCard] = useState(null); // State to track flipped card
+  };
 
-    useEffect(() => {
-        fetchMovies(props.sectionTitle);
-    }, [props.sectionTitle]);
+  const handleScrollToEnd = () => {
+    sectionRef.current.scrollTo({
+      left: sectionRef.current.scrollWidth,
+      behavior: 'smooth',
+    });
+  };
 
-    const sectionRef = useRef(null);
+  // Singular Flipped Card Functionality
+  const [flippedCard, setFlippedCard] = useState(null);
 
-    const fetchMovies = async (sectionTitle) => {
-        try {
-            const response = await axios.get('http://localhost:8000/api/get-movies');
-            const { data } = response;
-            setMoviesByState(data);
-        } catch (error) {
-            console.error('Error fetching movies:', error);
-        }
-    };
+  // Listener
+  useEffect(() => {
+    fetchMovies(props.sectionTitle);
+    const currentSectionRef = sectionRef.current;
 
-    const handleFlip = (movieId) => {
-        if (flippedCard === movieId) {
-            setFlippedCard(null);
-        } else {
-            setFlippedCard(movieId);
-        }
-    };
+    if (currentSectionRef) {
+      currentSectionRef.addEventListener('scroll', handleScroll);
 
-    const currentMovies = moviesByState[props.sectionTitle] || [];
-    
+      return () => {
+        currentSectionRef.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [props.sectionTitle]);
 
-    return (
-        <div className='movies-card'>
-            <h2>{props.sectionTitle}</h2>
-            <div className='movies-container' ref={sectionRef}>
-                {currentMovies.map(movie => (
-                    <div key={movie.mid}>
-                        <MovieCard 
-                            movie={movie} 
-                            origin='MoviesCard'
-                            isFlipped={flippedCard === movie.mid} 
-                            onFlip={handleFlip} />
-                        <h3 className='movie-title'>{movie.title}</h3>
-                    </div>
-                ))}
-            </div>
-            <div className='scroll-buttons'>
-                <button className='scroll-button' onClick={() => sectionRef.current.scrollTo({
-                    left: sectionRef.current.scrollLeft - sectionRef.current.offsetWidth,
-                    behavior: 'smooth'
-                })}>❮</button>
-                <button className='scroll-button' onClick={() => sectionRef.current.scrollTo({
-                    left: sectionRef.current.scrollLeft + sectionRef.current.offsetWidth,
-                    behavior: 'smooth'
-                })}>❯</button>
-            </div>
+  return (
+    <div className='movies-card'>
+      <h2>{props.sectionTitle}</h2>
+      <div className='movies-container-wrapper'>
+        <div className={`scroll-container left-scroll ${atStart ? 'hidden' : ''}`} onClick={handleScrollToStart}>
+          <button className='arrow-button left-arrow-button'>❮</button>
         </div>
-    );
+        <div className='movies-container' ref={sectionRef}>
+          {currentMovies.map(movie => (
+            <div key={movie.mid}>
+              <MovieCard
+                movie={movie} 
+                origin='MoviesCard'
+                isFlipped={flippedCard === movie.mid} 
+                onFlip={() => setFlippedCard(prev => (prev === movie.mid ? null : movie.mid))}
+              />
+              <h3 className='movie-title'>{movie.title}</h3>
+            </div>
+          ))}
+          <div className={`scroll-container right-scroll ${atEnd ? 'hidden' : ''}`} onClick={handleScrollToEnd}>
+            <button className='arrow-button right-arrow-button'>❯</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default MoviesCard;

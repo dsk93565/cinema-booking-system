@@ -636,6 +636,7 @@ const SignUp = () => {
                 <div className={`password-info ${passwordInput ? 'is-active' : ''}`}>
                   <input
                     type={passwordVisible ? 'text' : 'password'}
+                    autoComplete='off'
                     value={password}
                     ref={passwordInputRef}
                     onFocus={handlePasswordInputFocus}
@@ -661,6 +662,7 @@ const SignUp = () => {
                 <div className={`password-info ${confirmPasswordInput ? 'is-active' : ''}`}>
                   <input
                     type={confirmPasswordVisible ? 'text' : 'password'}
+                    autoComplete='off'
                     value={confirmPassword}
                     ref={confirmPasswordInputRef}
                     onFocus={handleConfirmPasswordInputFocus}

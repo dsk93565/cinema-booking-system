@@ -118,7 +118,7 @@ class Send_Booking_Email(APIView):
         r
         # can add more info if we want
         email_body = render_to_string('booking_email.html', 
-                                      {'total': str(booking.tota)})
+                                      {'total': str(booking.total)})
         subject = 'Cinera Booking for ' + str(show.show_date)
         send_mail(subject, email_body, "ebookingsystemcinera@gmail.com", [email])
         return Response({'email sent': 1})
@@ -209,7 +209,10 @@ class EditUser(APIView):
             new_first = data.get('first_name')
             new_last = data.get('last_name')
             new_promo = data.get('promotions')
-            
+            new_street = data.get('shipping_street')
+            new_city = data.get('shipping_city')
+            new_state = data.get('shipping_state')
+            new_zip = data.get('shipping_zip')
             if new_first is not None: 
                 user_to_modify.first_name = new_first
             if new_last is not None: 
@@ -221,8 +224,15 @@ class EditUser(APIView):
             if new_password is not None:
                 # Here you might want to validate the new password
                 # and encrypt/hash it before saving
-                user_to_modify.set_password(new_password)
-            
+                user_to_modify.password = make_password(new_password)
+            if new_street is not None:
+                user_to_modify.shipping_street = new_street
+            if new_city is not None:
+                user_to_modify.shipping_city = new_city
+            if new_state is not None:
+                user_to_modify.shipping_state = new_state
+            if new_zip is not None:
+                user_to_modify.shipping_zip = new_zip
             user_to_modify.save()
             return Response({"Success": 1})
         except Exception as e: 

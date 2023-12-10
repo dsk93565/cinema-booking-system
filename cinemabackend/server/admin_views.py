@@ -214,6 +214,19 @@ class AddPromo(APIView):
         except:
             return Response({"error": -1})
         
+#returns periods: {pid, start_time, end_time}
+class GetPeriods(APIView):
+    def get(self, request):
+        try: 
+            user_token = json.loads(request.data.get('user_token'))
+            if checkAdmin(user_token) is None:
+                return Response({'error': -1})
+            periods = Periods.objects.all()
+            serializer = PeriodSerializer(periods, many=True)
+            period_data = {'periods': serializer.data}
+            return(period_data)
+        except:
+            return Response({"error": -1})
 class RemovePromo(APIView):
     def post(self, request):
         try: 
@@ -232,4 +245,3 @@ class RemovePromo(APIView):
         except Exception as e:
             return Response({"error": str(e)})
 
-        

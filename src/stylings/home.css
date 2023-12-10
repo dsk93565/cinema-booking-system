@@ -4,26 +4,6 @@
     padding: 1rem 1.25rem;
 }
 
-.scroll-buttons {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    column-gap: 3rem;
-}
-
-.scroll-button {
-    background-color: var(--accent-two);
-    border-radius: 2rem;
-    color: var(--secondary);
-    width: 100%;
-    padding: 1rem 1.25rem;
-    transition: background-color 0.1s ease-in-out;   
-}
-
-.scroll-button:hover {
-    background-color: var(--accent-one);
-}
-
 .hero-info {
     max-width: 36rem;
     width: 100%;
@@ -51,22 +31,88 @@
     background-color: var(--accent-four);
     border-radius: 2rem;
     width: 100%;
-    padding: 2.25rem 2.25rem 2.75rem 2.25rem;
+    padding: 2.25rem 2.25rem 3.75rem 2.25rem;
     display: flex;
     flex-direction: column;
     row-gap: 2.25rem;
 }
 
-.movies-card a {
-    width: fit-content;
-    align-self: end;
+.movies-container-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .movies-container {
     display: flex;
-    column-gap: 2.25rem;
+    column-gap: 2rem;
     overflow-x: scroll;
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+.movies-container::-webkit-scrollbar {
+    width: 0;
+}
+
+.movies-container::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+.scroll-container {
+    height: 100%;
+    width: 6rem;
+    display: none;
+    position: absolute;
+    cursor: pointer;
+    z-index: 20;
+}
+
+.left-scroll {
+    background: linear-gradient(to left, transparent, var(--accent-four) 20%);
+    left: -2.25rem;
+    transition: opacity 0.075s ease-in-out, visibility 0.075s ease-in-out;
+}
+
+.left-scroll:hover > .arrow-button {
+    color: var(--accent-one);
+}
+
+.right-scroll {
+    background: linear-gradient(to right, transparent, var(--accent-four) 20%);
+    right: -2.25rem;
+    transition: opacity 0.075s ease-in-out, visibility 0.075s ease-in-out;
+}
+
+.right-scroll:hover > .arrow-button {
+    color: var(--accent-one);
+}
+
+.left-scroll.hidden, .right-scroll.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.arrow-button {
+    background-color: transparent;
+    color: var(--accent-two);
+    font-size: 1.75rem;
+    position: absolute;
+    top: 50%;
+    transition: color 0.3s ease-in-out;
+}
+
+.left-arrow-button {
+    left: 2.25rem;
+}
+
+.right-arrow-button {
+    right: 2.25rem;
+}
+
+.movies-card a {
+    width: fit-content;
+    align-self: end;
 }
 
 .movies::-webkit-scrollbar {
@@ -296,6 +342,10 @@
         font-size: 2.25rem;
     }
 
+    .scroll-container {
+        display: flex;
+    }
+
     .promo-subscription .user-info-input {
         font-size: 1rem;
     }
@@ -307,8 +357,36 @@
 
 @media only screen and (min-width: 48rem) {
     .movies-card {
-        padding: 3rem 3rem 3.5rem 3rem;
+        padding: 3rem 3rem 4.5rem 3rem;
         row-gap: 3rem;
+    }
+
+    .movies-container {
+        column-gap: 2.25rem;
+    }
+
+    .scroll-container {
+        width: 7rem;
+    }
+
+    .left-scroll {
+        left: -3rem;
+    }
+    
+    .right-scroll {
+        right: -3rem;
+    }
+
+    .arrow-button {
+        font-size: 2rem;
+    }
+
+    .left-arrow-button {
+        left: 3rem;
+    }
+    
+    .right-arrow-button {
+        right: 3rem;
     }
 
     .movies-card-titles {
@@ -317,10 +395,6 @@
 
     .movies {
         column-gap: 3rem;
-    }
-
-    .scroll-buttons {
-        column-gap: 6rem;
     }
 
     .promo-subscription form {
