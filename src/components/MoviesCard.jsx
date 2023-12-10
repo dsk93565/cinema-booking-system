@@ -57,11 +57,15 @@ const MoviesCard = (props) => {
   // Listener
   useEffect(() => {
     fetchMovies(props.sectionTitle);
-    sectionRef.current.addEventListener('scroll', handleScroll);
+    const currentSectionRef = sectionRef.current;
 
-    return () => {
-      sectionRef.current.removeEventListener('scroll', handleScroll);
-    };
+    if (currentSectionRef) {
+      currentSectionRef.addEventListener('scroll', handleScroll);
+
+      return () => {
+        currentSectionRef.removeEventListener('scroll', handleScroll);
+      };
+    }
   }, [props.sectionTitle]);
 
   return (
