@@ -210,13 +210,9 @@ class EditUser(APIView):
             new_last = data.get('last_name')
             new_promo = data.get('promotions')
             new_street = data.get('shipping_street')
-            print(new_street)
             new_city = data.get('shipping_city')
-            print(new_city)
             new_state = data.get('shipping_state')
-            print(new_state)
             new_zip = data.get('shipping_zip')
-            print(new_zip)
             if new_first is not None: 
                 user_to_modify.first_name = new_first
             if new_last is not None: 
