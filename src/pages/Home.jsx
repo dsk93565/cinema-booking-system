@@ -65,12 +65,22 @@ const Home = () => {
 
   useEffect(() => {
     fetchMovies();
-  }, [])
+  
+    const params = new URLSearchParams(window.location.search);
+    const scrollToSection = params.get('scrollTo');
+  
+    if (scrollToSection) {
+      const targetSection = document.getElementById(scrollToSection);
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, []);
 
   return (
     <div className='home'>
       <Hero />
-      <section className='section-wrapper'> {/* Trending */}
+      <section id='trending' className='section-wrapper'> {/* Trending */}
         <div className='section-container'>
           <MoviesCard moviesByState={moviesByState}
                       sectionTitle='Trending'
@@ -79,7 +89,7 @@ const Home = () => {
                       isLoading={isLoading}/>
         </div>
       </section>
-      <section className='section-wrapper'> {/* Now Playing */}
+      <section id='now-playing' className='section-wrapper'> {/* Now Playing */}
         <div className='section-container'>
           <MoviesCard moviesByState={moviesByState}
                       sectionTitle='Now Playing'
@@ -88,7 +98,7 @@ const Home = () => {
                       isLoading={isLoading}/>
         </div>
       </section>
-      <section className='section-wrapper'> {/* Coming Soon */}
+      <section id='coming-soon' className='section-wrapper'> {/* Coming Soon */}
         <div className='section-container'>
           <MoviesCard moviesByState={moviesByState}
                       sectionTitle='Coming Soon'

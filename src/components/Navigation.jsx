@@ -19,6 +19,25 @@ const Navigation = () => {
       setNavBar(!navBar);
     } // if
   };
+  const handleScrollToSection = (sectionId) => {
+    setSideNav(!sideNav);
+  
+    if (window.scrollY > 32) {
+      setNavBar(!navBar);
+    } // if
+  
+    const isHomePage = location.pathname === '/';
+  
+    if (isHomePage) {
+      const targetSection = document.getElementById(sectionId);
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      } // if
+    } else {
+      navigate(`/?scrollTo=${sectionId}`);
+    } // if else
+  };
+  
 
   // Disable Side Navigation Bar With Certain Screen Width
   const nonHamburgerMenuScreenWidth = window.matchMedia('(min-width: 64rem)');
@@ -87,7 +106,7 @@ const Navigation = () => {
 
           {/* Search Bar */}
           {location.pathname !== '/login' && location.pathname !== '/login/forgot' && location.pathname !== '/sign-up' ? (
-            <form className={`search-bar ${searchInput ? 'is-active' : ''}`}>
+            <form className={`search-bar ${searchInput ? 'is-active' : ''} ${sideNav ? 'is-hidden' : ''}`}>
               <input
                 type='text' placeholder='Search' onFocus={handleInputFocus} onBlur={handleInputBlur}
                 onChange={(e) => handleMovieInputData(e)} className='search-input'
@@ -187,10 +206,9 @@ const Navigation = () => {
           <div className='side-navigation-lists'>
             <div className='side-navigation-title-top'>Movies</div>
             <ol className='side-navigation-list'>
-              <li><Link to='/trending'><button onClick={handleSideNav} className='side-navigation-link'>Trending</button></Link></li>
-              <li><Link to='/now-playing'><button onClick={handleSideNav} className='side-navigation-link'>Now Playing</button></Link></li>
-              <li><Link to='/coming-soon'><button onClick={handleSideNav} className='side-navigation-link'>Coming Soon</button></Link></li>
-            </ol>
+              <li><button onClick={() => handleScrollToSection('trending')} className='side-navigation-link'>Trending</button></li>
+              <li><button onClick={() => handleScrollToSection('now-playing')} className='side-navigation-link'>Now Playing</button></li>
+              <li><button onClick={() => handleScrollToSection('coming-soon')} className='side-navigation-link'>Coming Soon</button></li>            </ol>
             {(userToken || rememberMe === 'true') ? (
               <div>
                 <div className='side-navigation-title'>Account</div>

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from django.core.cache import cache
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import make_password
@@ -253,6 +254,7 @@ class GetUser(APIView):
         serializer_class = UserSerializer(user, many=False)
         user_json = {"user":serializer_class.data}
         return Response(user_json)
+    
 class Create_User(APIView):
     def post(self, request):
         try: 
@@ -404,10 +406,16 @@ class GetSeats(APIView):
             return Response({"error": -1})
 
 class MovieList(APIView):
+    cache_key = 'movies_data'
+
     def get(self, request):
+        # Try to get data from cache
+        cached_data = cache.get(self.cache_key)
+        if cached_data:
+            return Response(cached_data)
+
+        # If not found in cache, fetch data from the database
         queryset = Movies.objects.all()
-        serializer_class = MovieSerializer(queryset, many=True)
-        movies_data = serializer_class.data
 
         sorted_movies = {
             'Now Playing': [],
@@ -417,13 +425,16 @@ class MovieList(APIView):
 
         for movie in queryset:
             state_id = movie.state_id.msid
-            serialized_movie = MovieSerializer(movie).data  # Serialize the movie instance
+            serialized_movie = MovieSerializer(movie).data
             if state_id == 2:
                 sorted_movies['Now Playing'].append(serialized_movie)
             elif state_id == 3:
                 sorted_movies['Trending'].append(serialized_movie)
             elif state_id == 4:
                 sorted_movies['Coming Soon'].append(serialized_movie)
+
+        # Cache the fetched data for 15 minutes
+        cache.set(self.cache_key, sorted_movies, timeout=60 * 30)
 
         return Response(sorted_movies)
     
