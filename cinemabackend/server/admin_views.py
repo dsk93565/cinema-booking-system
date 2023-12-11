@@ -11,7 +11,7 @@ import json, random
 #just uncomment the code
 class GetAllUsers(APIView):
     @check_admin
-    def get(self, request):
+    def post(self, request):
         users = CustomUser.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
@@ -135,6 +135,7 @@ class EditMovie(APIView):
         try: 
             response = json.loads(request.body.decode('utf-8'))
             data = json.loads(response['body'])
+            print(data)
             movie = Movies.objects.get(mid=data.get('mid'))
             movie.release_date=data.get('release_date') 
             movie.category=data.get('category') 

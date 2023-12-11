@@ -3,23 +3,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/admin.css'
 import axios from 'axios';
 
-export default function EditMovie({ onClose, movieid }) {
+export default function EditMovie({ onClose, movie, handleEditMovieSubmit }) {
     
-    const [title, setTitle] = useState('');
-    const [release_date, setReleaseDate] = useState('');
-    const [category, setCategory] = useState('');
-    const [cast, setCast] = useState('');
-    const [director, setDirector] = useState('');
-    const [producer, setProducer] = useState('');
-    const [synopsis, setSynopsis] = useState('');
-    const [reviews, setReviews] = useState('');
-    const [trailer, setTrailer] = useState('');
-    const [rating, setRating] = useState('');
-    const [poster_path, setPosterPath] = useState('');
-    const [msid, setStateID] = useState('');
+    const [title, setTitle] = useState(movie.title);
+    const [release_date, setReleaseDate] = useState(movie.release_date);
+    const [category, setCategory] = useState(movie.category);
+    const [cast, setCast] = useState(movie.cast);
+    const [director, setDirector] = useState(movie.director);
+    const [producer, setProducer] = useState(movie.producer);
+    const [synopsis, setSynopsis] = useState(movie.synopsis);
+    const [reviews, setReviews] = useState(movie.reviews);
+    const [trailer, setTrailer] = useState(movie.trailer);
+    const [rating, setRating] = useState(movie.rating);
+    const [poster_path, setPosterPath] = useState(movie.poster_path);
+    const [msid, setStateID] = useState(movie.state_id);
 
     // Filled Form Checker For Basic Information Section
-    const isEditMovieFormFilled = (!title || 
+    const isEditMovieFormEmpty = (!title || 
         !release_date || 
         !category ||
         !cast ||
@@ -31,11 +31,29 @@ export default function EditMovie({ onClose, movieid }) {
         !rating || 
         !poster_path);
 
-    console.log("filled: ", isEditMovieFormFilled);
+    console.log("empty: ", isEditMovieFormEmpty);
     const user_token = localStorage.getItem('userToken');
-    const mid = movieid;
 
-    const getMovie = async() => {
+    const movieData = {
+        user_token,
+        mid: movie.mid,
+        release_date,
+        category,
+        cast,
+        director,
+        producer,
+        synopsis,
+        reviews,
+        trailer,
+        rating,
+        title,
+        poster_path,
+        msid,
+    }
+
+    /* const mid = movie.mid; */
+
+    /* const getMovie = async() => {
         await axios.post('http://localhost:8000/api/get-movie', {
             mid: mid,
         }).then(function (response) {
@@ -61,48 +79,9 @@ export default function EditMovie({ onClose, movieid }) {
 
     useEffect(() => {
         getMovie();
-    }, [])
+    }, []) */
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        const movieData = {
-            user_token,
-            mid,
-            release_date,
-            category,
-            cast,
-            director,
-            producer,
-            synopsis,
-            reviews,
-            trailer,
-            rating,
-            title,
-            poster_path,
-            msid,
-        }
-
-        console.log(JSON.stringify(movieData));
-
-        async function postMovie (movieInfoExport) {
-            await axios.post('http://localhost:8000/api/admin/edit-movie', {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(movieInfoExport),
-            }).then(function (response) {
-                if (response.status === 403)
-                    console.log("Not Authorized");
-                console.log(response);
-            }).catch(function(error) {
-                console.log("Error adding movie: ", error.message);
-            });
-        }
-
-        postMovie(movieData);
-        onClose();
-    }
+    
 
     return (
         <div className='modal-wrapper'>
@@ -111,7 +90,10 @@ export default function EditMovie({ onClose, movieid }) {
                         <div className='modal-title'><h1>Edit Movie</h1></div>
                         <span className='close'><FontAwesomeIcon onClick={onClose} icon='fa fa-window-close'/></span>
                     </div>
-                    <form className='admin-form-holder' onSubmit={(event) => handleSubmit(event)}>
+                    <form className='admin-form-holder' onSubmit={(e) => {
+                        e.preventDefault(); // Prevent the default form submission behavior
+                        handleEditMovieSubmit(isEditMovieFormEmpty, movieData);
+                    }}>
                         <div className='admin-modal-body'>
                             <div className='add-movie-form' id="EditMovieForm">
                                 <div className='admin-movie-form-col'>
@@ -163,7 +145,7 @@ export default function EditMovie({ onClose, movieid }) {
                                     </div>
                                     <div className='movie-info'>
                                         <label className='movie-info-label'>Category</label>
-                                        <select className='add-movie-input' value={msid} onChange={(e) => setStateID(e.target.value)}>
+                                        <select className='add-movie-input' defaultValue={msid} onChange={(e) => setStateID(e.target.value)}>
                                             <option value={"1"}>Archived</option>
                                             <option value={"2"}>Now Playing</option>
                                             <option value={"3"}>Trending</option>
@@ -174,7 +156,7 @@ export default function EditMovie({ onClose, movieid }) {
                             </div>
                         </div>
                         <div className='modal-footer'>
-                            <button disabled={isEditMovieFormFilled} className='admin-movie-button' type='submit'>Save Movie</button>
+                            <button disabled={isEditMovieFormEmpty} className='admin-movie-button' type='submit'>Save Movie</button>
                         </div>
                     </form>
                 </div>

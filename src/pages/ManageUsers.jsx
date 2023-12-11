@@ -11,7 +11,16 @@ const ManageUsers = () => {
   const user_token = localStorage.getItem('userToken');
 
   async function getUsers() {
-    await axios.get('http://localhost:8000/api/admin/get-users', {timeout: 5000})
+    const adminData = {
+      user_token: user_token
+    };
+
+    await axios.post('http://localhost:8000/api/admin/get-users', {
+      body: JSON.stringify(adminData),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      timeout: 5000})
       .then(response => {
         setUsers(response.data);
         console.log("Users data", response.data);
