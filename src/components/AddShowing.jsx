@@ -5,43 +5,20 @@ import axios from 'axios';
 import DateTime from 'react-datetime';
 import MoviesDropdown from './MoviesDropdown';
 
-export default function AddShowing({ onClose, movies }) {
+export default function AddShowing({ onClose, movies, handlePostShowing }) {
     
     // Variables for submission
-    const [mid, setMid] = useState('');
-    const [pid, setPid] = useState('');
-    const [rid, setRid] = useState('');
-
+    const [mid, setMid] = useState(movies[0].mid ? movies[0].mid : '');
+    const [pid, setPid] = useState('1');
+    const [rid, setRid] = useState('1');
+    const [date, setDate] = useState('');
+    /* console.log(mid);
+    console.log(pid);
+    console.log(rid); */
     // Variables for form display
-    const [playingMovies, setPlayingMovies] = useState([])
     const [shows, setShows] = useState([]);
 
     const user_token = localStorage.getItem('userToken');
-    
-    const handleSubmit = () => {
-        /* const showInfoExport = {
-            
-        }
-        console.log(JSON.stringify(showInfoExport)); */
-
-        async function postShowing () {
-            await axios.post('http://localhost:8000/api/admin/add-showing', {
-                user_token: user_token,
-                mid: mid,
-                pid: pid,
-                rid: rid
-            }).then(function (response) {
-                if (response.status === 403)
-                    console.log("Not Authorized");
-                console.log(response);
-            }).catch(function(error) {
-                console.log("Error adding movie: ", error.message);
-            });
-        }
-
-        postShowing();
-        onClose();
-    }
 
 
     const fetchShowings = async(mid) => {
@@ -56,37 +33,9 @@ export default function AddShowing({ onClose, movies }) {
         });
     }
 
-    // Fetches currently playing movies to be scheduled.
-    const fetchPlayingMovies = () => {
-        try {
-            async function getMovies() {
-                return axios.get(`http://localhost:8000/api/get-movies`)
-                .then(function (response) {
-                    setPlayingMovies(response.data["Now Playing"]);
-                })
-            }
-            getMovies();
-        } catch (error) {
-            console.error('Error fetching movies:', error);
-        }
-    };
-
     useEffect(() => {
-        fetchPlayingMovies();
-    }, [])
-
-    useEffect(() => {
-        if(mid)
-            fetchShowings(mid);
+        fetchShowings(mid);
     }, [mid])
-
-    useEffect(() => {
-        if(playingMovies[0]) {
-            setMid(playingMovies[0].mid)
-            setPid(1);
-            setRid(1);
-        }
-    }, [playingMovies])
     
     return (
         <div className='modal-wrapper'>
@@ -96,16 +45,16 @@ export default function AddShowing({ onClose, movies }) {
                         <span className='close'><FontAwesomeIcon onClick={onClose} icon='fa fa-window-close'/></span>
                     </div>
                     <div className='admin-modal-body'>
-                        <form className='add-movie-form' onSubmit={handleSubmit}>
+                        <form className='add-movie-form' onSubmit={(event) => handlePostShowing(event, mid, pid, rid, date)}>
                             <div className='admin-movie-form-body'>
                                 <div className='admin-movie-form-col'>
                                     <div className='movie-info'>
                                             <label className='movie-info-label'>Show Date</label>
-                                            <input type='date' className='add-movie-input'></input>
+                                            <input type='date' onChange={(e) => setDate(e.target.value)} className='add-movie-input'></input>
                                     </div>
                                     <div className='movie-info'>
                                         <label className='movie-info-label'>Select Time</label>
-                                        <select className='add-movie-input' value={1} onChange={(e) => setPid(e.target.value)}>
+                                        <select className='add-movie-input' onChange={(e) => setPid(e.target.value)}>
                                             <option value={1}>Period 1: 9:00 AM - 12:00 PM</option>
                                             <option value={2}>Period 2: 12:00 PM - 3:00 PM</option>
                                             <option value={3}>Period 3: 3:00 PM - 6:00 PM</option>
@@ -117,7 +66,7 @@ export default function AddShowing({ onClose, movies }) {
                                     <div className='movie-info'>
                                         <label className='movie-info-label'>Select Movie</label>
                                         <select className='add-movie-input' onChange={(e) => setMid(e.target.value)}>
-                                            {playingMovies.map(movie => (
+                                            {movies.map(movie => (
                                                 <option value={movie.mid} key={movie.mid}>{movie.title}</option>
                                             ))}
                                         </select>

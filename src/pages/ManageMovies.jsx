@@ -8,6 +8,7 @@ import EditMovie from '../components/EditMovie';
 const ManageMovies = () => {
 
   const [movies, setMovies] = useState([]);
+  const [playingMovies, setPlayingMovies] = useState([]);
   const [addMovieModal, setAddMovieModal] = useState(false);
   const [editMovieModal, setEditMovieModal] = useState(false);
   const [movieToEdit, setMovieToEdit] = useState(0);
@@ -20,6 +21,7 @@ const ManageMovies = () => {
         const moviesList = [];
         const response = await axios.get(`http://localhost:8000/api/get-movies`);
         console.log(response.data);
+        setPlayingMovies(response.data["Now Playing"]);
         setMovies(moviesList.concat(response.data["Now Playing"],
                                     response.data["Coming Soon"],
                                     response.data["Trending"]));
@@ -27,6 +29,26 @@ const ManageMovies = () => {
         console.error('Error fetching movies:', error);
     }
   };
+
+  const handlePostShowing = (e, mid, pid, rid, date) => {
+    e.preventDefault();
+    async function postShowing () {
+        axios.post('http://localhost:8000/api/admin/add-showing', {
+            user_token: user_token,
+            mid: mid,
+            pid: pid,
+            rid: rid,
+            date: date
+        }).then(function (response) {
+            if (response.status === 403)
+                console.log("Not Authorized");
+            console.log(response);
+        }).catch(function(error) {
+            console.log("Error adding movie: ", error.message);
+        });
+    }
+    postShowing();
+  }
 
   const hideMovie = (event, movie) => {
       event.preventDefault();
@@ -124,7 +146,7 @@ const ManageMovies = () => {
         {editMovieModal && (<EditMovie onClose={() => setEditMovieModal(false)} movieid={movieToEdit}></EditMovie>)}
 
         {/** Add Showing Modal */}
-        {scheduleMovieModal && (<AddShowing movies={movies} onClose={() => setScheduleMovieModal(false)}></AddShowing>)}
+        {scheduleMovieModal && (<AddShowing onClose={() => setScheduleMovieModal(false)} movies={playingMovies} handlePostShowing={handlePostShowing}></AddShowing>)}
     </section>
   )
 }

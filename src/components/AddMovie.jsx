@@ -56,9 +56,11 @@ export default function AddMovie({ onClose }) {
         
     }, [isFormEmpty, readyToSubmit])
 
-    const handleSubmit = () => {        
+    const handleSubmit = (e) => {
+        e.preventDefault();
         console.log("top", readyToSubmit);
         if(!isFormEmpty && readyToSubmit) {
+            
             const movieData =  {
                 userToken,
                 release_date,
@@ -97,6 +99,7 @@ export default function AddMovie({ onClose }) {
             console.log("bottom", readyToSubmit);
         }
         onClose();
+        console.log("submitted")
     }
 
     return (
@@ -106,7 +109,7 @@ export default function AddMovie({ onClose }) {
                         <div className='modal-title'><h1>Add Movie</h1></div>
                         <span className='close'><FontAwesomeIcon onClick={onClose} icon='fa fa-window-close'/></span>
                     </div>
-                    <form onSubmit={handleSubmit} className='admin-form-holder'>
+                    <form onSubmit={(event) => handleSubmit(event)} className='admin-form-holder'>
                         <div className='admin-modal-body'>
                             <div className='add-movie-form' id="addMovieForm">
                                 <div className='admin-movie-form-col'>
