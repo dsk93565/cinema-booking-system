@@ -33,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
        password_length = serializers.SerializerMethodField()
        class Meta: 
               model = CustomUser
-              fields = ['username', 'email', 'phone_number', 'first_name', 
+              fields = ['uid', 'username', 'email', 'phone_number', 'first_name', 
                          'last_name', 'type_id', 'state_id', 'promotions',
                          'shipping_street', 'shipping_city', 'shipping_state', 'shipping_zip', 'password_length'
                          ]

@@ -23,3 +23,45 @@
     border-radius: 1rem;
     z-index: 20;
 }
+
+.show-listing-holder {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem;
+}
+
+.show-listing {
+    background-color: var(--accent-four);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+}
+
+.show-listing-info {
+    background-color: var(--accent-six);
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+/* Add some spacing and styling to the text elements */
+.show-listing-info div {
+    margin: 0.25rem;
+}
+
+/* Style for individual info items */
+.show-listing-info .date {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.show-listing-info .room {
+    color: var(--secondary);
+}
+
+.show-listing-info .period {
+    color: var(--tertiary);
+}

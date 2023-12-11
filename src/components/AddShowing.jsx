@@ -61,29 +61,27 @@ export default function AddShowing({ onClose, movies, handlePostShowing }) {
                                             <option value={4}>Period 4: 6:00 PM - 9:00 PM</option>
                                         </select>
                                     </div>
+                                    <div className='movie-info'>
+                                    <label className='movie-info-label'>Select Movie</label>
+                                    <select className='add-movie-input' onChange={(e) => setMid(e.target.value)}>
+                                        {movies.map(movie => (
+                                            <option value={movie.mid} key={movie.mid}>{movie.title}</option>
+                                        ))}
+                                    </select>
                                 </div>
-                                <div className='admin-movie-form-col'>
-                                    <div className='movie-info'>
-                                        <label className='movie-info-label'>Select Movie</label>
-                                        <select className='add-movie-input' onChange={(e) => setMid(e.target.value)}>
-                                            {movies.map(movie => (
-                                                <option value={movie.mid} key={movie.mid}>{movie.title}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className='movie-info'>
-                                        <label className='movie-info-label'>Select Room</label>
-                                        <select className='add-movie-input' onChange={(e) => setRid(e.target.value)}>
-                                            <option value={1}>Room 1</option>
-                                            <option value={2}>Room 2</option>
-                                            <option value={3}>Room 3</option>
-                                            <option value={4}>Room 4</option>
-                                            <option value={5}>Room 5</option>
-                                            <option value={6}>Room 6</option>
-                                            <option value={7}>Room 7</option>
-                                            <option value={8}>Room 8</option>
-                                        </select>
-                                    </div>
+                                <div className='movie-info'>
+                                    <label className='movie-info-label'>Select Room</label>
+                                    <select className='add-movie-input' onChange={(e) => setRid(e.target.value)}>
+                                        <option value={1}>Room 1</option>
+                                        <option value={2}>Room 2</option>
+                                        <option value={3}>Room 3</option>
+                                        <option value={4}>Room 4</option>
+                                        <option value={5}>Room 5</option>
+                                        <option value={6}>Room 6</option>
+                                        <option value={7}>Room 7</option>
+                                        <option value={8}>Room 8</option>
+                                    </select>
+                                </div>
                                 </div>
                             </div>
                             <div className='modal-footer'>

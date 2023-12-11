@@ -14,17 +14,24 @@ const ManageMovies = () => {
   const [movieToEdit, setMovieToEdit] = useState(0);
   const [scheduleMovieModal, setScheduleMovieModal] = useState(false);
   const [midHidden, setMidHidden] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const user_token = localStorage.getItem('userToken');
 
   const fetchMovies = async () => {
     try {
         const moviesList = [];
-        const response = await axios.get(`http://localhost:8000/api/get-movies`);
-        console.log(response.data);
-        setPlayingMovies(response.data["Now Playing"]);
-        setMovies(moviesList.concat(response.data["Now Playing"],
+        await axios.get(`http://localhost:8000/api/get-movies`).then(function (response) {
+          setPlayingMovies(response.data["Now Playing"]);
+          setMovies(moviesList.concat(response.data["Now Playing"],
                                     response.data["Coming Soon"],
                                     response.data["Trending"]));
+        }).catch(function (error) {
+          if (error.code === 'ECONNABORTED') {
+            console.error('The requrest has time out');
+          }
+        }).finally(function () {
+          setIsLoading(false);
+        });
     } catch (error) {
         console.error('Error fetching movies:', error);
     }
@@ -119,10 +126,10 @@ const ManageMovies = () => {
                   'Content-Type': 'application/json',
               },
               body: JSON.stringify(movieInfoExport),
+              timeout: 5000
           }).then(function (response) {
               if (response.status === 403)
                   console.log("Not Authorized");
-              console.log(response.data.success);
               window.dispatchEvent(new Event('movieHidden'));
           }).catch(function(error) {
               console.log("Error adding movie: ", error.message);
@@ -147,6 +154,7 @@ const ManageMovies = () => {
         if(movie.mid === midHidden)
           return null;
       }))
+      setIsLoading(true);
       fetchMovies();
     })
   }, []);
@@ -159,7 +167,8 @@ const ManageMovies = () => {
             <button className='CTA-button-one' onClick={() => setScheduleMovieModal(true)}>Schedule movie</button>
         </div>
         <div className='admin-body'>
-          {movies.map(movie => (
+          {isLoading && (<div><h3>Loading...</h3></div>)}  
+          {movies[0] && (movies.map(movie => (
             <div className='admin-result' key={movie.mid}>
               <div className='admin-result-row'>
                 <div className='admin-result-pic'>
@@ -177,7 +186,7 @@ const ManageMovies = () => {
                 </div>
               </div>
             </div>
-          ))}
+          )))}
         </div>
 
         {/** Add Movie Modal */}

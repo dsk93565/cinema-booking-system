@@ -6,24 +6,30 @@ import '../stylings/search.css';
 
 const SearchResults = () => {
   const { data } = useDataContext();
-  const [movies, setMovies] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect( () => {
     const fetchSearchResults = async () => {
       try {
         const moviesList = [];
         const BACKEND_URL = 'http://localhost:8000/api/get-movies'; // Adjust the URL as needed
-        await axios.get(`${BACKEND_URL}`).then(function (response) {
+        await axios.get(`${BACKEND_URL}`, {timeout: 5000}).then(function (response) {
           const results = moviesList.concat(response.data["Now Playing"], response.data["Coming Soon"], response.data["Trending"])
             .filter( (m) => m.title.toLowerCase().includes(data.toLowerCase()));
           setSearchResults(results);
+        }).catch(function (error) {
+          if (error.code === 'ECONNABORTED') {
+            console.error('The request timed out');
+          }
+        }).finally(function() {
+          setIsLoading(false);
         });
       } catch (error) {
         console.error('Error fetching search results:', error);
       }
     };
-    fetchSearchResults();
+    fetchSearchResults();    
   }, [data]);
 
   return (
@@ -49,7 +55,8 @@ const SearchResults = () => {
             </li>
           ))}
 
-          {!searchResults[0] && (<div><h3>No results found.</h3></div>)}
+          {isLoading && (<div><h3>Loading...</h3></div>)}  
+          {(!searchResults[0] && !isLoading) && (<div><h3>No results found.</h3></div>)}
         </ul>
       </div>
     </section>

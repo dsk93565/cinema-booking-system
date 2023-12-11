@@ -49,7 +49,9 @@ const Showtimes = () => {
             >
               {shows.map((show) => (
                 <option key={show.shid} value={show.shid} className='show-listing'>
-                  Date: {show.show_date} Room: {show.room_id} Period: {show.period_id}
+                  {show.show_date} |
+                  Room: {show.room_id} |
+                  Period: {show.period_id}
                 </option>
               ))}
             </select>

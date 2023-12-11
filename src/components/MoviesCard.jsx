@@ -59,7 +59,7 @@ const MoviesCard = (props) => {
           <button className='arrow-button left-arrow-button'>❮</button>
         </div>
         <div className='movies-container' ref={sectionRef}>
-          {currentMovies.map(movie => (
+          {!props.isLoading && (currentMovies.map(movie => (
             <div key={movie.mid}>
               <MovieCard
                 movie={movie} 
@@ -69,7 +69,8 @@ const MoviesCard = (props) => {
               />
               <h3 className='movie-title'>{movie.title}</h3>
             </div>
-          ))}
+          )))}
+          {props.isLoading && <div><h3>Loading...</h3></div>}
           <div className={`scroll-container right-scroll ${atEnd ? 'hidden' : ''}`} onClick={handleScrollToEnd}>
             <button className='arrow-button right-arrow-button'>❯</button>
           </div>
