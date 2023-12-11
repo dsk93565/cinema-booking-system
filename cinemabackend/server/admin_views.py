@@ -8,21 +8,11 @@ import json, random
 
 #Need to added user_token to check for admin here 
 #just uncomment the code
-class GetUsers(APIView):
+class GetAllUsers(APIView):
     def get(self, request):
-        try: 
-            data = json.loads(request.body.decode('utf-8'))
-        except json.JSONDecodeError:
-            return Response({"error": "Invalid JSON format"})
-
-        user_token = data.get('user_token')
-        if checkAdmin(user_token) is None:
-            return Response({'error': "User is not authorized or not an admin"})
-
-        queryset = CustomUser.objects.all()
-        serializer = self.get_serializer(queryset, many=True)
-        userList = {"users": serializer.data}
-        return Response(userList)
+        users = CustomUser.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
 
 class MakeAdmin(APIView):
     def post(self, request):
