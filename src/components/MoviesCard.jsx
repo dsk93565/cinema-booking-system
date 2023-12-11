@@ -18,21 +18,26 @@ const MoviesCard = (props) => {
 
     setAtStart(isAtBeginning);
     setAtEnd(isAtEnd);
-  };
+};
 
-  const handleScrollToStart = () => {
-    sectionRef.current.scrollTo({
-      left: 0,
-      behavior: 'smooth',
+  const handleScrollLeft = () => {
+    const moviesContainer = sectionRef.current;
+  
+    moviesContainer.scrollTo({
+        left: sectionRef.current.scrollLeft - (sectionRef.current.offsetWidth / 2),
+        behavior: 'smooth',
     });
   };
 
-  const handleScrollToEnd = () => {
-        sectionRef.current.scrollTo({
-            left: sectionRef.current.scrollWidth,
-            behavior: 'smooth',
-        });
+  const handleScrollRight = () => {
+    const moviesContainer = sectionRef.current;
+  
+    moviesContainer.scrollTo({
+        left: sectionRef.current.scrollLeft + (sectionRef.current.offsetWidth / 2),
+        behavior: 'smooth',
+    });
   };
+
 
   // Singular Flipped Card Functionality
   const [flippedCard, setFlippedCard] = useState(null);
@@ -55,7 +60,7 @@ const MoviesCard = (props) => {
     <div className='movies-card'>
       <h2>{props.sectionTitle}</h2>
       <div className='movies-container-wrapper'>
-        <div className={`scroll-container left-scroll ${atStart ? 'hidden' : ''}`} onClick={handleScrollToStart}>
+        <div className={`scroll-container left-scroll ${atStart ? 'hidden' : ''}`} onClick={handleScrollLeft}>
           <button className='arrow-button left-arrow-button'>❮</button>
         </div>
         <div className='movies-container' ref={sectionRef}>
@@ -71,7 +76,7 @@ const MoviesCard = (props) => {
             </div>
           )))}
           {props.isLoading && <div><h3>Loading...</h3></div>}
-          <div className={`scroll-container right-scroll ${atEnd ? 'hidden' : ''}`} onClick={handleScrollToEnd}>
+          <div className={`scroll-container right-scroll ${atEnd ? 'hidden' : ''}`} onClick={handleScrollRight}>
             <button className='arrow-button right-arrow-button'>❯</button>
           </div>
         </div>
