@@ -11,7 +11,7 @@ def check_admin(view_func):
     def wrapper(self, request, *args, **kwargs):
         data = json.loads(request.body.decode('utf-8'))
         inner_data = data['body']
-        data = json.loads(data['body'])
+        data = json.loads(inner_data)
         token_str = data.get('user_token')
         user = getUserFromToken(token_str)
         if user is not None and user.type_id == 2:

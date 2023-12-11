@@ -163,6 +163,9 @@ class AddShow(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
+            inner_data = data['body']
+            data = json.loads(inner_data)
+            print(data)
             user_token = data.get('user_token')
             if checkAdmin(user_token) is None:
                 print("No token")
