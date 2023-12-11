@@ -13,7 +13,7 @@ import SearchResults from './SearchResults';
 import Showtimes from './Showtimes';
 import Seats from './Seats';
 import AgeCategory from './AgeCategory';
-import OrderSummary from './OrderSummary';
+import Cart from './Cart';
 import Checkout from './Checkout';
 import CheckoutConfirmation from './CheckoutConfirmation';
 import AdminView from './AdminView';
@@ -45,8 +45,8 @@ function App() {
           <Route path='seats' element={<Seats />} />
           <Route path='age' element={<AgeCategory />} />
         </Route>
-        <Route path='/order'>
-          <Route path='' element={<OrderSummary />} />
+        <Route path='/cart'>
+          <Route path='' element={<Cart />} />
           <Route path='checkout' element={<Checkout />} />
           <Route path='confirmation' element={<CheckoutConfirmation />} />
         </Route>
