@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import '../stylings/temporary.css';
+import '../stylings/booking.css';
 
 const Checkout = () => {
   return (

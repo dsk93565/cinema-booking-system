@@ -1,0 +1,25 @@
+.booking .section-container-top {
+    align-items: normal;
+    flex-direction: column;
+    row-gap: 3rem;
+}
+
+.booking .CTA-button-one, .temporary .CTA-button-two {
+    font-size: 1rem;
+    font-weight: 500;
+    max-width: 30rem;
+    width: 100%;
+    padding: 1rem 1.25rem;
+}
+
+.booking .user-info-option {
+    width: fit-content;
+    align-self: end;
+}
+
+.search-result-image {
+    height: 10rem;
+    width: 6rem;
+    border-radius: 1rem;
+    z-index: 20;
+}

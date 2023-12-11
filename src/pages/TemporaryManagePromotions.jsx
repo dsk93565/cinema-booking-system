@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../stylings/temporary.css';
+import '../stylings/booking.css';
 
   const TemporaryManagePromotions = () => {
   const [promotionCode, setPromotionCode] = useState('');

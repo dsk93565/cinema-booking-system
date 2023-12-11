@@ -400,6 +400,7 @@ class GetSeats(APIView):
             return Response(seat_data)
         except json.JSONDecodeError:
             return Response({"error": -1})
+
 class MovieList(APIView):
     def get(self, request):
         queryset = Movies.objects.all()

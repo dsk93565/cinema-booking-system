@@ -1,8 +1,8 @@
-import '../stylings/temporary.css';
+import '../stylings/booking.css';
 
 const AgeCategory = () => {
   return (
-    <section className='temporary section-wrapper'>
+    <section className='booking section-wrapper'>
         <div className='section-container-narrow'>
             <h2>Select the age groups</h2>
             <button className='CTA-button-two'>Senior</button>
