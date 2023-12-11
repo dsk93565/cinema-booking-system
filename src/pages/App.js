@@ -13,7 +13,7 @@ import SearchResults from './SearchResults';
 import TemporaryShowtimes from './TemporaryShowtimes';
 import TemporarySeats from './TemporarySeats';
 import TemporaryAgeCategory from './TemporaryAgeCategory';
-import TemporaryOrderSummary from './TemporaryOrderSummary';
+import Cart from './Cart';
 import TemporaryCheckout from './TemporaryCheckout';
 import TemporaryCheckoutConfirmation from './TemporaryCheckoutConfirmation';
 import TemporaryAdminView from './TemporaryAdminView';
@@ -45,8 +45,8 @@ function App() {
           <Route path='seats' element={<TemporarySeats />} />
           <Route path='age' element={<TemporaryAgeCategory />} />
         </Route>
-        <Route path='/order'>
-          <Route path='' element={<TemporaryOrderSummary />} />
+        <Route path='/cart'>
+          <Route path='' element={<Cart />} />
           <Route path='checkout' element={<TemporaryCheckout />} />
           <Route path='confirmation' element={<TemporaryCheckoutConfirmation />} />
         </Route>
