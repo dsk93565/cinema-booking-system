@@ -3,28 +3,161 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import AddMovie from '../components/AddMovie';
 import AddShowing from '../components/AddShowing';
+import EditMovie from '../components/EditMovie';
 
 const ManageMovies = () => {
 
   const [movies, setMovies] = useState([]);
+  const [playingMovies, setPlayingMovies] = useState([]);
   const [addMovieModal, setAddMovieModal] = useState(false);
+  const [editMovieModal, setEditMovieModal] = useState(false);
+  const [movieToEdit, setMovieToEdit] = useState(0);
   const [scheduleMovieModal, setScheduleMovieModal] = useState(false);
+  const [midHidden, setMidHidden] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const user_token = localStorage.getItem('userToken');
+
+  const fetchMovies = async () => {
+    try {
+        const moviesList = [];
+        await axios.get(`http://localhost:8000/api/get-movies`).then(function (response) {
+          setPlayingMovies(response.data["Now Playing"]);
+          setMovies(moviesList.concat(response.data["Now Playing"],
+                                    response.data["Coming Soon"],
+                                    response.data["Trending"]));
+        }).catch(function (error) {
+          if (error.code === 'ECONNABORTED') {
+            console.error('The requrest has time out');
+          }
+        }).finally(function () {
+          setIsLoading(false);
+        });
+    } catch (error) {
+        console.error('Error fetching movies:', error);
+    }
+  };
+
+  const handlePostShowing = async(e, mid, pid, rid, date) => {
+    e.preventDefault();
+    e.target.disabled = true;
+    
+      axios.post('http://localhost:8000/api/admin/add-showing', {
+          user_token: user_token,
+          mid: mid,
+          pid: pid,
+          rid: rid,
+          date: date
+      }).then(function (response) {
+          if (response.status === 403)
+              console.log("Not Authorized");
+          console.log(response);
+      }).catch(function(error) {
+          console.log("Error adding movie: ", error.message);
+      }).finally(function() {
+          e.target.disabled = false;
+      });
+    setScheduleMovieModal(false);
+  }
+
+  const handleMovieSubmit = async (isFormEmpty, userToken, release_date, category, cast, director,
+                                producer, synopsis, reviews, trailer, rating, title,
+                                poster_path, msid) => {
+        if (!isFormEmpty) {
+            const movieData = {
+                userToken,
+                release_date,
+                category,
+                cast,
+                director,
+                producer,
+                synopsis,
+                reviews,
+                trailer,
+                rating,
+                title,
+                poster_path,
+                msid,
+            };
+    
+            try {
+                const response = await axios.post('http://localhost:8000/api/admin/add-movie', JSON.stringify(movieData), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+    
+                if (response.status === 403) {
+                    console.log("Not Authorized");
+                } else {
+                    console.log(response);
+                }
+            } catch (error) {
+                console.log("Error adding movie: ", error.message);
+            }
+        }
+        setAddMovieModal(false);
+  };
+
+  const hideMovie = (event, movie) => {
+      event.preventDefault();
+      setMidHidden(movie.mid);
+      const movieData = {
+            user_token: user_token,
+            mid: movie.mid,
+            release_date: movie.release_date,
+            category: movie.category,
+            cast: movie.cast,
+            director: movie.director,
+            producer: movie.producer,
+            synopsis: movie.synopsis,
+            reviews: movie.reviews,
+            trailer: movie.trailer,
+            rating: movie.rating,
+            title: movie.title,
+            poster_path: movie.poster_path,
+            msid: 1,
+      }
+
+      console.log(JSON.stringify(movieData));
+
+      async function postMovie (movieInfoExport) {
+          await axios.post('http://localhost:8000/api/admin/edit-movie', {
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(movieInfoExport),
+              timeout: 5000
+          }).then(function (response) {
+              if (response.status === 403)
+                  console.log("Not Authorized");
+              window.dispatchEvent(new Event('movieHidden'));
+          }).catch(function(error) {
+              console.log("Error adding movie: ", error.message);
+          });
+      }
+
+      postMovie(movieData);
+  }
+
+  const handleEditMovie = (mid) => {
+    setEditMovieModal(true);
+    setMovieToEdit(mid);
+  }
 
   useEffect( () => {
     fetchMovies();
   }, []);
 
-  const fetchMovies = async () => {
-    try {
-        const movies = [];
-        const response = await axios.get(`http://localhost:8000/api/get-movies`);
-        setMovies(movies.concat(response.data["Now Playing"], response.data["Coming Soon"], response.data["Trending"]));
-        movies.map((movie) => {console.log(typeof movie)})
-        console.log(response.data["Now Playing"]);
-    } catch (error) {
-        console.error('Error fetching movies:', error);
-    }
-};
+  useEffect( () => {
+    window.addEventListener('movieHidden', () => {
+      setMovies(movies.map(movie => {
+        if(movie.mid === midHidden)
+          return null;
+      }))
+      setIsLoading(true);
+      fetchMovies();
+    })
+  }, []);
 
   return (
     <section className='admin-section-wrapper'>
@@ -34,7 +167,8 @@ const ManageMovies = () => {
             <button className='CTA-button-one' onClick={() => setScheduleMovieModal(true)}>Schedule movie</button>
         </div>
         <div className='admin-body'>
-          {movies.map(movie => (
+          {isLoading && (<div><h3>Loading...</h3></div>)}  
+          {movies[0] && (movies.map(movie => (
             <div className='admin-result' key={movie.mid}>
               <div className='admin-result-row'>
                 <div className='admin-result-pic'>
@@ -47,19 +181,22 @@ const ManageMovies = () => {
                     <p><strong>Producer:</strong> {movie.producer}</p>
                 </div>
                 <div className='admin-button-container'>
-                  <button className='admin-movie-button'>Hide Movie</button>
-                  <button className='admin-movie-button'>Edit Movie</button>
+                  <button className='admin-movie-button' onClick={(event) => hideMovie(event, movie)}>Hide Movie</button>
+                  <button className='admin-movie-button' onClick={() => handleEditMovie(movie.mid)}>Edit Movie</button>
                 </div>
               </div>
             </div>
-          ))}
+          )))}
         </div>
 
         {/** Add Movie Modal */}
-        {addMovieModal && (<AddMovie onClose={() => setAddMovieModal(false)}></AddMovie>)}
+        {addMovieModal && (<AddMovie onClose={() => setAddMovieModal(false)} handleMovieSubmit={handleMovieSubmit}></AddMovie>)}
+
+        {/** Edit Movie Modal */}
+        {editMovieModal && (<EditMovie onClose={() => setEditMovieModal(false)} movieid={movieToEdit}></EditMovie>)}
 
         {/** Add Showing Modal */}
-        {scheduleMovieModal && (<AddShowing movies={movies} onClose={() => setScheduleMovieModal(false)}></AddShowing>)}
+        {scheduleMovieModal && (<AddShowing onClose={() => setScheduleMovieModal(false)} movies={playingMovies} handlePostShowing={handlePostShowing}></AddShowing>)}
     </section>
   )
 }

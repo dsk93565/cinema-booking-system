@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import '../stylings/temporary.css';
+import '../stylings/booking.css';
 
-const TemporaryCheckoutConfirmation = () => {
+const CheckoutConfirmation = () => {
   return (
     <section className='order temporary section-wrapper'>
         <div className='section-container-narrow'>
@@ -13,4 +13,4 @@ const TemporaryCheckoutConfirmation = () => {
   )
 }
 
-export default TemporaryCheckoutConfirmation;
+export default CheckoutConfirmation;

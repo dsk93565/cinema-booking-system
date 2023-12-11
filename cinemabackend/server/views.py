@@ -242,6 +242,7 @@ class EditUser(APIView):
 class GetUser(APIView):
     def post(self, request):
         try: 
+            print(request)
             data = json.loads(request.body.decode('utf-8'))
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
@@ -375,9 +376,10 @@ class GetCards(APIView):
 # returns
  # showings: ['shid', 'movie_id', 'period_id', 'room_id', 'room_id', 'show_date']
 class GetShows(APIView):
-    def get(self, request):
+    def post(self, request):
         try: 
             showObjects = getShowObjects(request)
+            print("OBJECTS: ", showObjects)
             serializer = ShowingSerializer(showObjects, many=True)
             showings = {'showings': serializer.data}
             return Response(showings)
@@ -400,6 +402,7 @@ class GetSeats(APIView):
             return Response(seat_data)
         except json.JSONDecodeError:
             return Response({"error": -1})
+
 class MovieList(APIView):
     def get(self, request):
         queryset = Movies.objects.all()
@@ -425,8 +428,9 @@ class MovieList(APIView):
         return Response(sorted_movies)
     
 class Movie(APIView):
-    def get(self, request):
-        try: 
+    def post(self, request):
+        try:
+            print(request)
             data = json.loads(request.body.decode('utf-8'))
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})

@@ -5,24 +5,7 @@ import MovieCard from './MovieCard';
 const MoviesCard = (props) => {
   const sectionRef = useRef(null);
 
-  // Fetch and Categorize Movies Functionality
-  const [moviesByState, setMoviesByState] = useState({
-    'Now Playing': [],
-    'Trending': [],
-    'Coming Soon': [],
-  });
-
-  const fetchMovies = async () => {
-    try {
-      const response = await axios.get('http://localhost:8000/api/get-movies');
-      const { data } = response;
-      setMoviesByState(data);
-    } catch (error) {
-      console.error('Error fetching movies:', error);
-    } // try catch
-  };
-
-  const currentMovies = moviesByState[props.sectionTitle] || [];
+  const currentMovies = props.moviesByState[props.sectionTitle] || [];
 
   // Scroll Functionality
   const [atStart, setAtStart] = useState(true);
@@ -45,10 +28,10 @@ const MoviesCard = (props) => {
   };
 
   const handleScrollToEnd = () => {
-    sectionRef.current.scrollTo({
-      left: sectionRef.current.scrollWidth,
-      behavior: 'smooth',
-    });
+        sectionRef.current.scrollTo({
+            left: sectionRef.current.scrollWidth,
+            behavior: 'smooth',
+        });
   };
 
   // Singular Flipped Card Functionality
@@ -56,7 +39,7 @@ const MoviesCard = (props) => {
 
   // Listener
   useEffect(() => {
-    fetchMovies(props.sectionTitle);
+    
     const currentSectionRef = sectionRef.current;
 
     if (currentSectionRef) {
@@ -76,7 +59,7 @@ const MoviesCard = (props) => {
           <button className='arrow-button left-arrow-button'>❮</button>
         </div>
         <div className='movies-container' ref={sectionRef}>
-          {currentMovies.map(movie => (
+          {!props.isLoading && (currentMovies.map(movie => (
             <div key={movie.mid}>
               <MovieCard
                 movie={movie} 
@@ -86,7 +69,8 @@ const MoviesCard = (props) => {
               />
               <h3 className='movie-title'>{movie.title}</h3>
             </div>
-          ))}
+          )))}
+          {props.isLoading && <div><h3>Loading...</h3></div>}
           <div className={`scroll-container right-scroll ${atEnd ? 'hidden' : ''}`} onClick={handleScrollToEnd}>
             <button className='arrow-button right-arrow-button'>❯</button>
           </div>

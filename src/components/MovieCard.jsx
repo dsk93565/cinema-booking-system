@@ -3,6 +3,8 @@ import { createPortal } from 'react-dom';
 import TrailerLoader from './TrailerLoader';
 import ReactCardFlip from 'react-card-flip';
 import MovieInfo from './MovieInfo';
+import { useNavigate } from 'react-router-dom';
+import { useDataContext } from '../DataContext';
 
 const MovieCard = ({ movie, origin, isFlipped, onFlip }) => {
     const moviePosterImage = movie.poster_path;
@@ -19,6 +21,13 @@ const MovieCard = ({ movie, origin, isFlipped, onFlip }) => {
     const [showTrailer, setShowTrailer] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
 
+    const navigate = useNavigate();
+    const { setSharedData } = useDataContext();
+    const sendToBook = () => {
+        setSharedData(movie);
+        navigate('/book');
+    }
+
     return (
         <div className='movie-card'>
             <div className='movie-poster-container' style={cardStyle}>
@@ -31,7 +40,7 @@ const MovieCard = ({ movie, origin, isFlipped, onFlip }) => {
                         <img onClick={handlePosterFlip} style={cardStyle} src={moviePosterImage} alt={movie.title} className='movie-poster' />
                         <button onClick={() => setShowTrailer(true)} className='CTA-button-one'>Watch trailer</button>
                         <button onClick={() => setShowInfo(true)} className='CTA-button-one'>Movie info</button>
-                        <button className='CTA-button-one'>Book tickets</button>
+                        <button onClick={() => sendToBook()} className='CTA-button-one'>Book tickets</button>
                     </div>
                 </ReactCardFlip>
             </div>

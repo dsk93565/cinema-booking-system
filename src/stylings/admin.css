@@ -74,6 +74,7 @@
     padding: 0.75rem 1.125rem;
     transition: background-color 0.1s ease-in-out;
     max-height: 2rem;
+    line-height: 0.5rem;
 }
 
 .admin-movie-button:hover {
@@ -97,11 +98,17 @@
     border-radius: 2rem;
 }
 
+.admin-form-holder {
+    width: 100%;
+    overflow-y: scroll;
+    margin: 1rem;
+}
+
 .add-movie-form {
+    justify-content: center;   
+    width: 100%;
     display: flex;
     flex-direction: row;
-    width: 100%;
-    margin: 2rem;
 }
 
 .admin-movie-form-col {
@@ -149,3 +156,72 @@
 .add-movie-input:focus {
     outline: var(--accent-two) 0.125rem solid;
 }
+
+.show-listing-holder {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem;
+}
+
+.show-listing {
+    background-color: var(--accent-four);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+}
+
+.show-listing-info {
+    background-color: var(--accent-six);
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+/* Add some spacing and styling to the text elements */
+.show-listing-info div {
+    margin: 0.25rem;
+}
+
+/* Style for individual info items */
+.show-listing-info .date {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.show-listing-info .room {
+    color: var(--secondary);
+}
+
+.show-listing-info .period {
+    color: var(--tertiary);
+}
+
+
+.admin-user-button {
+    background-color: var(--accent-two);
+    border-radius: 2rem;
+    color: var(--secondary);
+    padding: 0.75rem 1.125rem;
+    transition: background-color 0.1s ease-in-out;
+    max-height: 2rem;
+    text-align: center;
+    margin-right: 0.5rem; /* Add spacing between buttons (adjust as needed) */
+    position: relative; /* Required for dropdown */
+    display: inline-block; /* Required for inline display */
+    line-height: 0.5rem;
+}
+
+.admin-user-result-text {
+    -webkit-flex: 5;
+    -ms-flex: 5;
+    flex: 5;
+    row-gap: 1rem;
+    flex-direction: column;
+    display: flex;
+    font-weight: bold; /* Make the text bold */
+    font-size: 1.2em; /* Adjust the font size as needed */
+}
+

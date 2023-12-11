@@ -3,26 +3,17 @@ from rest_framework.response import Response
 from .models import Movies, CustomUser, Card, Periods, Showings, Rooms, Promotions, Movie_States, Seats, Logical_Seats
 from .serializer import MovieSerializer, UserSerializer, PeriodSerializer
 from .utils import *
+import copy
 import json, random
 
 
 #Need to added user_token to check for admin here 
 #just uncomment the code
-class GetUsers(APIView):
+class GetAllUsers(APIView):
     def get(self, request):
-        try: 
-            data = json.loads(request.body.decode('utf-8'))
-        except json.JSONDecodeError:
-            return Response({"error": "Invalid JSON format"})
-
-        user_token = data.get('user_token')
-        if checkAdmin(user_token) is None:
-            return Response({'error': "User is not authorized or not an admin"})
-
-        queryset = CustomUser.objects.all()
-        serializer = self.get_serializer(queryset, many=True)
-        userList = {"users": serializer.data}
-        return Response(userList)
+        users = CustomUser.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
 
 class MakeAdmin(APIView):
     def post(self, request):
@@ -93,32 +84,45 @@ class EditUser(APIView):
 #  synopsis, reviews, trailer, rating, title, poster_path}
 class AddMovie(APIView):
     def post(self, request):
-        try: 
-            response = json.loads(request.body.decode('utf-8'))
-            # Load the JSON string from the 'body' field
-            data = json.loads(response['body'])
-            # Extract the userToken
-            user_token = data['userToken']
+        try:
+            user_token = request.data.get('userToken')
+
             if checkAdmin(user_token) is None:
+                print("userisnone")
                 return Response({'error': -1})
-            msid = data.get('msid')
+
+            msid = request.data.get('msid')
             moviestate = Movie_States.objects.get(msid=msid)
-            new_movie = Movies.objects.create(release_date=data.get('release_date'), 
-                                              category=data.get('category'), 
-                                              cast=data.get('cast'),
-                                              director=data.get('director'), 
-                                              producer=data.get('producer'), 
-                                              synopsis=data.get('synopsis'), 
-                                              reviews=data.get('reviews'),
-                                              trailer=data.get('trailer'), 
-                                              rating=data.get('rating'), 
-                                              title=data.get('title'), 
-                                              poster_path=data.get('poster_path'),
-                                              state_id=moviestate)
-            new_movie.save()
-        except json.JSONDecodeError:
+
+            # Use get_or_create to avoid creating duplicate entries
+            new_movie, created = Movies.objects.get_or_create(
+                release_date=request.data.get('release_date'),
+                category=request.data.get('category'),
+                cast=request.data.get('cast'),
+                director=request.data.get('director'),
+                producer=request.data.get('producer'),
+                synopsis=request.data.get('synopsis'),
+                reviews=request.data.get('reviews'),
+                trailer=request.data.get('trailer'),
+                rating=request.data.get('rating'),
+                title=request.data.get('title'),
+                poster_path=request.data.get('poster_path'),
+                state_id=moviestate
+            )
+
+            if created:
+                # The movie was created
+                print("New movie created:", new_movie.title)
+            else:
+                # The movie already existed
+                print("Movie already exists:", new_movie.title)
+
+            return Response({'mid': new_movie.mid})
+        except Exception as e:
+            print("Error adding movie: ", str(e))
             return Response({"error": -1})
-        return Response({'mid': new_movie.mid})
+
+
 
 #expects MID, user_token
 class ArchiveMove(APIView):
@@ -141,11 +145,18 @@ class ArchiveMove(APIView):
 class EditMovie(APIView):
     def post(self, request):
         try: 
-            data = json.loads(request.body.decode('utf-8'))
-            user_token = data.get('user_token')
-            if checkAdmin(user_token) is None:
+            response = json.loads(request.body.decode('utf-8'))
+            data = json.loads(response['body'])
+            user_token = data['user_token']
+            user = checkAdmin(user_token)
+            if user is None:
+                print("userisnone")
                 return Response({'error': -1})
             movie = Movies.objects.get(mid=data.get('mid'))
+            if user is None or user.type_id != 2 or movie is None:
+                print("usernotauthorized")
+                return Response({"error:"-1})
+            movie.release_date=data.get('release_date') 
             movie.category=data.get('category') 
             movie.cast=data.get('cast')
             movie.director=data.get('director') 
@@ -156,30 +167,47 @@ class EditMovie(APIView):
             movie.rating=data.get('rating')
             movie.title=data.get('title')
             movie.poster_path=data.get('poster_path')
-            movie.save()    
+            msid = data.get('msid')
+            moviestate = Movie_States.objects.get(msid=msid)
+            movie.state_id=moviestate
+            movie.save()
         except json.JSONDecodeError:
             return Response({"error": -1})
+        return Response({"success": movie.mid})
 
 # EXPECTED REQUEST
-# {mid, pid, rid}
+# {user_token, mid, pid, rid ,date}
 class AddShow(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
             user_token = data.get('user_token')
             if checkAdmin(user_token) is None:
+                print("No token")
                 return Response({'error': -1})
             period = Periods.objects.get(pid=data.get('pid'))
             movie = Movies.objects.get(mid=data.get('mid'))
             room = Rooms.objects.get(rid=data.get('rid'))
+            date = data.get('date')
+            print("Room: ", copy.deepcopy(room))
             seats = Seats.objects.filter(room_id=room)
-            for i in room.seatsInRoom:
-                seat = seats.filter(seat_number=i)
+            print("Seats: ", copy.deepcopy(seats))
+            for i in range(1, room.seatsInRoom):
+                print(i)
+                seat = seats.filter(seat_number=i).first()
+                print("seat: ", copy.deepcopy(seat))
                 logical_seat = Logical_Seats.objects.create(seat_id=seat, period_id=period, available=1)
                 logical_seat.save()
-            showing = Showings.objects.create(movie_id=movie,period_id=showing,room_id=room)
+            showing, created = Showings.objects.get_or_create(movie_id=movie, period_id=period, room_id=room, show_date=date)
+            if created:
+                print("New showing created: ", showing.period_id)
+            else:
+                print("Showing already exists: ", showing.period_id)
+            """ showing.save() """
+            return Response({"success": 1})
         except json.JSONDecodeError:
             return Response({"error": -1})
+        
         
 class RemoveShow(APIView):
     def post(self, request):

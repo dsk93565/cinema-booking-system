@@ -27,14 +27,23 @@ def checkToken(user, testToken):
 
 def getShowObjects(request):
     try: 
+        print(request.body.decode('utf-8'))
         data = json.loads(request.body.decode('utf-8'))
+        print("HERE: ", data.get('mid'))
         movie = Movies.objects.get(mid=data.get('mid'))
+        print("HERE2", movie)
+        query = Showings.objects.filter(movie_id=movie)
+        print("query ", query)
         start_date = data.get('start_date')
         end_date = data.get('end_date')
-        query = Showings.objects.filter(movie_id=movie)
-        if start_date is not None:
+        if start_date and end_date is not None:
+            print("???")
             query = query.filter(show_date__range=[start_date, end_date])
-        return query
+        if query:
+            print("HERE3", query)
+            return query
+        else:
+            return None
     except json.JSONDecodeError:
         raise Exception({"error: could not decode json object": -5})
 

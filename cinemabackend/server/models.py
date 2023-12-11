@@ -49,8 +49,8 @@ class Movie_States(models.Model):
     movie_state = models.CharField(db_column='movie_state',max_length=255, default='')
 class Movies(models.Model):
     mid = models.IntegerField(db_column='mid',primary_key=True)
-    release_date = models.DateField(db_column='release_date')
     category = models.CharField(db_column='category', max_length=255, default='')
+    release_date = models.DateField(db_column='release_date')
     cast = models.CharField(db_column='cast',max_length=255, default='')
     director = models.CharField(db_column='director',max_length=255, default='')
     producer = models.CharField(db_column='producer',max_length=255, default='')
@@ -81,7 +81,7 @@ class Seats(models.Model):
     sid = models.IntegerField(db_column='sid',primary_key=True)
     seat_number = models.IntegerField(db_column='seat_number', default='')
     room_id = models.ForeignKey(Rooms, on_delete=models.DO_NOTHING, db_column='room_id')
-    available = models.IntegerField(db_column='available', default='')
+    #available = models.IntegerField(db_column='available', default='1')
 
 
 # 1 is available 0 is unavailible
@@ -91,7 +91,7 @@ class Logical_Seats(models.Model):
     lsid = models.IntegerField(db_column='lsid', primary_key=True)
     seat_id = models.ForeignKey(Seats, on_delete=models.DO_NOTHING, db_column='seat_id')
     period_id = models.ForeignKey(Periods, on_delete=models.DO_NOTHING, db_column='period_id')
-    available = models.IntegerField(db_column='available', default='')
+    available = models.IntegerField(db_column='available', default="1")
 
 class Showings(models.Model):
     class Meta:

@@ -10,7 +10,8 @@ const Hero = () => {
   const getUsername = async(token) => {
     try {
       const response = await axios.post(`http://localhost:8000/api/get-user`, {
-        user_token: token
+        user_token: token,
+        timeout: 5000
       });
       setUsername(response.data.user.first_name);
     } catch (error) {

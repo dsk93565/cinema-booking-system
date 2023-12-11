@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import '../stylings/temporary.css';
+import '../stylings/booking.css';
 
-const TemporaryAdminView = () => {
+const AdminView = () => {
   return (
     <section className='temporary section-wrapper'>
         <div className='section-container-narrow'>
@@ -14,4 +14,4 @@ const TemporaryAdminView = () => {
   )
 }
 
-export default TemporaryAdminView;
+export default AdminView;
