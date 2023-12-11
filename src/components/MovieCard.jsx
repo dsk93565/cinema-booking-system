@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDataContext } from '../DataContext';
 
 const MovieCard = ({ movie, origin, isFlipped, onFlip }) => {
+    const userToken = localStorage.getItem('userToken');
+
     const moviePosterImage = movie.poster_path;
     const cardStyle = {
         height: `${origin === "MoviesCard" ? 20 : 10}rem`,
@@ -24,8 +26,16 @@ const MovieCard = ({ movie, origin, isFlipped, onFlip }) => {
     const navigate = useNavigate();
     const { setSharedData } = useDataContext();
     const sendToBook = () => {
-        setSharedData(movie);
-        navigate('/book');
+        if (userToken) {
+            setSharedData(movie);
+            navigate('/book');
+        } else {
+            sendToLogin();
+        } // if else
+    }
+
+    const sendToLogin = () => {
+        navigate('/login');
     }
 
     return (
