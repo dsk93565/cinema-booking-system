@@ -605,8 +605,8 @@ const UserProfile = () => {
                       className='user-info-input disabled-input'
                     />
                   </div>
-                  <div className='user-infos'>
-                    <div className='user-info state'>
+                  <div className='user-infos state'>
+                    <div className='user-info'>
                       <label className='user-info-label'>State</label>
                       <Select
                         options={usStates}
@@ -701,8 +701,8 @@ const UserProfile = () => {
                       className='user-info-input disabled-input'
                     />
                   </div>
-                  <div className='user-infos'>
-                    <div className='user-info state'>
+                  <div className='user-infos state'>
+                    <div className='user-info'>
                       <label className='user-info-label'>State</label>
                       <Select
                         options={usStates}
@@ -791,8 +791,8 @@ const UserProfile = () => {
                           className='user-info-input disabled-input'
                         />
                       </div>
-                      <div className='user-infos'>
-                        <div className='user-info state'>
+                      <div className='user-infos state'>
+                        <div className='user-info'>
                           <label className='user-info-label'>State</label>
                           <Select
                             options={usStates}
@@ -879,8 +879,8 @@ const UserProfile = () => {
                           className='user-info-input disabled-input'
                         />
                       </div>
-                      <div className='user-infos'>
-                        <div className='user-info state'>
+                      <div className='user-infos state'>
+                        <div className='user-info'>
                           <label className='user-info-label'>State</label>
                           <Select
                             options={usStates}
@@ -969,8 +969,8 @@ const UserProfile = () => {
                               className='user-info-input disabled-input'
                             />
                           </div>
-                          <div className='user-infos'>
-                            <div className='user-info state'>
+                          <div className='user-infos state'>
+                            <div className='user-info'>
                               <label className='user-info-label'>State</label>
                               <Select
                                 options={usStates}
@@ -1061,8 +1061,8 @@ const UserProfile = () => {
                           className='user-info-input disabled-input'
                         />
                       </div>
-                      <div className='user-infos'>
-                        <div className='user-info state'>
+                      <div className='user-infos state'>
+                        <div className='user-info'>
                           <label className='user-info-label'>State</label>
                           <Select
                             options={usStates}
@@ -1151,8 +1151,8 @@ const UserProfile = () => {
                               className='user-info-input disabled-input'
                             />
                           </div>
-                          <div className='user-infos'>
-                            <div className='user-info state'>
+                          <div className='user-infos state'>
+                            <div className='user-info'>
                               <label className='user-info-label'>State</label>
                               <Select
                                 options={usStates}

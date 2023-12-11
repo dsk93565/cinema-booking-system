@@ -9,7 +9,7 @@ import json, random
 
 #Need to added user_token to check for admin here 
 #just uncomment the code
-class GetAllUsers(APIView):
+class GetUsers(APIView):
     def get(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
@@ -39,7 +39,7 @@ class MakeAdmin(APIView):
         user_id = data.get('uid')
         try:
             user = CustomUser.objects.get(pk=user_id)
-            user.type_id = 4  # Setting type_id to 4 to make the user an admin
+            user.type_id = 2  # Setting type_id to 2 to make the user an admin
             user.save()
             return Response({"success": 1})
         except CustomUser.DoesNotExist:

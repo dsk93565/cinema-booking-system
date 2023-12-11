@@ -111,8 +111,6 @@ const Navigation = () => {
 
                 <Link to='/profile'><button className='navigation-link non-CTA-button'>Profile</button></Link>
 
-                <Link to='/cart'><button className='navigation-link non-CTA-button'>Cart</button></Link>
-
                 {/* Sign Out */}
                 <button onClick={handleSignOut} className='navigation-link CTA-button-one'>Sign out</button>
 
@@ -194,19 +192,14 @@ const Navigation = () => {
                 <div className='side-navigation-title'>Account</div>
                 <ol className='side-navigation-list'>
                   <li>
-                    {(userType === '2') ? (
-                      // Admin Portal
-                      <Link to='/admin'><button onClick={handleSideNav} className='side-navigation-link'>Portal</button></Link>
-                    ) : null}
-                  </li>
-                  <li>
                     {(userType === '1') ? (
                       <Link to='/profile'><button onClick={handleSideNav} className='side-navigation-link'>Profile</button></Link>
                     ) : null}
                   </li>
                   <li>
-                    {(userType === '1' || userType === '2') ? (
-                      <Link to='/cart'><button onClick={handleSideNav} className='side-navigation-link'>Cart</button></Link>
+                    {(userType === '2') ? (
+                      // Admin Portal
+                      <Link to='/admin'><button onClick={handleSideNav} className='side-navigation-link'>Portal</button></Link>
                     ) : null}
                   </li>
                 </ol>

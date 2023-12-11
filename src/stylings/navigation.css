@@ -42,8 +42,7 @@
     height: 2.25rem;
     max-width: 32rem;
     width: 100%;
-    margin-left: 1.5rem;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: space-between;
     transition: outline 0.2s ease-in-out;
@@ -149,7 +148,6 @@
     color: var(--primary);
     height: 1.125rem;
     width: 1.125rem;
-    display: none;
 }
 
 .hamburger-menu {

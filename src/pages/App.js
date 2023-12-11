@@ -11,15 +11,15 @@ import SignUp from './SignUp';
 import UserProfile from './UserProfile';
 import SearchResults from './SearchResults';
 import Showtimes from './Showtimes';
-import Seats from './Seats';
-import AgeCategory from './AgeCategory';
-import Cart from './Cart';
-import Checkout from './Checkout';
-import CheckoutConfirmation from './CheckoutConfirmation';
-import AdminView from './AdminView';
+import TemporarySeats from './TemporarySeats';
+import TemporaryAgeCategory from './TemporaryAgeCategory';
+import TemporaryOrderSummary from './TemporaryOrderSummary';
+import TemporaryCheckout from './TemporaryCheckout';
+import TemporaryCheckoutConfirmation from './TemporaryCheckoutConfirmation';
+import TemporaryAdminView from './TemporaryAdminView';
 import ManageMovies from './ManageMovies';
-import ManagePromotions from './ManagePromotions';
-import ManageUsers from './ManageUsers';
+import TemporaryManagePromotions from './TemporaryManagePromotions';
+import TemporaryManageUsers from './TemporaryManageUsers';
 
 library.add(fas, faSearch, faEye, faEyeSlash);
 
@@ -42,19 +42,19 @@ function App() {
         <Route path='/search-results' element={<SearchResults />} />
         <Route path='/book'>
           <Route path='' element={<Showtimes />} />
-          <Route path='seats' element={<Seats />} />
-          <Route path='age' element={<AgeCategory />} />
+          <Route path='seats' element={<TemporarySeats />} />
+          <Route path='age' element={<TemporaryAgeCategory />} />
         </Route>
-        <Route path='/cart'>
-          <Route path='' element={<Cart />} />
-          <Route path='checkout' element={<Checkout />} />
-          <Route path='confirmation' element={<CheckoutConfirmation />} />
+        <Route path='/order'>
+          <Route path='' element={<TemporaryOrderSummary />} />
+          <Route path='checkout' element={<TemporaryCheckout />} />
+          <Route path='confirmation' element={<TemporaryCheckoutConfirmation />} />
         </Route>
         <Route path='/admin'>
-          <Route path='' element={<AdminView />} />
+          <Route path='' element={<TemporaryAdminView />} />
           <Route path='manage-movies' element={<ManageMovies />} />
-          <Route path='manage-promotions' element={<ManagePromotions />} />
-          <Route path='manage-users' element={<ManageUsers />} />
+          <Route path='manage-promotions' element={<TemporaryManagePromotions />} />
+          <Route path='manage-users' element={<TemporaryManageUsers />} />
         </Route>
       </Routes>
     </>
