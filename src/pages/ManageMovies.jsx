@@ -13,11 +13,27 @@ const ManageMovies = () => {
   const [editMovieModal, setEditMovieModal] = useState(false);
   
   const [scheduleMovieModal, setScheduleMovieModal] = useState(false);
-  const [midHidden, setMidHidden] = useState(0);
+  /* const [midHidden, setMidHidden] = useState(0); */
   const [isLoading, setIsLoading] = useState(true);
 
   /* const [movieToEdit, setMovieToEdit] = useState(0); */
   const [movieToEdit, setMovieToEdit] = useState({
+    mid: 0,
+    category: '',
+    release_date: '',
+    cast: '',
+    director: '',
+    producer: '',
+    synopsis: '',
+    reviews: '',
+    trailer: '',
+    rating: '',
+    title: '',
+    poster_path: '',
+    msid: '',
+  });
+
+  const [movieHidden, setMovieHidden] = useState({
     mid: 0,
     category: '',
     release_date: '',
@@ -152,7 +168,7 @@ const ManageMovies = () => {
 
   const hideMovie = (event, movie) => {
       event.preventDefault();
-      setMidHidden(movie.mid);
+      
       const movieData = {
             user_token: user_token,
             mid: movie.mid,
@@ -170,9 +186,10 @@ const ManageMovies = () => {
             msid: 1,
       }
 
-      console.log(JSON.stringify(movieData));
+      /* console.log(JSON.stringify(movieData)); */
 
       async function postMovie (movieInfoExport) {
+        console.log(movieInfoExport);
           await axios.post('http://localhost:8000/api/admin/edit-movie', {
               headers: {
                   'Content-Type': 'application/json',
@@ -181,7 +198,9 @@ const ManageMovies = () => {
               timeout: 5000
           }).then(function (response) {
               if (response.status === 403)
-                  console.log("Not Authorized");
+                console.log("Not Authorized");
+              console.log(response.data)
+              setMovieHidden(movie);
               window.dispatchEvent(new Event('reloadMovies'));
           }).catch(function(error) {
               console.log("Error adding movie: ", error.message);
@@ -206,14 +225,16 @@ const ManageMovies = () => {
 
   useEffect( () => {
     window.addEventListener('reloadMovies', () => {
-      setMovies(movies.map(movie => {
-        if(movie.mid === midHidden || movie.mid === movieToEdit.mid)
-          return null;
+      setMovies(movies => movies.map(movie => {
+        if( movie && movie.mid === movieToEdit.mid)
+          return movieToEdit;
+        if( movie && movie.mid === movieHidden.mid)
+          return movieHidden;
       }))
       setIsLoading(true);
       fetchMovies();
     })
-  }, [movies, midHidden]);
+  }, [movies, movieHidden, movieToEdit]);
 
   return (
     <section className='admin-section-wrapper'>
