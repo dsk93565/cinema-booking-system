@@ -115,7 +115,6 @@ class Send_Booking_Email(APIView):
         email = user.email
         booking = Bookings.objects.get(bid=data.get('bid'))
         show = booking.showing_id
-        r
         # can add more info if we want
         email_body = render_to_string('booking_email.html', 
                                       {'total': str(booking.total)})
@@ -182,7 +181,7 @@ class CheckPromo(APIView):
      except json.JSONDecodeError:
         return Response({"error": -1})
     
-class SubsribeToPromo(APIView):
+class SubscribeToPromo(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
@@ -242,7 +241,6 @@ class EditUser(APIView):
 class GetUser(APIView):
     def post(self, request):
         try: 
-            print(request)
             data = json.loads(request.body.decode('utf-8'))
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
@@ -374,10 +372,9 @@ class GetCards(APIView):
 # returns
  # showings: ['shid', 'movie_id', 'period_id', 'room_id', 'room_id', 'show_date']
 class GetShows(APIView):
-    def post(self, request):
+    def get(self, request):
         try: 
             showObjects = getShowObjects(request)
-            print("OBJECTS: ", showObjects)
             serializer = ShowingSerializer(showObjects, many=True)
             showings = {'showings': serializer.data}
             return Response(showings)
@@ -425,9 +422,8 @@ class MovieList(APIView):
         return Response(sorted_movies)
     
 class Movie(APIView):
-    def post(self, request):
-        try:
-            print(request)
+    def get(self, request):
+        try: 
             data = json.loads(request.body.decode('utf-8'))
         except json.JSONDecodeError:
             return Response({"error: could not decode json object": -5})
