@@ -14,6 +14,8 @@ class CustomUser(AbstractUser):
     last_name = models.CharField(db_column='last_name', max_length=255, default='')
     username = models.CharField(default='nothing', unique=True, max_length=255)
     phone_number = models.IntegerField(db_column='phone_number')
+    
+    # 1 - Unverified 2 - Verified 3 - Suspended
     state_id = models.IntegerField(db_column='state_id', default='')
     verification_code = models.IntegerField(db_column='verification_code', default=0)
     promotions = models.IntegerField(db_column='promotions', default=0)

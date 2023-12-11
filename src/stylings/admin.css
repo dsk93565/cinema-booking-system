@@ -23,6 +23,10 @@
     overflow-y: scroll;
 }
 
+.admin-view-title {
+    text-align: center;
+}
+
 .admin-result {
     background-color: var(--accent-four);
     border-radius: 2rem;
@@ -214,6 +218,42 @@
     line-height: 0.5rem;
 }
 
+.admin-user-button:hover {
+    background-color: var(--accent-one);
+}
+
+.remove-admin-button {
+    background-color: var(--accent-three);
+    border-radius: 2rem;
+    color: var(--secondary);
+    padding: 0.75rem 1.125rem;
+    transition: background-color 0.1s ease-in-out;
+    max-height: 2rem;
+    text-align: center;
+    margin-right: 0.5rem; /* Add spacing between buttons (adjust as needed) */
+    position: relative; /* Required for dropdown */
+    display: inline-block; /* Required for inline display */
+    line-height: 0.5rem;
+}
+
+.remove-admin-button:hover {
+    background-color: var(--accent-one);
+}
+
+.suspended-user-button {
+    background-color: var(--error);
+    border-radius: 2rem;
+    color: var(--secondary);
+    padding: 0.75rem 1.125rem;
+    transition: background-color 0.1s ease-in-out;
+    max-height: 2rem;
+    text-align: center;
+    margin-right: 0.5rem; /* Add spacing between buttons (adjust as needed) */
+    position: relative; /* Required for dropdown */
+    display: inline-block; /* Required for inline display */
+    line-height: 0.5rem;
+}
+
 .admin-user-result-text {
     -webkit-flex: 5;
     -ms-flex: 5;
@@ -225,3 +265,15 @@
     font-size: 1.2em; /* Adjust the font size as needed */
 }
 
+.admin-view-button {
+    background-color: var(--accent-two);
+    border-radius: 2rem;
+    color: var(--secondary);
+    padding: 0.75rem 1.125rem;
+    transition: background-color 0.1s ease-in-out;
+    width: 100%;
+}
+
+.admin-view-button:hover {
+    background-color: var(--accent-one);
+}

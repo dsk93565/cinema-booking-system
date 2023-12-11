@@ -20,19 +20,8 @@ export default function AddMovie({ onClose, handleMovieSubmit }) {
     
 
     // Returns true until every input is filled.
-    const isFormEmpty = (!title || 
-                                  !release_date || 
-                                  !category || 
-                                  !cast ||
-                                  !director ||
-                                  !producer || 
-                                  !synopsis || 
-                                  !reviews || 
-                                  !trailer || 
-                                  !rating || 
-                                  !poster_path);
-        
-    const userToken = localStorage.getItem('userToken');    
+    const isFormEmpty = (!title ||!release_date || !category || !cast || !director || !producer || !synopsis || !reviews || !trailer || !rating || !poster_path);
+    const userToken = localStorage.getItem('userToken');
     
     return (
         <div className='modal-wrapper'>
