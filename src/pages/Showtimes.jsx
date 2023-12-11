@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDataContext } from '../DataContext';
 import axios from 'axios';
+import '../stylings/booking.css';
 
 const Showtimes = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const Showtimes = () => {
   };
 
   return (
-    <section className='temporary section-wrapper'>
+    <section className='booking section-wrapper'>
       <div className='section-container-narrow'>
         <h2>Select the date and time</h2>
         {shows[0] && (
