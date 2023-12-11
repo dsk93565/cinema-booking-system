@@ -16,9 +16,8 @@ export default function AddMovie({ onClose }) {
     const [trailer, setTrailer] = useState('');
     const [rating, setRating] = useState('');
     const [poster_path, setPosterPath] = useState('');
-    const [msid, setStateID] = useState('2');
+    const [msid, setStateID] = useState('');
     const [readyToSubmit, setReadyToSubmit] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
 
     // Returns true until every input is filled.
     const isFormEmpty = (!title || 
@@ -31,12 +30,11 @@ export default function AddMovie({ onClose }) {
                                   !reviews || 
                                   !trailer || 
                                   !rating || 
-                                  !poster_path ||
-                                  !msid);
+                                  !poster_path);
         
-    const userToken = localStorage.getItem('userToken');
-    console.log(readyToSubmit);
-    /* console.log(title);
+    const userToken = localStorage.getItem('userToken');    
+    /* console.log(isFormEmpty);
+    console.log(title);
     console.log(release_date);
     console.log(category);
     console.log(cast);
@@ -48,7 +46,7 @@ export default function AddMovie({ onClose }) {
     console.log(rating);
     console.log(poster_path); */
 
-    /* useEffect(() => {
+    useEffect(() => {
         if (!isFormEmpty) {
             console.log("Is form empty:", isFormEmpty);
             setReadyToSubmit(true);
@@ -56,11 +54,11 @@ export default function AddMovie({ onClose }) {
             setReadyToSubmit(false);
         console.log("Is ready to submit:", readyToSubmit);
         
-    }, [isFormEmpty, readyToSubmit]) */
+    }, [isFormEmpty, readyToSubmit])
 
-    function handleSubmit () {        
-        if(!isFormEmpty) {
-
+    const handleSubmit = () => {        
+        console.log("top", readyToSubmit);
+        if(!isFormEmpty && readyToSubmit) {
             const movieData =  {
                 userToken,
                 release_date,
@@ -95,20 +93,10 @@ export default function AddMovie({ onClose }) {
             }
 
             postMovie(movieData);
-        }
-    }
-
-    useEffect(() => {
-        if(readyToSubmit) {
-            handleSubmit();
             setReadyToSubmit(false);
-            onClose();
+            console.log("bottom", readyToSubmit);
         }
-    }, [readyToSubmit])
-
-    const activateSubmit = (event) => {
-        event.preventDefault();
-        setReadyToSubmit(true);
+        onClose();
     }
 
     return (
@@ -118,7 +106,7 @@ export default function AddMovie({ onClose }) {
                         <div className='modal-title'><h1>Add Movie</h1></div>
                         <span className='close'><FontAwesomeIcon onClick={onClose} icon='fa fa-window-close'/></span>
                     </div>
-                    <form onSubmit={(e) => activateSubmit(e)} className='admin-form-holder'>
+                    <form onSubmit={handleSubmit} className='admin-form-holder'>
                         <div className='admin-modal-body'>
                             <div className='add-movie-form' id="addMovieForm">
                                 <div className='admin-movie-form-col'>
@@ -170,8 +158,7 @@ export default function AddMovie({ onClose }) {
                                     </div>
                                     <div className='movie-info'>
                                         <label className='movie-info-label'>Category</label>
-                                        {/** Defaults to Now Playing */}
-                                        <select className='add-movie-input' value={msid} onChange={(e) => setStateID(e.target.value)}>
+                                        <select className='add-movie-input' onChange={(e) => setStateID(e.target.value)}>
                                             <option value={"1"}>Archived</option>
                                             <option value={"2"}>Now Playing</option>
                                             <option value={"3"}>Trending</option>
