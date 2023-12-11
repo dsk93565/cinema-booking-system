@@ -81,7 +81,7 @@ class Seats(models.Model):
     sid = models.IntegerField(db_column='sid',primary_key=True)
     seat_number = models.IntegerField(db_column='seat_number', default='')
     room_id = models.ForeignKey(Rooms, on_delete=models.DO_NOTHING, db_column='room_id')
-    available = models.IntegerField(db_column='available', default='')
+    #available = models.IntegerField(db_column='available', default='1')
 
 
 # 1 is available 0 is unavailible
@@ -91,7 +91,7 @@ class Logical_Seats(models.Model):
     lsid = models.IntegerField(db_column='lsid', primary_key=True)
     seat_id = models.ForeignKey(Seats, on_delete=models.DO_NOTHING, db_column='seat_id')
     period_id = models.ForeignKey(Periods, on_delete=models.DO_NOTHING, db_column='period_id')
-    available = models.IntegerField(db_column='available', default='')
+    available = models.IntegerField(db_column='available', default="1")
 
 class Showings(models.Model):
     class Meta:

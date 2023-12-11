@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from .models import Movies, CustomUser, Card, Periods, Showings, Rooms, Promotions, Movie_States, Seats, Logical_Seats
 from .serializer import MovieSerializer, UserSerializer, PeriodSerializer
 from .utils import *
+import copy
 import json, random
 
 
@@ -175,7 +176,7 @@ class EditMovie(APIView):
         return Response({"success": movie.mid})
 
 # EXPECTED REQUEST
-# {user_token, mid, pid, rid}
+# {user_token, mid, pid, rid ,date}
 class AddShow(APIView):
     def post(self, request):
         try: 
@@ -187,17 +188,26 @@ class AddShow(APIView):
             period = Periods.objects.get(pid=data.get('pid'))
             movie = Movies.objects.get(mid=data.get('mid'))
             room = Rooms.objects.get(rid=data.get('rid'))
-            print(room)
+            date = data.get('date')
+            print("Room: ", copy.deepcopy(room))
             seats = Seats.objects.filter(room_id=room)
-            print("room seats", seats)
-            for i in range(room.seatsInRoom):
-                seat = seats.filter(seat_number=i)
-                print("seat: ",seat)
+            print("Seats: ", copy.deepcopy(seats))
+            for i in range(1, room.seatsInRoom):
+                print(i)
+                seat = seats.filter(seat_number=i).first()
+                print("seat: ", copy.deepcopy(seat))
                 logical_seat = Logical_Seats.objects.create(seat_id=seat, period_id=period, available=1)
                 logical_seat.save()
-            showing = Showings.objects.create(movie_id=movie,period_id=showing,room_id=room)# Need show_date?
+            showing, created = Showings.objects.get_or_create(movie_id=movie, period_id=period, room_id=room, show_date=date)
+            if created:
+                print("New showing created: ", showing.period_id)
+            else:
+                print("Showing already exists: ", showing.period_id)
+            """ showing.save() """
+            return Response({"success": 1})
         except json.JSONDecodeError:
             return Response({"error": -1})
+        
         
 class RemoveShow(APIView):
     def post(self, request):

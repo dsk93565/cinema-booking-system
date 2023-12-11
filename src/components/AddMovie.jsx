@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/admin.css'
 import axios from 'axios';
 
-export default function AddMovie({ onClose }) {
+export default function AddMovie({ onClose, handleMovieSubmit }) {
     
     const [title, setTitle] = useState('');
     const [release_date, setReleaseDate] = useState('');
@@ -17,7 +17,7 @@ export default function AddMovie({ onClose }) {
     const [rating, setRating] = useState('');
     const [poster_path, setPosterPath] = useState('');
     const [msid, setStateID] = useState('');
-    const [readyToSubmit, setReadyToSubmit] = useState(false);
+    
 
     // Returns true until every input is filled.
     const isFormEmpty = (!title || 
@@ -33,66 +33,6 @@ export default function AddMovie({ onClose }) {
                                   !poster_path);
         
     const userToken = localStorage.getItem('userToken');    
-    /* console.log(isFormEmpty);
-    console.log(title);
-    console.log(release_date);
-    console.log(category);
-    console.log(cast);
-    console.log(director);
-    console.log(producer);
-    console.log(synopsis);
-    console.log(reviews);
-    console.log(trailer);
-    console.log(rating);
-    console.log(poster_path); */
-
-    useEffect(() => {
-        if (!isFormEmpty) {
-            console.log("Is form empty:", isFormEmpty);
-            setReadyToSubmit(true);
-        } else
-            setReadyToSubmit(false);
-        console.log("Is ready to submit:", readyToSubmit);
-        
-    }, [isFormEmpty, readyToSubmit])
-
-    const handleSubmit = async () => {
-        if (!isFormEmpty && readyToSubmit) {
-            const movieData = {
-                userToken,
-                release_date,
-                category,
-                cast,
-                director,
-                producer,
-                synopsis,
-                reviews,
-                trailer,
-                rating,
-                title,
-                poster_path,
-                msid,
-            };
-    
-            try {
-                const response = await axios.post('http://localhost:8000/api/admin/add-movie', JSON.stringify(movieData), {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-    
-                if (response.status === 403) {
-                    console.log("Not Authorized");
-                } else {
-                    console.log(response);
-                    setReadyToSubmit(false);
-                    onClose(); // Move onClose() here
-                }
-            } catch (error) {
-                console.log("Error adding movie: ", error.message);
-            }
-        }
-    };
     
     return (
         <div className='modal-wrapper'>
@@ -103,7 +43,9 @@ export default function AddMovie({ onClose }) {
                     </div>
                     <form onSubmit={(e) => {
                         e.preventDefault(); // Prevent the default form submission behavior
-                        handleSubmit();
+                        handleMovieSubmit(isFormEmpty, userToken, release_date, category, cast, director,
+                            producer, synopsis, reviews, trailer, rating, title,
+                            poster_path, msid);
                     }} className='admin-form-holder'>
                         <div className='admin-modal-body'>
                             <div className='add-movie-form' id="addMovieForm">
