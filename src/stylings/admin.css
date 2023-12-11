@@ -172,3 +172,26 @@
 .show-listing-info {
     background-color: var(--accent-six);
 }
+.admin-user-button {
+    background-color: var(--accent-two);
+    border-radius: 2rem;
+    color: var(--secondary);
+    padding: 0.75rem 1.125rem;
+    transition: background-color 0.1s ease-in-out;
+    max-height: 2rem;
+    margin-right: 0.5rem; /* Add spacing between buttons (adjust as needed) */
+    position: relative; /* Required for dropdown */
+    display: inline-block; /* Required for inline display */
+}
+
+.admin-user-result-text {
+    -webkit-flex: 5;
+    -ms-flex: 5;
+    flex: 5;
+    row-gap: 1rem;
+    flex-direction: column;
+    display: flex;
+    font-weight: bold; /* Make the text bold */
+    font-size: 1.2em; /* Adjust the font size as needed */
+}
+
