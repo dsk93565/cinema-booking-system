@@ -18,8 +18,8 @@ import Checkout from './Checkout';
 import CheckoutConfirmation from './CheckoutConfirmation';
 import AdminView from './AdminView';
 import ManageMovies from './ManageMovies';
-import TemporaryManagePromotions from './TemporaryManagePromotions';
-import TemporaryManageUsers from './TemporaryManageUsers';
+import ManagePromotions from './ManagePromotions';
+import ManageUsers from './ManageUsers';
 
 library.add(fas, faSearch, faEye, faEyeSlash);
 
@@ -53,8 +53,8 @@ function App() {
         <Route path='/admin'>
           <Route path='' element={<AdminView />} />
           <Route path='manage-movies' element={<ManageMovies />} />
-          <Route path='manage-promotions' element={<TemporaryManagePromotions />} />
-          <Route path='manage-users' element={<TemporaryManageUsers />} />
+          <Route path='manage-promotions' element={<ManagePromotions />} />
+          <Route path='manage-users' element={<ManageUsers />} />
         </Route>
       </Routes>
     </>

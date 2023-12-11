@@ -42,10 +42,11 @@ class SuspendUser(APIView):
     def post(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
+            print(data)
             user_token = data.get('user_token')
             if checkAdmin(user_token) is None:
                 return Response({'error': -1})
-            user = CustomUser.objects.get(data.get('uid'))
+            user = CustomUser.objects.get(uid=data.get('uid'))
             user.state_id = 3
             user.save()
             return Response({"success": 1})
