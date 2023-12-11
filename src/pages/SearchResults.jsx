@@ -14,21 +14,15 @@ const SearchResults = () => {
       try {
         const moviesList = [];
         const BACKEND_URL = 'http://localhost:8000/api/get-movies'; // Adjust the URL as needed
-        const response = await axios.get(`${BACKEND_URL}`);
-        await setMovies(moviesList.concat(response.data["Now Playing"],
-                                       response.data["Coming Soon"],
-                                       response.data["Trending"]));
-        await console.log(movies);
-        const results = movies.filter( (m) => m.title.toLowerCase().includes(data.toLowerCase()));
-        console.log(results);
-        // Assuming your API returns an array of movies in the 'results' property
-        setSearchResults(results);
+        await axios.get(`${BACKEND_URL}`).then(function (response) {
+          const results = moviesList.concat(response.data["Now Playing"], response.data["Coming Soon"], response.data["Trending"])
+            .filter( (m) => m.title.toLowerCase().includes(data.toLowerCase()));
+          setSearchResults(results);
+        });
       } catch (error) {
         console.error('Error fetching search results:', error);
       }
-      
     };
-
     fetchSearchResults();
   }, [data]);
 
