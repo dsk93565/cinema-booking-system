@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 
-const TemporaryManageUsers = () => {
+const ManageUsers = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
 
@@ -62,4 +62,4 @@ const TemporaryManageUsers = () => {
   );
 }
 
-export default TemporaryManageUsers;
+export default ManageUsers;

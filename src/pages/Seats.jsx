@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import '../stylings/temporary.css';
 
-const TemporarySeats = () => {
+const Seats = () => {
   return (
     <section className='temporary section-wrapper'>
         <div className='section-container-narrow'>
@@ -13,4 +13,4 @@ const TemporarySeats = () => {
   )
 }
 
-export default TemporarySeats;
+export default Seats;

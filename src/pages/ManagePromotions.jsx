@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../stylings/temporary.css';
 
-  const TemporaryManagePromotions = () => {
+  const ManagePromotions = () => {
   const [promotionCode, setPromotionCode] = useState('');
   const [percent, setPercent] = useState('');
   const [removePromoCode, setRemovePromoCode] = useState('');
@@ -60,4 +60,4 @@ import '../stylings/temporary.css';
   )
 }
 
-export default TemporaryManagePromotions;
+export default ManagePromotions;

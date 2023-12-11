@@ -10,16 +10,16 @@ import ChangePassword from './ChangePassword';
 import SignUp from './SignUp';
 import UserProfile from './UserProfile';
 import SearchResults from './SearchResults';
-import TemporaryShowtimes from './TemporaryShowtimes';
-import TemporarySeats from './TemporarySeats';
-import TemporaryAgeCategory from './TemporaryAgeCategory';
-import TemporaryOrderSummary from './TemporaryOrderSummary';
-import TemporaryCheckout from './TemporaryCheckout';
-import TemporaryCheckoutConfirmation from './TemporaryCheckoutConfirmation';
-import TemporaryAdminView from './TemporaryAdminView';
+import Showtimes from './Showtimes';
+import Seats from './Seats';
+import AgeCategory from './AgeCategory';
+import OrderSummary from './OrderSummary';
+import Checkout from './Checkout';
+import CheckoutConfirmation from './CheckoutConfirmation';
+import AdminView from './AdminView';
 import ManageMovies from './ManageMovies';
-import TemporaryManagePromotions from './TemporaryManagePromotions';
-import TemporaryManageUsers from './TemporaryManageUsers';
+import ManagePromotions from './ManagePromotions';
+import ManageUsers from './ManageUsers';
 
 library.add(fas, faSearch, faEye, faEyeSlash);
 
@@ -41,20 +41,20 @@ function App() {
         <Route path='/profile' element={<UserProfile />} />
         <Route path='/search-results' element={<SearchResults />} />
         <Route path='/book'>
-          <Route path='' element={<TemporaryShowtimes />} />
-          <Route path='seats' element={<TemporarySeats />} />
-          <Route path='age' element={<TemporaryAgeCategory />} />
+          <Route path='' element={<Showtimes />} />
+          <Route path='seats' element={<Seats />} />
+          <Route path='age' element={<AgeCategory />} />
         </Route>
         <Route path='/order'>
-          <Route path='' element={<TemporaryOrderSummary />} />
-          <Route path='checkout' element={<TemporaryCheckout />} />
-          <Route path='confirmation' element={<TemporaryCheckoutConfirmation />} />
+          <Route path='' element={<OrderSummary />} />
+          <Route path='checkout' element={<Checkout />} />
+          <Route path='confirmation' element={<CheckoutConfirmation />} />
         </Route>
         <Route path='/admin'>
-          <Route path='' element={<TemporaryAdminView />} />
+          <Route path='' element={<AdminView />} />
           <Route path='manage-movies' element={<ManageMovies />} />
-          <Route path='manage-promotions' element={<TemporaryManagePromotions />} />
-          <Route path='manage-users' element={<TemporaryManageUsers />} />
+          <Route path='manage-promotions' element={<ManagePromotions />} />
+          <Route path='manage-users' element={<ManageUsers />} />
         </Route>
       </Routes>
     </>
