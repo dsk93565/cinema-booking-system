@@ -288,19 +288,19 @@
     }
 
     .user-info.state {
-        width: 55%;
-    }
-
-    .user-info.zip {
-        width: 45%;
-    }
-
-    .user-info.state, .user-info.card-num {
         width: 65%;
     }
 
-    .user-info.zip, .user-info.exp-date {
+    .user-info.zip {
         width: 35%;
+    }
+
+    .user-info.card-num {
+        width: 75%;
+    }
+
+    .user-info.exp-date {
+        width: 25%;
     }
 
     .user-shipping-info .user-infos {

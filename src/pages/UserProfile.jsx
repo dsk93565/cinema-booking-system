@@ -605,8 +605,8 @@ const UserProfile = () => {
                       className='user-info-input disabled-input'
                     />
                   </div>
-                  <div className='user-infos state'>
-                    <div className='user-info'>
+                  <div className='user-infos'>
+                    <div className='user-info state'>
                       <label className='user-info-label'>State</label>
                       <Select
                         options={usStates}
@@ -666,7 +666,7 @@ const UserProfile = () => {
                         placeholder={!editMode ? cardNumber1 : ''}
                         value={editMode ? cardNumber1 : ''}
                         onChange={(e) => setCardNumber1(e.target.value)}
-                        className='user-info-input disabled-input'
+                        className='user-info-input'
                       />
                     </div>
                     <div className='user-info exp-date'>
@@ -676,7 +676,7 @@ const UserProfile = () => {
                         placeholder={!editMode ? expirationDate1 : ''}
                         value={editMode ? expirationDate1 : ''}
                         onChange={(e) => setExpirationDate1(e.target.value)}
-                        className='user-info-input disabled-input'
+                        className='user-info-input'
                       />
                     </div>
                   </div>
@@ -688,7 +688,7 @@ const UserProfile = () => {
                       placeholder={!editMode ? billingStreetAddress1 : ''}
                       value={editMode ? billingStreetAddress1 : ''}
                       onChange={(e) => setBillingStreetAddress1(e.target.value)}
-                      className='user-info-input disabled-input'
+                      className='user-info-input'
                     />
                   </div>
                   <div className='user-info'>
@@ -698,11 +698,11 @@ const UserProfile = () => {
                       placeholder={!editMode ? billingCityAddress1 : ''}
                       value={editMode ? billingCityAddress1 : ''}
                       onChange={(e) => setBillingCityAddress1(e.target.value)}
-                      className='user-info-input disabled-input'
+                      className='user-info-input'
                     />
                   </div>
-                  <div className='user-infos state'>
-                    <div className='user-info'>
+                  <div className='user-infos'>
+                    <div className='user-info state'>
                       <label className='user-info-label'>State</label>
                       <Select
                         options={usStates}
@@ -719,7 +719,7 @@ const UserProfile = () => {
                         placeholder={!editMode ? billingZipCodeAddress1 : ''}
                         value={editMode ? billingZipCodeAddress1 : ''}
                         onChange={(e) => setBillingZipCodeAddress1(e.target.value)}
-                        className='user-info-input disabled-input'
+                        className='user-info-input'
                       />
                     </div>
                   </div>
@@ -791,8 +791,8 @@ const UserProfile = () => {
                           className='user-info-input disabled-input'
                         />
                       </div>
-                      <div className='user-infos state'>
-                        <div className='user-info'>
+                      <div className='user-infos'>
+                        <div className='user-info state'>
                           <label className='user-info-label'>State</label>
                           <Select
                             options={usStates}
@@ -844,7 +844,7 @@ const UserProfile = () => {
                             placeholder={!editMode2 ? cardNumber2 : ''}
                             value={editMode2 ? cardNumber2 : ''}
                             onChange={(e) => setCardNumber2(e.target.value)}
-                            className='user-info-input disabled-input'
+                            className='user-info-input'
                           />
                         </div>
                         <div className='user-info exp-date'>
@@ -854,7 +854,7 @@ const UserProfile = () => {
                             placeholder={!editMode2 ? expirationDate2 : ''}
                             value={editMode2 ? expirationDate2 : ''}
                             onChange={(e) => setExpirationDate2(e.target.value)}
-                            className='user-info-input disabled-input'
+                            className='user-info-input'
                           />
                         </div>
                       </div>
@@ -866,7 +866,7 @@ const UserProfile = () => {
                           placeholder={!editMode2 ? billingStreetAddress2 : ''}
                           value={editMode2 ? billingStreetAddress2 : ''}
                           onChange={(e) => setBillingStreetAddress2(e.target.value)}
-                          className='user-info-input disabled-input'
+                          className='user-info-input'
                         />
                       </div>
                       <div className='user-info'>
@@ -876,11 +876,11 @@ const UserProfile = () => {
                           placeholder={!editMode2 ? billingCityAddress2 : ''}
                           value={editMode2 ? billingCityAddress2 : ''}
                           onChange={(e) => setBillingCityAddress2(e.target.value)}
-                          className='user-info-input disabled-input'
+                          className='user-info-input'
                         />
                       </div>
-                      <div className='user-infos state'>
-                        <div className='user-info'>
+                      <div className='user-infos'>
+                        <div className='user-info state'>
                           <label className='user-info-label'>State</label>
                           <Select
                             options={usStates}
@@ -897,7 +897,7 @@ const UserProfile = () => {
                             placeholder={!editMode2 ? billingZipCodeAddress2 : ''}
                             value={editMode2 ? billingZipCodeAddress2 : ''}
                             onChange={(e) => setBillingZipCodeAddress2(e.target.value)}
-                            className='user-info-input disabled-input'
+                            className='user-info-input'
                           />
                         </div>
                       </div>
@@ -969,8 +969,8 @@ const UserProfile = () => {
                               className='user-info-input disabled-input'
                             />
                           </div>
-                          <div className='user-infos state'>
-                            <div className='user-info'>
+                          <div className='user-infos'>
+                            <div className='user-info state'>
                               <label className='user-info-label'>State</label>
                               <Select
                                 options={usStates}
@@ -1026,7 +1026,7 @@ const UserProfile = () => {
                             placeholder={!editMode3 ? cardNumber3 : ''}
                             value={editMode3 ? cardNumber3 : ''}
                             onChange={(e) => setCardNumber3(e.target.value)}
-                            className='user-info-input disabled-input'
+                            className='user-info-input'
                           />
                         </div>
                         <div className='user-info exp-date'>
@@ -1036,7 +1036,7 @@ const UserProfile = () => {
                             placeholder={!editMode3 ? expirationDate3 : ''}
                             value={editMode3 ? expirationDate3 : ''}
                             onChange={(e) => setExpirationDate3(e.target.value)}
-                            className='user-info-input disabled-input'
+                            className='user-info-input'
                           />
                         </div>
                       </div>
@@ -1048,7 +1048,7 @@ const UserProfile = () => {
                           placeholder={!editMode3 ? billingStreetAddress3 : ''}
                           value={editMode3 ? billingStreetAddress3 : ''}
                           onChange={(e) => setBillingStreetAddress3(e.target.value)}
-                          className='user-info-input disabled-input'
+                          className='user-info-input'
                         />
                       </div>
                       <div className='user-info'>
@@ -1058,11 +1058,11 @@ const UserProfile = () => {
                           placeholder={!editMode3 ? billingCityAddress3 : ''}
                           value={editMode3 ? billingCityAddress3 : ''}
                           onChange={(e) => setBillingCityAddress3(e.target.value)}
-                          className='user-info-input disabled-input'
+                          className='user-info-input'
                         />
                       </div>
-                      <div className='user-infos state'>
-                        <div className='user-info'>
+                      <div className='user-infos'>
+                        <div className='user-info state'>
                           <label className='user-info-label'>State</label>
                           <Select
                             options={usStates}
@@ -1079,7 +1079,7 @@ const UserProfile = () => {
                             placeholder={!editMode3 ? billingZipCodeAddress3 : ''}
                             value={editMode3 ? billingZipCodeAddress3 : ''}
                             onChange={(e) => setBillingZipCodeAddress3(e.target.value)}
-                            className='user-info-input disabled-input'
+                            className='user-info-input'
                           />
                         </div>
                       </div>
@@ -1151,8 +1151,8 @@ const UserProfile = () => {
                               className='user-info-input disabled-input'
                             />
                           </div>
-                          <div className='user-infos state'>
-                            <div className='user-info'>
+                          <div className='user-infos'>
+                            <div className='user-info state'>
                               <label className='user-info-label'>State</label>
                               <Select
                                 options={usStates}
