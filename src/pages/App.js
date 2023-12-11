@@ -42,7 +42,7 @@ function App() {
         <Route path='/search-results' element={<SearchResults />} />
         <Route path='/book'>
           <Route path='' element={<Showtimes />} />
-          <Route path='seats' element={<Seats />} />
+          <Route path='seats/:shid' element={<Seats />} />
           <Route path='age' element={<AgeCategory />} />
         </Route>
         <Route path='/cart'>

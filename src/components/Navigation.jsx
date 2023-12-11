@@ -202,10 +202,8 @@ const Navigation = () => {
                     ) : null}
                   </li>
                   <li>
-                    {(userType === '1') ? (
-                      // User Profile
-                      <Link to='/profile'><button onClick={handleSideNav} className='side-navigation-link'>Profile</button></Link>
-                    ) : null}
+                    {/* User Profile */}
+                    <Link to='/profile'><button onClick={handleSideNav} className='side-navigation-link'>Profile</button></Link>
                   </li>
                   <li>
                     {(userType === '1' || userType === '2') ? (
