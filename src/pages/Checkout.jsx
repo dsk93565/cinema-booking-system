@@ -3,7 +3,7 @@ import '../stylings/booking.css';
 
 const Checkout = () => {
   return (
-    <section className='order temporary section-wrapper'>
+    <section className='order booking section-wrapper'>
         <div className='section-container-narrow'>
             <h2>Checkout</h2>
             <p>Empty</p>

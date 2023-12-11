@@ -3,7 +3,7 @@ import '../stylings/booking.css';
 
 const AdminView = () => {
   return (
-    <section className='temporary section-wrapper'>
+    <section className='booking section-wrapper'>
         <div className='section-container-narrow'>
             <h2>Admin view</h2>
             <Link to='manage-movies'><button className='CTA-button-one'>Manage movies</button></Link>
