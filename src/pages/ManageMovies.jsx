@@ -30,25 +30,66 @@ const ManageMovies = () => {
     }
   };
 
-  const handlePostShowing = (e, mid, pid, rid, date) => {
+  const handlePostShowing = async(e, mid, pid, rid, date) => {
     e.preventDefault();
-    async function postShowing () {
-        axios.post('http://localhost:8000/api/admin/add-showing', {
-            user_token: user_token,
-            mid: mid,
-            pid: pid,
-            rid: rid,
-            date: date
-        }).then(function (response) {
-            if (response.status === 403)
-                console.log("Not Authorized");
-            console.log(response);
-        }).catch(function(error) {
-            console.log("Error adding movie: ", error.message);
-        });
-    }
-    postShowing();
+    e.target.disabled = true;
+    
+      axios.post('http://localhost:8000/api/admin/add-showing', {
+          user_token: user_token,
+          mid: mid,
+          pid: pid,
+          rid: rid,
+          date: date
+      }).then(function (response) {
+          if (response.status === 403)
+              console.log("Not Authorized");
+          console.log(response);
+      }).catch(function(error) {
+          console.log("Error adding movie: ", error.message);
+      }).finally(function() {
+          e.target.disabled = false;
+      });
+    setScheduleMovieModal(false);
   }
+
+  const handleMovieSubmit = async (isFormEmpty, userToken, release_date, category, cast, director,
+                                producer, synopsis, reviews, trailer, rating, title,
+                                poster_path, msid) => {
+        if (!isFormEmpty) {
+            const movieData = {
+                userToken,
+                release_date,
+                category,
+                cast,
+                director,
+                producer,
+                synopsis,
+                reviews,
+                trailer,
+                rating,
+                title,
+                poster_path,
+                msid,
+            };
+    
+            try {
+                const response = await axios.post('http://localhost:8000/api/admin/add-movie', JSON.stringify(movieData), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+    
+                if (response.status === 403) {
+                    console.log("Not Authorized");
+                } else {
+                    console.log(response);
+                }
+            } catch (error) {
+                console.log("Error adding movie: ", error.message);
+            }
+        }
+        setAddMovieModal(false);
+  };
 
   const hideMovie = (event, movie) => {
       event.preventDefault();
@@ -140,7 +181,7 @@ const ManageMovies = () => {
         </div>
 
         {/** Add Movie Modal */}
-        {addMovieModal && (<AddMovie onClose={() => setAddMovieModal(false)}></AddMovie>)}
+        {addMovieModal && (<AddMovie onClose={() => setAddMovieModal(false)} handleMovieSubmit={handleMovieSubmit}></AddMovie>)}
 
         {/** Edit Movie Modal */}
         {editMovieModal && (<EditMovie onClose={() => setEditMovieModal(false)} movieid={movieToEdit}></EditMovie>)}

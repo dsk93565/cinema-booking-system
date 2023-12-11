@@ -194,15 +194,20 @@ class AddShow(APIView):
             print("Seats: ", copy.deepcopy(seats))
             for i in range(1, room.seatsInRoom):
                 print(i)
-                seat = seats.filter(sid=i).first()
+                seat = seats.filter(seat_number=i).first()
                 print("seat: ", copy.deepcopy(seat))
                 logical_seat = Logical_Seats.objects.create(seat_id=seat, period_id=period, available=1)
                 logical_seat.save()
-            showing = Showings.objects.create(movie_id=movie, period_id=period, room_id=room, show_date=date)# Need show_date?
-            showing.save()
+            showing, created = Showings.objects.get_or_create(movie_id=movie, period_id=period, room_id=room, show_date=date)
+            if created:
+                print("New showing created: ", showing.period_id)
+            else:
+                print("Showing already exists: ", showing.period_id)
+            """ showing.save() """
             return Response({"success": 1})
         except json.JSONDecodeError:
             return Response({"error": -1})
+        
         
 class RemoveShow(APIView):
     def post(self, request):
