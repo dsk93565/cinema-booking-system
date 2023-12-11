@@ -3,7 +3,7 @@ import '../stylings/booking.css';
 
 const Cart = () => {
   return (
-    <section className='order temporary section-wrapper'>
+    <section className='order booking section-wrapper'>
         <div className='section-container-narrow'>
             <h2>Cart</h2>
             <p>No tickets are in your cart</p>
