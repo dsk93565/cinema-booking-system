@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from .models import Movies, CustomUser, Card, Periods, Showings, Rooms, Promotions, Movie_States, Seats, Logical_Seats
 from .serializer import MovieSerializer, UserSerializer, PeriodSerializer
 from .utils import *
+import copy
 import json, random
 
 
@@ -20,7 +21,7 @@ class GetUsers(APIView):
             return Response({'error': "User is not authorized or not an admin"})
 
         queryset = CustomUser.objects.all()
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = UserSerializer(queryset, many=True)
         userList = {"users": serializer.data}
         return Response(userList)
 
@@ -185,12 +186,9 @@ class AddShow(APIView):
             period = Periods.objects.get(pid=data.get('pid'))
             movie = Movies.objects.get(mid=data.get('mid'))
             room = Rooms.objects.get(rid=data.get('rid'))
-            print(room)
             seats = Seats.objects.filter(room_id=room)
-            print("room seats", seats)
             for i in range(room.seatsInRoom):
                 seat = seats.filter(seat_number=i)
-                print("seat: ",seat)
                 logical_seat = Logical_Seats.objects.create(seat_id=seat, period_id=period, available=1)
                 logical_seat.save()
             showing = Showings.objects.create(movie_id=movie,period_id=showing,room_id=room)# Need show_date?

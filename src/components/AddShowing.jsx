@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../stylings/admin.css'
 import axios from 'axios';
-import DateTime from 'react-datetime';
-import MoviesDropdown from './MoviesDropdown';
 
 export default function AddShowing({ onClose, movies }) {
     
@@ -105,7 +103,7 @@ export default function AddShowing({ onClose, movies }) {
                                     </div>
                                     <div className='movie-info'>
                                         <label className='movie-info-label'>Select Time</label>
-                                        <select className='add-movie-input' value={1} onChange={(e) => setPid(e.target.value)}>
+                                        <select className='add-movie-input' onChange={(e) => setPid(e.target.value)}>
                                             <option value={1}>Period 1: 9:00 AM - 12:00 PM</option>
                                             <option value={2}>Period 2: 12:00 PM - 3:00 PM</option>
                                             <option value={3}>Period 3: 3:00 PM - 6:00 PM</option>
