@@ -5,24 +5,7 @@ import MovieCard from './MovieCard';
 const MoviesCard = (props) => {
   const sectionRef = useRef(null);
 
-  // Fetch and Categorize Movies Functionality
-  const [moviesByState, setMoviesByState] = useState({
-    'Now Playing': [],
-    'Trending': [],
-    'Coming Soon': [],
-  });
-
-  const fetchMovies = async () => {
-    try {
-      const response = await axios.get('http://localhost:8000/api/get-movies');
-      const { data } = response;
-      setMoviesByState(data);
-    } catch (error) {
-      console.error('Error fetching movies:', error);
-    } // try catch
-  };
-
-  const currentMovies = moviesByState[props.sectionTitle] || [];
+  const currentMovies = props.moviesByState[props.sectionTitle] || [];
 
   // Scroll Functionality
   const [atStart, setAtStart] = useState(true);
@@ -56,7 +39,7 @@ const MoviesCard = (props) => {
 
   // Listener
   useEffect(() => {
-    fetchMovies(props.sectionTitle);
+    
     const currentSectionRef = sectionRef.current;
 
     if (currentSectionRef) {
