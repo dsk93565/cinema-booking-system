@@ -211,6 +211,7 @@ button {
 }
 
 .user-info {
+    width: 100%;
     margin-top: 2rem;
     display: flex;
     flex-direction: column;
@@ -255,6 +256,10 @@ button {
     font-weight: 400;
     width: 100%;
     padding: 1rem 0 1rem 1.125rem;
+}
+
+.disabled-input {
+    cursor: not-allowed;
 }
 
 .input-error {
