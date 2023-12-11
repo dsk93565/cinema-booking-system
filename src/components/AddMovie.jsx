@@ -56,10 +56,9 @@ export default function AddMovie({ onClose }) {
         
     }, [isFormEmpty, readyToSubmit])
 
-    const handleSubmit = () => {        
-        console.log("top", readyToSubmit);
-        if(!isFormEmpty && readyToSubmit) {
-            const movieData =  {
+    const handleSubmit = async () => {
+        if (!isFormEmpty && readyToSubmit) {
+            const movieData = {
                 userToken,
                 release_date,
                 category,
@@ -74,31 +73,27 @@ export default function AddMovie({ onClose }) {
                 poster_path,
                 msid,
             };
-            
-            console.log(JSON.stringify(movieData));
-            
-            async function postMovie (movieInfoExport) {
-                await axios.post('http://localhost:8000/api/admin/add-movie', {
+    
+            try {
+                const response = await axios.post('http://localhost:8000/api/admin/add-movie', JSON.stringify(movieData), {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(movieInfoExport),
-                }).then(function (response) {
-                    if (response.status === 403)
-                        console.log("Not Authorized");
-                    console.log(response);
-                }).catch(function(error) {
-                    console.log("Error adding movie: ", error.message);
                 });
+    
+                if (response.status === 403) {
+                    console.log("Not Authorized");
+                } else {
+                    console.log(response);
+                    setReadyToSubmit(false);
+                    onClose(); // Move onClose() here
+                }
+            } catch (error) {
+                console.log("Error adding movie: ", error.message);
             }
-
-            postMovie(movieData);
-            setReadyToSubmit(false);
-            console.log("bottom", readyToSubmit);
         }
-        onClose();
-    }
-
+    };
+    
     return (
         <div className='modal-wrapper'>
                 <div className='admin-modal'>
@@ -106,7 +101,10 @@ export default function AddMovie({ onClose }) {
                         <div className='modal-title'><h1>Add Movie</h1></div>
                         <span className='close'><FontAwesomeIcon onClick={onClose} icon='fa fa-window-close'/></span>
                     </div>
-                    <form onSubmit={handleSubmit} className='admin-form-holder'>
+                    <form onSubmit={(e) => {
+                        e.preventDefault(); // Prevent the default form submission behavior
+                        handleSubmit();
+                    }} className='admin-form-holder'>
                         <div className='admin-modal-body'>
                             <div className='add-movie-form' id="addMovieForm">
                                 <div className='admin-movie-form-col'>
