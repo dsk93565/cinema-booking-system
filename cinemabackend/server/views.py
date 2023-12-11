@@ -362,10 +362,12 @@ class GetCards(APIView):
     def get(self, request):
         try: 
             data = json.loads(request.body.decode('utf-8'))
-        except json.JSONDecodeError:
             cardHandler = CardActions()
             cards = cardHandler.getCards(data.get('user_token'))
             return Response(cards)
+        except json.JSONDecodeError:
+            return Response({'error:':-1})
+            
 
 # expects      mid, 
 # (optional)   start_date, end_date
