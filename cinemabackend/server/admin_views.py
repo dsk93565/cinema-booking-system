@@ -9,21 +9,11 @@ import json, random
 
 #Need to added user_token to check for admin here 
 #just uncomment the code
-class GetUsers(APIView):
+class GetAllUsers(APIView):
     def get(self, request):
-        try: 
-            data = json.loads(request.body.decode('utf-8'))
-        except json.JSONDecodeError:
-            return Response({"error": "Invalid JSON format"})
-
-        user_token = data.get('user_token')
-        if checkAdmin(user_token) is None:
-            return Response({'error': "User is not authorized or not an admin"})
-
-        queryset = CustomUser.objects.all()
-        serializer = self.get_serializer(queryset, many=True)
-        userList = {"users": serializer.data}
-        return Response(userList)
+        users = CustomUser.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
 
 class MakeAdmin(APIView):
     def post(self, request):
@@ -94,33 +84,45 @@ class EditUser(APIView):
 #  synopsis, reviews, trailer, rating, title, poster_path}
 class AddMovie(APIView):
     def post(self, request):
-        try: 
-            response = json.loads(request.body.decode('utf-8'))
-            # Load the JSON string from the 'body' field
-            data = json.loads(response['body'])
-            # Extract the userToken
-            user_token = data['userToken']
+        try:
+            user_token = request.data.get('userToken')
+
             if checkAdmin(user_token) is None:
                 print("userisnone")
                 return Response({'error': -1})
-            msid = data.get('msid')
+
+            msid = request.data.get('msid')
             moviestate = Movie_States.objects.get(msid=msid)
-            new_movie = Movies.objects.create(release_date=data.get('release_date'), 
-                                              category=data.get('category'), 
-                                              cast=data.get('cast'),
-                                              director=data.get('director'), 
-                                              producer=data.get('producer'), 
-                                              synopsis=data.get('synopsis'), 
-                                              reviews=data.get('reviews'),
-                                              trailer=data.get('trailer'), 
-                                              rating=data.get('rating'), 
-                                              title=data.get('title'), 
-                                              poster_path=data.get('poster_path'),
-                                              state_id=moviestate)
-            new_movie.save()
-        except json.JSONDecodeError:
+
+            # Use get_or_create to avoid creating duplicate entries
+            new_movie, created = Movies.objects.get_or_create(
+                release_date=request.data.get('release_date'),
+                category=request.data.get('category'),
+                cast=request.data.get('cast'),
+                director=request.data.get('director'),
+                producer=request.data.get('producer'),
+                synopsis=request.data.get('synopsis'),
+                reviews=request.data.get('reviews'),
+                trailer=request.data.get('trailer'),
+                rating=request.data.get('rating'),
+                title=request.data.get('title'),
+                poster_path=request.data.get('poster_path'),
+                state_id=moviestate
+            )
+
+            if created:
+                # The movie was created
+                print("New movie created:", new_movie.title)
+            else:
+                # The movie already existed
+                print("Movie already exists:", new_movie.title)
+
+            return Response({'mid': new_movie.mid})
+        except Exception as e:
+            print("Error adding movie: ", str(e))
             return Response({"error": -1})
-        return Response({'mid': new_movie.title})
+
+
 
 #expects MID, user_token
 class ArchiveMove(APIView):
