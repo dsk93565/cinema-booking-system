@@ -1,6 +1,6 @@
 import '../stylings/temporary.css';
 
-const TemporaryAgeCategory = () => {
+const AgeCategory = () => {
   return (
     <section className='temporary section-wrapper'>
         <div className='section-container-narrow'>
@@ -14,4 +14,4 @@ const TemporaryAgeCategory = () => {
   )
 }
 
-export default TemporaryAgeCategory;
+export default AgeCategory;

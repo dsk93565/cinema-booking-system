@@ -11,12 +11,12 @@ import SignUp from './SignUp';
 import UserProfile from './UserProfile';
 import SearchResults from './SearchResults';
 import Showtimes from './Showtimes';
-import TemporarySeats from './TemporarySeats';
-import TemporaryAgeCategory from './TemporaryAgeCategory';
+import Seats from './Seats';
+import AgeCategory from './AgeCategory';
 import Cart from './Cart';
-import TemporaryCheckout from './TemporaryCheckout';
-import TemporaryCheckoutConfirmation from './TemporaryCheckoutConfirmation';
-import TemporaryAdminView from './TemporaryAdminView';
+import Checkout from './Checkout';
+import CheckoutConfirmation from './CheckoutConfirmation';
+import AdminView from './AdminView';
 import ManageMovies from './ManageMovies';
 import TemporaryManagePromotions from './TemporaryManagePromotions';
 import TemporaryManageUsers from './TemporaryManageUsers';
@@ -42,16 +42,16 @@ function App() {
         <Route path='/search-results' element={<SearchResults />} />
         <Route path='/book'>
           <Route path='' element={<Showtimes />} />
-          <Route path='seats' element={<TemporarySeats />} />
-          <Route path='age' element={<TemporaryAgeCategory />} />
+          <Route path='seats' element={<Seats />} />
+          <Route path='age' element={<AgeCategory />} />
         </Route>
         <Route path='/cart'>
           <Route path='' element={<Cart />} />
-          <Route path='checkout' element={<TemporaryCheckout />} />
-          <Route path='confirmation' element={<TemporaryCheckoutConfirmation />} />
+          <Route path='checkout' element={<Checkout />} />
+          <Route path='confirmation' element={<CheckoutConfirmation />} />
         </Route>
         <Route path='/admin'>
-          <Route path='' element={<TemporaryAdminView />} />
+          <Route path='' element={<AdminView />} />
           <Route path='manage-movies' element={<ManageMovies />} />
           <Route path='manage-promotions' element={<TemporaryManagePromotions />} />
           <Route path='manage-users' element={<TemporaryManageUsers />} />
