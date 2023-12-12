@@ -21,12 +21,14 @@ class MakeAdmin(APIView):
     @check_admin
     def post(self, request):
         try: 
-            data = json.loads(request.body.decode('utf-8'))
+            response = json.loads(request.body.decode('utf-8'))
+            data = json.loads(response['body'])
+            print(data)
         except json.JSONDecodeError:
             return Response({"error": "Invalid JSON format"})
         user_id = data.get('uid')
         try:
-            user = CustomUser.objects.get(pk=user_id)
+            user = CustomUser.objects.get(uid=user_id)
             user.type_id = 2  # Setting type_id to 2 to make the user an admin
             user.save()
             return Response({"success": 1})

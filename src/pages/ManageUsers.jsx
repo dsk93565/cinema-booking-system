@@ -47,7 +47,7 @@ const ManageUsers = () => {
 
       const makeAdminData = {
         user_token: user_token,
-        uid: uidSuspend,
+        uid: uidAdmin,
         timeout: 5000
       }
 
@@ -63,6 +63,7 @@ const ManageUsers = () => {
           .catch(error => console.error('Error making admin:', error));
       }
       postAdmin();
+      navigate('/admin');
     }
   }, [uidAdmin]);
 
