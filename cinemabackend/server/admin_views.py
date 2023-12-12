@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Movies, CustomUser, Card, Periods, Showings, Rooms, Promotions, Movie_States, Seats, Logical_Seats
 from .serializer import MovieSerializer, UserSerializer, PeriodSerializer
+from django.core.cache import cache
 from .utils import *
 import copy
 import json, random
@@ -38,9 +39,10 @@ class MakeAdmin(APIView):
 class SuspendUser(APIView):
     @check_admin
     def post(self, request):
-        try: 
-            data = json.loads(request.body.decode('utf-8'))
-            user = CustomUser.objects.get(data.get('uid'))
+        try:
+            response = json.loads(request.body.decode('utf-8'))
+            data = json.loads(response['body'])
+            user = CustomUser.objects.get(uid=data.get('uid'))
             user.state_id = 3
             user.save()
             return Response({"success": 1})
@@ -77,22 +79,24 @@ class AddMovie(APIView):
     @check_admin
     def post(self, request):
         try:
-            msid = request.data.get('msid')
+            response = json.loads(request.body.decode('utf-8'))
+            data = json.loads(response['body'])
+            print(data)
+            msid = data.get('msid')
             moviestate = Movie_States.objects.get(msid=msid)
-
             # Use get_or_create to avoid creating duplicate entries
             new_movie, created = Movies.objects.get_or_create(
-                release_date=request.data.get('release_date'),
-                category=request.data.get('category'),
-                cast=request.data.get('cast'),
-                director=request.data.get('director'),
-                producer=request.data.get('producer'),
-                synopsis=request.data.get('synopsis'),
-                reviews=request.data.get('reviews'),
-                trailer=request.data.get('trailer'),
-                rating=request.data.get('rating'),
-                title=request.data.get('title'),
-                poster_path=request.data.get('poster_path'),
+                release_date=data.get('release_date'),
+                category=data.get('category'),
+                cast=data.get('cast'),
+                director=data.get('director'),
+                producer=data.get('producer'),
+                synopsis=data.get('synopsis'),
+                reviews=data.get('reviews'),
+                trailer=data.get('trailer'),
+                rating=data.get('rating'),
+                title=data.get('title'),
+                poster_path=data.get('poster_path'),
                 state_id=moviestate
             )
 
@@ -133,9 +137,9 @@ class EditMovie(APIView):
     @check_admin
     def post(self, request):
         try: 
+            cache.clear()
             response = json.loads(request.body.decode('utf-8'))
             data = json.loads(response['body'])
-            print(data)
             movie = Movies.objects.get(mid=data.get('mid'))
             movie.release_date=data.get('release_date') 
             movie.category=data.get('category') 
@@ -144,7 +148,7 @@ class EditMovie(APIView):
             movie.producer=data.get('producer') 
             movie.synopsis=data.get('synopsis') 
             movie.reviews=data.get('reviews')
-            movie.trailer=data.get('trailer') 
+            movie.trailer=data.get('trailer')
             movie.rating=data.get('rating')
             movie.title=data.get('title')
             movie.poster_path=data.get('poster_path')
@@ -189,6 +193,7 @@ class AddShow(APIView):
             else:
                 print("Showing already exists: ", showing.period_id)
             """ showing.save() """
+            cache.clear()
             return Response({"success": 1})
         except json.JSONDecodeError:
             return Response({"error": -1})

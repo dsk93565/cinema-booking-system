@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../stylings/admin.css';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -9,6 +10,7 @@ const ManageUsers = () => {
   const [uidAdmin, setUserToAdmin] = useState(0);
   const [uidSuspend, setUserToSuspend] = useState(0);
   const user_token = localStorage.getItem('userToken');
+  const navigate = useNavigate();
 
   async function getUsers() {
     const adminData = {
@@ -40,23 +42,21 @@ const ManageUsers = () => {
     getUsers();
   }, []);
 
-  // Reload
-  function reloadUsers() {
-    /* setUsers(users.map(user => {
-      return null;
-    })) */
-    setIsLoading(true);
-    getUsers();
-  }
-
-
   useEffect( () => {
     if (uidAdmin != 0) {
+
+      const makeAdminData = {
+        user_token: user_token,
+        uid: uidSuspend,
+        timeout: 5000
+      }
+
       async function postAdmin() {
         await axios.post('http://localhost:8000/api/admin/make-admin', {
-            user_token: user_token,
-            uid: uidAdmin,
-            timeout: 5000 })
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(makeAdminData)})
           .then(response => {
             console.log(response.data);
           })
@@ -74,18 +74,26 @@ const ManageUsers = () => {
   useEffect( () => {
     if (uidSuspend != 0) {
       async function postSuspend() {
+
+        const suspendData = {
+          user_token: user_token,
+          uid: uidSuspend,
+          timeout: 5000
+        }
+
         await axios.post('http://localhost:8000/api/admin/suspend-user', {
-            user_token: user_token,
-            uid: uidSuspend,
-            timeout: 5000 })
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(suspendData)})
           .then(response => {
             console.log(response.data);
           })
           .catch(error => console.error('Error suspending user:', error));
       }
       postSuspend();
+      navigate('/admin');
     }
-    /* reloadUsers(); */
   }, [uidSuspend]);
 
   return (
@@ -107,7 +115,6 @@ const ManageUsers = () => {
                 ) : (
                   <button className='suspended-user-button'>User Suspended</button>
                 )}
-                
               </div>
             ) : (
               <div key={user.uid}>

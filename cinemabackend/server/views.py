@@ -434,7 +434,7 @@ class MovieList(APIView):
                 sorted_movies['Coming Soon'].append(serialized_movie)
 
         # Cache the fetched data for 15 minutes
-        cache.set(self.cache_key, sorted_movies, timeout=60 * 30)
+        cache.set(self.cache_key, sorted_movies, timeout=10)
 
         return Response(sorted_movies)
     

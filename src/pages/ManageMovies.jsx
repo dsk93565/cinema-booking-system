@@ -16,7 +16,7 @@ const ManageMovies = () => {
   /* const [midHidden, setMidHidden] = useState(0); */
   const [isLoading, setIsLoading] = useState(true);
 
-  /* const [movieToEdit, setMovieToEdit] = useState(0); */
+  /* State value for editing movie */
   const [movieToEdit, setMovieToEdit] = useState({
     mid: 0,
     category: '',
@@ -33,6 +33,7 @@ const ManageMovies = () => {
     msid: '',
   });
 
+  /* State value for hiding movie */
   const [movieHidden, setMovieHidden] = useState({
     mid: 0,
     category: '',
@@ -91,7 +92,6 @@ const ManageMovies = () => {
     }).then(function (response) {
         if (response.status === 403)
             console.log("Not Authorized");
-        console.log(response);
     }).catch(function(error) {
         console.log("Error adding movie: ", error.message);
     }).finally(function() {
@@ -119,25 +119,27 @@ const ManageMovies = () => {
                 poster_path,
                 msid,
             };
+
+            console.log(JSON.stringify(movieData));
     
             try {
-                const response = await axios.post('http://localhost:8000/api/admin/add-movie', 
-                    JSON.stringify(movieData), {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-    
-                if (response.status === 403) {
-                    console.log("Not Authorized");
-                } else {
+                await axios.post('http://localhost:8000/api/admin/add-movie', {
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(movieData)
+                }).then(function (response) {
+                    if (response.status === 403) {
+                      console.log("Not Authorized");
+                    }
                     console.log(response);
-                }
+                });    
+                
             } catch (error) {
                 console.log("Error adding movie: ", error.message);
             }
         }
-        setAddMovieModal(false);
+        // setAddMovieModal(false);
   };
 
   const handleEditMovieSubmit = async (isEditMovieFormEmpty, movieData) => {
@@ -234,7 +236,7 @@ const ManageMovies = () => {
       setIsLoading(true);
       fetchMovies();
     })
-  }, [movies, movieHidden, movieToEdit]);
+  }, []);
 
   return (
     <section className='admin-section-wrapper'>

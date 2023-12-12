@@ -9,6 +9,9 @@ const SearchResults = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Singular Flipped Card Functionality
+  const [flippedCard, setFlippedCard] = useState(null);
+
   useEffect( () => {
     const fetchSearchResults = async () => {
       try {
@@ -43,7 +46,7 @@ const SearchResults = () => {
               <div className='search-results-header'><h2>{movie.title}</h2></div>
               <div className='search-result-row'>
                 <div className='search-result-image'>
-                  <MovieCard movie={movie} origin="SearchResults" />
+                  <MovieCard movie={movie} origin="SearchResults" onFlip={() => setFlippedCard(prev => (prev === movie.mid ? null : movie.mid))}/>
                 </div>
                 <div className='search-result-info'>
                   <p><strong>Genre:</strong> {movie.category}</p>
