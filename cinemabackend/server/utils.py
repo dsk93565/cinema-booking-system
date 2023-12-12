@@ -109,6 +109,7 @@ class CardActions():
             new_card.save()
         except: 
             raise Exception({'could not save card': -1})
-        key_storage = Encryption_Keys.objects.get_or_create(encryption_key=key, user_id=user)
-        key_storage.save() 
+        key_storage, created = Encryption_Keys.objects.get_or_create(encryption_key=key, user_id=user)
+        if created:
+            key_storage.save()
         return 1
